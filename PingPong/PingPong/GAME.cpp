@@ -70,17 +70,27 @@ bool GAME::InitWindow() {
 void GAME::InitGame() {
 	ball = new Ball();
 	ball->Init(content);
-	bat = new Bat();
-	bat->Init(content);
+	bat1 = new Bat();
+	bat1->InitDown(content);
 	keyboard = new MKeyboard(hInstance, hWnd);
 	keyboard->Init();
+	bat2 = new Bat();
+	bat2->InitUp(content);
+	mouse = new MMouse(hInstance, hWnd);
+	mouse->Init();
 }
 
 void GAME::Update(float gameTime) {
 	ball->Update(gameTime);
 	keyboard->GetState();
-	bat->Update(gameTime, keyboard);
-	if (Check(bat->rect, ball->rect)) {
+	bat1->Update(gameTime, keyboard);
+	if (Check(bat1->rect, ball->rect)) {
+		ball->dy = -ball->dy;
+	}
+	long x;
+	//mouse->GetState(x);
+	bat2->Update2(gameTime, keyboard); 
+	if (Check(bat2->rect, ball->rect)) {
 		ball->dy = -ball->dy;
 	}
 }
@@ -88,6 +98,7 @@ void GAME::Update(float gameTime) {
 void GAME::Render() {
 	graphic->Begin();
 	ball->Render(graphic);
-	bat->Render(graphic);
+	bat1->Render(graphic);
+	bat2->Render(graphic);
 	graphic->End();
 }

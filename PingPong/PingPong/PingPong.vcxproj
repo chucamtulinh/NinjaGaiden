@@ -134,6 +134,7 @@
     <ClCompile Include="MContent.cpp" />
     <ClCompile Include="MGraphic.cpp" />
     <ClCompile Include="MKeyboard.cpp" />
+    <ClCompile Include="MMouse.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="MContent.h" />
     <ClInclude Include="MGraphic.h" />
     <ClInclude Include="MKeyboard.h" />
+    <ClInclude Include="MMouse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

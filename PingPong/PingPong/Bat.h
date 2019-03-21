@@ -3,6 +3,7 @@
 #include "MContent.h"
 #include "MGraphic.h"
 #include "MKeyboard.h"
+#include "MMouse.h"
 
 class Bat
 {
@@ -13,8 +14,11 @@ public:
 	float speed;
 	RECT rect;
 	~Bat(void);
-	void Init(MContent* content);
+	void InitUp(MContent* content);
+	void InitDown(MContent* content);
 	void Update(float gameTime, MKeyboard* key);
+	void Update2(float gameTime, MKeyboard* key);
+	void Update(float gameTime, long x);
 	void Render(MGraphic* graphic);
 };
 
