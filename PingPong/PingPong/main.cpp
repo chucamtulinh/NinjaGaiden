@@ -4,7 +4,7 @@
 int WINAPI WinMain(HINSTANCE h, HINSTANCE p, LPTSTR a, int c) {
 	
 	MSG msg;
-	GAME game(h, 300, 600, (char *) "PingPong");
+	GAME game(h, 600, 800, (char *) "PingPong");
 	if (!game.InitWindow()) {
 		MessageBox(NULL, "Can't init game", "Error", MB_OK);
 		return 0;
@@ -29,7 +29,6 @@ int WINAPI WinMain(HINSTANCE h, HINSTANCE p, LPTSTR a, int c) {
 			DispatchMessage(&msg);
 		}
 		else {
-
 			QueryPerformanceCounter(&startTime);
 			game.Update(gameTime);
 			game.Render();

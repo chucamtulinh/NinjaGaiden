@@ -27,17 +27,15 @@ bool MMouse::Init() {
 	if (FAILED(hr)) return false;
 	hr = this->did8->Acquire();
 	if (FAILED(hr)) return false;
+	this->curx = 200;
+	this->cury = 240;
 }
 
-void MMouse::GetState(long &x) {
-	DIMOUSESTATE mouseState;
-	long currentXpos = 320, currentYpos = 240, currentZpos;
-	while (1) {
-		HRESULT hr = this->did8->GetDeviceState(sizeof(mouseState), (LPVOID)&mouseState);
-
-		currentXpos += mouseState.lx;
-		x = currentXpos;
-		currentYpos += mouseState.ly;
+void MMouse::GetState() {
+	HRESULT hr = this->did8->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&mouseState);
+	if (FAILED(hr)) {
+		hr = this->did8->Acquire();
+		while (hr == DIERR_INPUTLOST) hr = this->did8->Acquire();
 	}
 }
 

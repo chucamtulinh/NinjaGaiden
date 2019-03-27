@@ -61,7 +61,7 @@ bool GAME::InitWindow() {
 	if (!this->hWnd) return false;
 	ShowWindow(this->hWnd, SW_NORMAL);
 	UpdateWindow(this->hWnd);
-	graphic = new MGraphic(this->hWnd, 300, 600);
+	graphic = new MGraphic(this->hWnd, 600, 800);
 	if (!graphic->InitD3d()) return false;
 	content = new MContent(graphic->GetDevice());
 	return true;
@@ -83,13 +83,12 @@ void GAME::InitGame() {
 void GAME::Update(float gameTime) {
 	ball->Update(gameTime);
 	keyboard->GetState();
+	mouse->GetState();
 	bat1->Update(gameTime, keyboard);
 	if (Check(bat1->rect, ball->rect)) {
 		ball->dy = -ball->dy;
 	}
-	long x;
-	//mouse->GetState(x);
-	bat2->Update2(gameTime, keyboard); 
+	bat2->Update(gameTime, mouse); 
 	if (Check(bat2->rect, ball->rect)) {
 		ball->dy = -ball->dy;
 	}

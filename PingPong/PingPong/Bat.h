@@ -16,9 +16,9 @@ public:
 	~Bat(void);
 	void InitUp(MContent* content);
 	void InitDown(MContent* content);
-	void Update(float gameTime, MKeyboard* key);
-	void Update2(float gameTime, MKeyboard* key);
-	void Update(float gameTime, long x);
+	void Update(float gameTime, MKeyboard* key);// <-- and -->
+	void Update2(float gameTime, MKeyboard* key);// A and D
+	void Update(float gameTime, MMouse* mouse);
 	void Render(MGraphic* graphic);
 };
 
