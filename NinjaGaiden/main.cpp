@@ -25,17 +25,17 @@
 #define MARIO_TEXTURE_PATH L"mario.png"
 
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 0, 0)
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 255)
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
 
-#define MAX_FRAME_RATE 10
+#define MAX_FRAME_RATE 80
 
 CGame *game;
 CMario *mario;
 CGameObject *brick;
 
-LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) // dung de lang nghe cac su kien Cua so khi nguoi dung tuong tac
 {
 	switch (message) {
 	case WM_DESTROY:
