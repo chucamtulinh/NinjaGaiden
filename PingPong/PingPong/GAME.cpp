@@ -64,6 +64,8 @@ bool GAME::InitWindow() {
 	graphic = new MGraphic(this->hWnd, 600, 800);
 	if (!graphic->InitD3d()) return false;
 	content = new MContent(graphic->GetDevice());
+	this->img = content->LoadTexture("background.png");
+	this->position = D3DXVECTOR2(0, 0);
 	return true;
 }
 
@@ -96,6 +98,7 @@ void GAME::Update(float gameTime) {
 
 void GAME::Render() {
 	graphic->Begin();
+	graphic->DrawTexture(this->img, this->position, D3DCOLOR_XRGB(255, 255, 255));
 	ball->Render(graphic);
 	bat1->Render(graphic);
 	bat2->Render(graphic);

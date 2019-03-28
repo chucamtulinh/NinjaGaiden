@@ -9,6 +9,7 @@
 
 class GAME
 {
+	LPDIRECT3DTEXTURE9 img;
 private:
 		HINSTANCE hInstance;
 		HWND hWnd;
@@ -25,6 +26,7 @@ private:
 		Bat* bat2;
 		bool Check(RECT r1, RECT r2);
 public:
+	D3DXVECTOR2 position;
 	bool InitWindow();
 	void InitGame();
 	void Update(float gameTime);

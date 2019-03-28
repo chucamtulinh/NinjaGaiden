@@ -8,14 +8,14 @@ Ball::Ball(void)
 
 void Ball::Init(MContent* content) {
 	this->img = content->LoadTexture("ball.png");
-	this->position = D3DXVECTOR2(0, 0);
+	this->position = D3DXVECTOR2(300, 400);
 	dx = dy = 1;
 }
 
 void Ball::Update(float gameTime) {
 	float speed = 4;
-	if (position.x < 0 || position.x + 35.0 > 600) dx = -dx;
-	if (position.y < 0 || position.y + 35.0 > 800) dy = -dy;
+	if (position.x < 10 || position.x + 35.0 > 590) dx = -dx;
+	if (position.y < 10 || position.y + 35.0 > 790) dy = -dy;
 	position.x += dx * speed;
 	position.y += dy * speed;
 	rect.left = position.x;
