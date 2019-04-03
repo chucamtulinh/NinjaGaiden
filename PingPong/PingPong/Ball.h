@@ -3,6 +3,10 @@
 #include "MContent.h"
 #include "MGraphic.h"
 
+struct Box {
+	float x, y, w, h, vx, vy;
+};
+
 class Ball
 {
 private:
@@ -12,6 +16,7 @@ public:
 	float speed;
 	int dx, dy;
 	RECT rect;
+	Box bball;
 	Ball(void);
 	~Ball(void);
 	void Init(MContent* content);

@@ -4,6 +4,7 @@
 #include "MGraphic.h"
 #include "MKeyboard.h"
 #include "MMouse.h"
+#include "Ball.h"
 
 class Bat
 {
@@ -13,6 +14,7 @@ public:
 	D3DXVECTOR2 position;
 	float speed;
 	RECT rect;
+	Box bbat;
 	~Bat(void);
 	void InitUp(MContent* content);
 	void InitDown(MContent* content);

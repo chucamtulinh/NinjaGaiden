@@ -15,6 +15,98 @@ bool GAME::Check(RECT r1, RECT r2) {
 	return !(r1.left + r1.right < r2.left || r1.top + r1.bottom < r2.top || r2.left + r2.right < r1.left || r2.top + r2.bottom < r1.top);
 }
 
+float SweptAABB(Box b1, Box b2, float& normalx, float& normaly) {
+	float xInvEntry, yInvEntry, xInvExit, yInvExit;
+
+	if (b1.vx > 0.0f) {
+		xInvEntry = b2.x - (b1.x + b1.w);
+		xInvExit = (b2.x + b2.w) - b1.x;
+	}
+	else {
+		xInvEntry = (b2.x + b2.w) - b1.x;
+		xInvExit = b2.x - (b1.x + b1.w);
+	}
+
+	if (b1.vy > 0.0f) {
+		yInvEntry = b2.y - (b1.y + b1.h);
+		yInvExit = (b2.y + b2.h) - b1.y;
+	}
+	else {
+		yInvEntry = (b2.y + b2.h) - b1.y;
+		yInvExit = b2.y - (b1.y + b1.h);
+	}
+
+	float xEntry, yEntry, xExit, yExit;
+
+	if (b1.vx == 0.0f) {
+		xEntry = numeric_limits<float>::infinity();
+		xExit = numeric_limits<float>::infinity();
+	}
+	else {
+		xEntry = xInvEntry / b1.vx;
+		xExit = xInvExit / b1.vx;
+	}
+
+	if (b1.vy == 0.0f) {
+		yEntry = numeric_limits<float>::infinity();
+		yExit = numeric_limits<float>::infinity();
+	}
+	else {
+		yEntry = yInvEntry / b1.vy;
+		yExit = yInvExit / b1.vy;
+	}
+
+	float entryTime = max(xEntry, yEntry), exitTime = min(xExit, yExit);
+
+	if (entryTime > exitTime || xEntry < 0.0f || yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
+		normalx = 0.0f;
+		normaly = 0.0f;
+		return 1.0f;
+	}
+	else {
+		if (xEntry > yEntry) {
+			if (xInvEntry < 0.0f) {
+				normalx = 1.0f;
+				normaly = 0.0f;
+			}
+			else {
+				normalx = -1.0f;
+				normaly = 0.0f;
+			}
+		}
+		else {
+			if (yInvEntry < 0.0f) {
+				normalx = 0.0f;
+				normaly = 1.0f;
+			}
+			else {
+				normalx = 0.0f;
+				normaly = -1.0f;
+			}
+		}
+	}
+	return entryTime;
+}
+
+bool GAME::CheckAABB(Ball* ball, Bat* bat) {
+	float normalx, normaly;
+	float collisiontime = SweptAABB(ball->bball, bat->bbat, normalx, normaly);
+	ball->bball.x += ball->bball.vx * collisiontime;
+	ball->bball.y += ball->bball.vy * collisiontime;
+	float remainingtime = 1.0f - collisiontime;
+	ball->bball.vx *= remainingtime;
+	ball->bball.vy *= remainingtime;
+	/*if (abs(normalx) > 0.0001f) {
+		ball->dx = -ball->dx;
+		ball->bball.vx = -ball->bball.vx;
+	};*/
+	if (abs(normaly) > 0.0001f) {
+		ball->bball.vy = -ball->bball.vy;
+		return true;
+	};
+	return false;
+}
+
 GAME::~GAME(void)
 {
 }
@@ -87,11 +179,11 @@ void GAME::Update(float gameTime) {
 	keyboard->GetState();
 	mouse->GetState();
 	bat1->Update(gameTime, keyboard);
-	if (Check(bat1->rect, ball->rect)) {
+	if (CheckAABB(ball, bat1)) {
 		ball->dy = -ball->dy;
 	}
-	bat2->Update(gameTime, mouse); 
-	if (Check(bat2->rect, ball->rect)) {
+	bat2->Update(gameTime, mouse);
+	if (CheckAABB(ball, bat2)) {
 		ball->dy = -ball->dy;
 	}
 }
