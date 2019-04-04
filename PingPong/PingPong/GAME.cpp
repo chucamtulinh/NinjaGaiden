@@ -11,10 +11,6 @@ GAME::GAME(HINSTANCE hIns, int w, int h, char * name)
 	strcpy_s(this->windowName, name);
 }
 
-bool GAME::Check(RECT r1, RECT r2) {
-	return !(r1.left + r1.right < r2.left || r1.top + r1.bottom < r2.top || r2.left + r2.right < r1.left || r2.top + r2.bottom < r1.top);
-}
-
 float SweptAABB(Box b1, Box b2, float& normalx, float& normaly) {
 	float xInvEntry, yInvEntry, xInvExit, yInvExit;
 
@@ -39,7 +35,7 @@ float SweptAABB(Box b1, Box b2, float& normalx, float& normaly) {
 	float xEntry, yEntry, xExit, yExit;
 
 	if (b1.vx == 0.0f) {
-		xEntry = numeric_limits<float>::infinity();
+		xEntry = -numeric_limits<float>::infinity();
 		xExit = numeric_limits<float>::infinity();
 	}
 	else {
@@ -48,7 +44,7 @@ float SweptAABB(Box b1, Box b2, float& normalx, float& normaly) {
 	}
 
 	if (b1.vy == 0.0f) {
-		yEntry = numeric_limits<float>::infinity();
+		yEntry = -numeric_limits<float>::infinity();
 		yExit = numeric_limits<float>::infinity();
 	}
 	else {
@@ -58,7 +54,7 @@ float SweptAABB(Box b1, Box b2, float& normalx, float& normaly) {
 
 	float entryTime = max(xEntry, yEntry), exitTime = min(xExit, yExit);
 
-	if (entryTime > exitTime || xEntry < 0.0f || yEntry < 0.0f || xEntry > 1.0f || yEntry > 1.0f) {
+	if (entryTime > exitTime || (xEntry < 0.0f && yEntry < 0.0f) || xEntry > 1.0f || yEntry > 1.0f) {
 		normalx = 0.0f;
 		normaly = 0.0f;
 		return 1.0f;
@@ -88,23 +84,13 @@ float SweptAABB(Box b1, Box b2, float& normalx, float& normaly) {
 	return entryTime;
 }
 
-bool GAME::CheckAABB(Ball* ball, Bat* bat) {
-	float normalx, normaly;
-	float collisiontime = SweptAABB(ball->bball, bat->bbat, normalx, normaly);
-	ball->bball.x += ball->bball.vx * collisiontime;
-	ball->bball.y += ball->bball.vy * collisiontime;
-	float remainingtime = 1.0f - collisiontime;
-	ball->bball.vx *= remainingtime;
-	ball->bball.vy *= remainingtime;
-	/*if (abs(normalx) > 0.0001f) {
-		ball->dx = -ball->dx;
-		ball->bball.vx = -ball->bball.vx;
-	};*/
-	if (abs(normaly) > 0.0001f) {
-		ball->bball.vy = -ball->bball.vy;
-		return true;
-	};
-	return false;
+Box GetSweptBroadPhaseBox(Box b) {
+	Box bb;
+	bb.x = b.vx > 0 ? b.x : b.x + b.vx;
+	bb.y = b.vy > 0 ? b.y : b.y + b.vy;
+	bb.w = b.vx > 0 ? b.vx + b.w : b.w - b.vx;
+	bb.h = b.vy > 0 ? b.vy + b.h : b.h - b.vy;
+	return bb;
 }
 
 GAME::~GAME(void)
@@ -174,18 +160,53 @@ void GAME::InitGame() {
 	mouse->Init();
 }
 
+bool GAME::Check(RECT r1, RECT r2) {
+	return !(r1.left + r1.right < r2.left || r1.top + r1.bottom < r2.top || r2.left + r2.right < r1.left || r2.top + r2.bottom < r1.top);
+}
+
+bool GAME::AABBCheck(Box b1, Box b2) {
+	return !(b1.x + b1.w < b2.x || b1.x > b2.x + b2.w || b1.y + b1.h < b2.y || b1.y > b2.y + b2.h);
+}
+
+void GAME::CheckAABB(Ball* ball, Bat* bat) {
+	Box bb = GetSweptBroadPhaseBox(ball->bball);
+	if (AABBCheck(bb, bat->bbat)) {
+		float normalx, normaly;
+		float collisiontime = SweptAABB(ball->bball, bat->bbat, OUT normalx, OUT normaly);
+		ball->bball.x += ball->bball.vx * collisiontime;
+		ball->bball.y += ball->bball.vy * collisiontime;
+		float remainingtime = 1.0f - collisiontime;
+		ball->bball.vx *= remainingtime;
+		ball->bball.vy *= remainingtime;
+		/*if (Check(ball->rect, bat->rect)) {
+		ball->dx = -ball->dx;
+		ball->bball.vx = -ball->bball.vx;
+		ball->dy = -ball->dy;
+		ball->bball.vy = -ball->bball.vy;
+		return true;
+		};*/
+		if (abs(normalx) > 0.0001f) {
+			ball->dx = -ball->dx;
+			ball->bball.vx = -ball->bball.vx;
+		};
+		if (abs(normaly) > 0.0001f) {
+			ball->dy = -ball->dy;
+			ball->bball.vy = -ball->bball.vy;
+		};
+		//return false;
+	}
+}
+
 void GAME::Update(float gameTime) {
 	ball->Update(gameTime);
 	keyboard->GetState();
 	mouse->GetState();
 	bat1->Update(gameTime, keyboard);
-	if (CheckAABB(ball, bat1)) {
-		ball->dy = -ball->dy;
-	}
+	//if (AABBCheck(ball->bball, bat1->bbat)) ball->dy = -ball->dy;
+	CheckAABB(ball, bat1);
 	bat2->Update(gameTime, mouse);
-	if (CheckAABB(ball, bat2)) {
-		ball->dy = -ball->dy;
-	}
+	//if (AABBCheck(ball->bball, bat2->bbat)) ball->dy = -ball->dy;
+	CheckAABB(ball, bat2);
 }
 
 void GAME::Render() {

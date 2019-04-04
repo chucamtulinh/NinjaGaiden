@@ -25,7 +25,8 @@ private:
 		Bat* bat1;
 		Bat* bat2;
 		bool Check(RECT r1, RECT r2);
-		bool CheckAABB(Ball* ball, Bat* bat);
+		bool AABBCheck(Box b1, Box b2);
+		void CheckAABB(Ball* ball, Bat* bat);
 public:
 	D3DXVECTOR2 position;
 	bool InitWindow();
