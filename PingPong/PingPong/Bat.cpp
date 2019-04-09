@@ -53,10 +53,12 @@ void Bat::Update(float gameTime, MKeyboard* key) {
 	}
 	bbat.x = position.x;
 	bbat.y = position.y;
+	bbat.w = 90.0f;
+	bbat.h = 30.0f;
 	rect.left = position.x;
-	rect.right = rect.left + 90;
+	rect.right = 90;
 	rect.top = position.y;
-	rect.bottom = rect.top + 30;
+	rect.bottom = 30;
 }
 
 void Bat::Update2(float gameTime, MKeyboard* key) {
@@ -69,10 +71,12 @@ void Bat::Update2(float gameTime, MKeyboard* key) {
 	}
 	bbat.x = position.x;
 	bbat.y = position.y;
+	bbat.w = 90.0f;
+	bbat.h = 30.0f;
 	rect.left = position.x;
-	rect.right = rect.left + 90;
+	rect.right = 90;
 	rect.top = position.y;
-	rect.bottom = rect.top + 30;
+	rect.bottom = 30;
 }
 
 void Bat::Update(float gameTime, MMouse* mouse) {
@@ -82,10 +86,12 @@ void Bat::Update(float gameTime, MMouse* mouse) {
 	this->position.x = mouse->curx;
 	bbat.x = position.x;
 	bbat.y = position.y;
+	bbat.w = 90.0f;
+	bbat.h = 30.0f;
 	rect.left = position.x;
-	rect.right = rect.left + 90;
+	rect.right = 90;
 	rect.top = position.y;
-	rect.bottom = rect.top + 30;
+	rect.bottom = 30;
 }
 
 void Bat::Render(MGraphic* graphic) {

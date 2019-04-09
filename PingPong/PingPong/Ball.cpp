@@ -10,7 +10,7 @@ void Ball::Init(MContent* content) {
 	this->img = content->LoadTexture("ball.png");
 	this->position = D3DXVECTOR2(300, 400);
 	dx = dy = 1;
-	speed = 3.0f;
+	speed = 50.0f;
 	bball.x = position.x;
 	bball.y = position.y;
 	bball.w = 40.0f;
@@ -28,6 +28,8 @@ void Ball::Update(float gameTime) {
 	position.y += bball.vy;
 	bball.x = position.x;
 	bball.y = position.y;
+	bball.w = 40.0f;
+	bball.h = 40.0f;
 	rect.left = position.x;
 	rect.top = position.y;
 	rect.right = 40;
