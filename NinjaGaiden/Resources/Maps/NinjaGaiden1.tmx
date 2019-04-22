@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="128" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="1">
+ <tileset firstgid="1" source="NinjaGaiden1.tsx"/>
+ <layer id="3" name="Tile Layer 1" width="128" height="11">
+  <data encoding="base64" compression="zlib">
+   eJzdludOw1AMhdNQRtl7r7JBbCiU0gJlz77/4+BI19KRsTOaSGn58enGN3ecY8dVC57n+Y4iPHO8DaPfIaTVJX1Gzf9nhoiCex4lxoheFx8TJzBaZzSIb+Iu5p1R66PeW7qsfXIefRbBr/Sfte40NGL4ilqv7QvqP+zm54kF4pDoJzbEaGn7dHy5MZj7IWowz3EWuYirywJ9ol+eP2rz3DgMELuOUox8Yh7le19Zl1TPDDELeQ28bxITLsZR+66Ce9+Id6Dl5p5hjmNLY9j3qtVf6kr6/bBP6RfjpLri+LkF6rCW+1HmE/NYE+9bEfmN83u0JurPOVlyMY5yb5N4JJ6UMeDDiE8NLdp377tY1s/Shf0lKXl/fUq/GFv9W4q4T+tr3qfVPyyfYXm01sn8Yl45n5zfoP7rxAVxSVSIK+JajFXiBtYF3BMPxlhxz1ZcdWfwuU3wg55WhCe+X+rS+ktSV3xKvxVP98uxrJt1j9b39RA9Vj5l3uSzXIP51fLK+eT89hAHRF+Xo/WXVpe097wQrxBH3cO6eF/WetIy4uo/3uVo/aXVJat7MA67B3Vp/Z933uaIMrGYI8ugh/slaaz1V5z6y//jPD+YkS/WZfW/1LOXME6rs+zYypEd8DNJTLUR43hmgPtw/5ly7nRGvsL0aXrOE8Zpde53CHn/DkpWu8RXWp2/7w2Siw==
+  </data>
+ </layer>
+</map>
