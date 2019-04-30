@@ -1,28 +1,38 @@
-#pragma once
-#include <Windows.h>
-#include <d3d9.h>
+#ifndef __GAME__
+#define __GAME__
 #include <d3dx9.h>
+#include <d3d9.h>
+#include <Windows.h>
+#include <dinput.h>
 
-class CGame
+#include "GameTime.h"
+
+#define KEYBOARD_BUFFERD_SIZE 1024
+
+class Game
 {
-	static CGame * __instance;
-	HWND hWnd;									// Window handle
-
-	LPDIRECT3D9 d3d = NULL;						// Direct3D handle
-	LPDIRECT3DDEVICE9 d3ddv = NULL;				// Direct3D device object
-
-	LPDIRECT3DSURFACE9 backBuffer = NULL;
-	LPD3DXSPRITE spriteHandler = NULL;			// Sprite helper library to help us draw 2D image on the screen 
-
 public:
-	void Init(HWND hWnd);
-	void Draw(float x, float y, LPDIRECT3DTEXTURE9 texture);
+	Game(int fps = 60);
+	~Game();
 
-	LPDIRECT3DDEVICE9 GetDirect3DDevice() { return this->d3ddv; }
-	LPDIRECT3DSURFACE9 GetBackBuffer() { return backBuffer; }
-	LPD3DXSPRITE GetSpriteHandler() { return this->spriteHandler; }
+protected:
 
-	static CGame * GetInstance();
+	PDIRECT3DSURFACE9       mBackground,
+							mBackBuffer;
 
-	~CGame();
+	int                     mWidth,
+							mHeight;
+	static int              mIsDone;
+	float                   mFPS;
+
+	//khoi tao vong lap cho game
+	void InitLoop();
+
+	//ham dung de ve sau khi update
+	void Render();
+
+	//ham update cua game
+	void Update(float dt);
 };
+
+#endif

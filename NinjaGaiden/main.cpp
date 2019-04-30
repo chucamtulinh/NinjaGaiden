@@ -1,196 +1,135 @@
-/* =============================================================
-	INTRODUCTION TO GAME PROGRAMMING SE102
-
-	SAMPLE 01 - SKELETON CODE
-
-	This sample illustrates how to:
-
-		1/ Create a window
-		2/ Initiate DirectX 9, Direct3D, DirectX Sprite
-		3/ Draw a static brick sprite to the screen
-================================================================ */
-
-#include <windows.h>
 #include <d3d9.h>
 #include <d3dx9.h>
-
-#include "debug.h"
+#include <Windows.h>
+#include <iostream>
+#include <sstream>
+#include <dinput.h>
+#include <windowsx.h>
+#include "GameGlobal.h"
+#include "GameTime.h"
 #include "Game.h"
-#include "GameObject.h"
 
-#define WINDOW_CLASS_NAME L"SampleWindow"
-#define MAIN_WINDOW_TITLE L"01 - Skeleton"
+using namespace std;
 
-#define BRICK_TEXTURE_PATH L"brick.png"
-#define MARIO_TEXTURE_PATH L"mario.png"
+#define WIN_NAME L"Game DirectX"
+#define WIN_TITLE L"Game DirectX"
+#define SCREEN_WIDTH GameGlobal::GetWidth()
+#define SCREEN_HEIGHT GameGlobal::GetHeight()
+#define FPS 60
+#define KEYBOARD_BUFFERD_SIZE 1024
 
+int initWindow(int cmdShow);
+int InitDevice();
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-#define BACKGROUND_COLOR D3DCOLOR_XRGB(255, 255, 255)
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+LPDIRECT3D9             mDirect3D9;
+LPD3DXSPRITE            mSpriteHandler;
+PDIRECT3D9              mD3d;
+LPDIRECT3DDEVICE9       mDevice;
+HINSTANCE               mHInstance;
+int                     mCmdShow;
 
-#define MAX_FRAME_RATE 80
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int cmdShow) {
+	mHInstance = hInstance;
+	initWindow(cmdShow);
+	return 0;
+}
 
-CGame *game;
-CMario *mario;
-CGameObject *brick;
+int initWindow(int cmdShow) {
+	WNDCLASSEX wc;
+	wc.cbSize = sizeof(WNDCLASSEX);
 
-LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) // dung de lang nghe cac su kien Cua so khi nguoi dung tuong tac
-{
-	switch (message) {
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.hInstance = mHInstance;
+
+	wc.lpfnWndProc = (WNDPROC)WndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hIcon = NULL;
+
+	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wc.lpszMenuName = NULL;
+	wc.lpszClassName = WIN_NAME;
+	wc.hIconSm = NULL;
+
+	RegisterClassEx(&wc);
+
+	//WS_OVERLAPPEDWINDOW <=> WS_EX_TOPMOST | WS_POPUP | WS_VISIBLE
+	HWND hWnd = CreateWindow(
+		WIN_NAME,
+		WIN_NAME,
+		WS_OVERLAPPEDWINDOW,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		SCREEN_WIDTH,
+		SCREEN_HEIGHT,
+		NULL,
+		NULL,
+		mHInstance,
+		NULL);
+
+	GameGlobal::SetCurrentHINSTACE(mHInstance);
+	GameGlobal::SetCurrentHWND(hWnd);
+
+	ShowWindow(hWnd, cmdShow);
+	UpdateWindow(hWnd);
+
+	if (InitDevice()) {
+		Game *game = new Game(60);
 	}
 
 	return 0;
 }
 
-/*
-	Load all game resources. In this example, create a brick object and mario object
-*/
-void LoadResources()
-{
-	mario = new CMario(MARIO_TEXTURE_PATH);
-	mario->SetPosition(10.0f, 130.0f);
+int InitDevice() {
+	mD3d = Direct3DCreate9(D3D_SDK_VERSION);
+	D3DPRESENT_PARAMETERS d3dpp;
 
-	brick = new CGameObject(BRICK_TEXTURE_PATH);
-	brick->SetPosition(10.0f, 100.0f);
-}
+	ZeroMemory(&d3dpp, sizeof(d3dpp));
 
-/*
-	Update world status for this frame
-	dt: time period between beginning of last frame and beginning of this frame
-*/
-void Update(DWORD dt)
-{
-	mario->Update(dt);
-	brick->Update(dt);
-}
+	d3dpp.Windowed = TRUE;
+	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
+	d3dpp.BackBufferCount = 1;
+	d3dpp.BackBufferWidth = SCREEN_WIDTH;
+	d3dpp.BackBufferHeight = SCREEN_HEIGHT;
 
-/*
-	Render a frame
-*/
-void Render()
-{
-	LPDIRECT3DDEVICE9 d3ddv = game->GetDirect3DDevice();
-	LPDIRECT3DSURFACE9 bb = game->GetBackBuffer();
-	LPD3DXSPRITE spriteHandler = game->GetSpriteHandler();
+	HRESULT dvresult = mD3d->CreateDevice(D3DADAPTER_DEFAULT,
+		D3DDEVTYPE_HAL,
+		GameGlobal::getCurrentHWND(),
+		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
+		&d3dpp,
+		&mDevice);
+	GameGlobal::SetCurrentDevice(mDevice);
 
-	if (d3ddv->BeginScene())
-	{
-		// Clear back buffer with a color
-		d3ddv->ColorFill(bb, NULL, BACKGROUND_COLOR);
-
-		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
-
-
-		mario->Render();
-		brick->Render();
-
-
-		spriteHandler->End();
-		d3ddv->EndScene();
-	}
-
-	// Display back buffer content to the screen
-	d3ddv->Present(NULL, NULL, NULL, NULL);
-}
-
-HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int ScreenHeight)
-{
-	WNDCLASSEX wc;
-	wc.cbSize = sizeof(WNDCLASSEX);
-
-	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.hInstance = hInstance;
-
-	wc.lpfnWndProc = (WNDPROC)WinProc;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hIcon = NULL;
-	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-	wc.lpszMenuName = NULL;
-	wc.lpszClassName = WINDOW_CLASS_NAME;
-	wc.hIconSm = NULL;
-
-	RegisterClassEx(&wc);
-
-	HWND hWnd =
-		CreateWindow(
-			WINDOW_CLASS_NAME,
-			MAIN_WINDOW_TITLE,
-			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
-			CW_USEDEFAULT,
-			CW_USEDEFAULT,
-			ScreenWidth,
-			ScreenHeight,
-			NULL,
-			NULL,
-			hInstance,
-			NULL);
-
-	if (!hWnd)
-	{
-		OutputDebugString(L"[ERROR] CreateWindow failed");
-		DWORD ErrCode = GetLastError();
-		return FALSE;
-	}
-
-	ShowWindow(hWnd, nCmdShow);
-	UpdateWindow(hWnd);
-
-	return hWnd;
-}
-
-int Run()
-{
-	MSG msg;
-	int done = 0;
-	DWORD frameStart = GetTickCount();
-	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
-
-	while (!done)
-	{
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			if (msg.message == WM_QUIT) done = 1;
-
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-
-		DWORD now = GetTickCount();
-
-		// dt: the time between (beginning of last frame) and now
-		// this frame: the frame we are about to render
-		DWORD dt = now - frameStart;
-
-		if (dt >= tickPerFrame)
-		{
-			frameStart = now;
-			Update(dt);
-			Render();
-		}
-		else
-			Sleep(tickPerFrame - dt);
-	}
+	D3DXCreateSprite(GameGlobal::GetCurrentDevice(), &mSpriteHandler);
+	GameGlobal::SetCurrentSpriteHandler(mSpriteHandler);
 
 	return 1;
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{
-	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {	
+	switch (message) {
+	case WM_DESTROY:
+		GameGlobal::isGameRunning = false;
+		PostQuitMessage(0);
+		break;
 
-	game = CGame::GetInstance();
-	game->Init(hWnd);
+	case WM_LBUTTONDOWN:
 
-	LoadResources();
-	Run();
+		break;
+
+	case WM_KEYDOWN:
+
+		break;
+
+	case WM_KEYUP:
+
+
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
 
 	return 0;
 }

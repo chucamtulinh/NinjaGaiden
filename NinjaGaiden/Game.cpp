@@ -1,76 +1,69 @@
 #include "Game.h"
+#include "GameGlobal.h"
+#include "Sprite.h"
 
-CGame * CGame::__instance = NULL;
+Sprite *sprite;
 
-/*
-	Initialize DirectX, create a Direct3D device for rendering within the window, initial Sprite library for
-	rendering 2D images
-	- hInst: Application instance handle
-	- hWnd: Application window handle
-*/
-void CGame::Init(HWND hWnd)
+Game::Game(int fps)
 {
-	LPDIRECT3D9 d3d = Direct3DCreate9(D3D_SDK_VERSION);
+	mFPS = fps;
+	sprite = new Sprite("brick.png");
+	sprite->SetPosition(GameGlobal::GetWidth() / 2, GameGlobal::GetHeight() / 2);
+	InitLoop();
+}
 
-	this->hWnd = hWnd;
+Game::~Game()
+{
+}
 
-	D3DPRESENT_PARAMETERS d3dpp;
+void Game::Update(float dt) {
+	Render();
+}
 
-	ZeroMemory(&d3dpp, sizeof(d3dpp));
+void Game::Render() {
+	auto device = GameGlobal::GetCurrentDevice();
 
-	d3dpp.Windowed = TRUE;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-	d3dpp.BackBufferCount = 1;
+	device->Clear(0, NULL, D3DCLEAR_TARGET, 0x4866ff, 0.0f, 0);
 
-	RECT r;
-	GetClientRect(hWnd, &r);	// retrieve Window width & height 
+	if (device->BeginScene()) {
+		//bat dau ve
+		GameGlobal::GetCurrentSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 
-	d3dpp.BackBufferHeight = r.bottom + 1;
-	d3dpp.BackBufferWidth = r.right + 1;
+		//draw here
+		sprite->Draw();
 
-	d3d->CreateDevice(
-		D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL,
-		hWnd,
-		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-		&d3dpp,
-		&d3ddv);
+		//ket thuc ve
+		GameGlobal::GetCurrentSpriteHandler()->End();
 
-	if (d3ddv == NULL)
-	{
-		OutputDebugString(L"[ERROR] CreateDevice failed\n");
-		return;
+
+		device->EndScene();
 	}
 
-	d3ddv->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &backBuffer);
-
-	// Initialize sprite helper from Direct3DX helper library
-	D3DXCreateSprite(d3ddv, &spriteHandler);
-
-	OutputDebugString(L"[INFO] InitGame done;\n");
+	device->Present(0, 0, 0, 0);
 }
 
-/*
-	Utility function to wrap LPD3DXSPRITE::Draw
-*/
-void CGame::Draw(float x, float y, LPDIRECT3DTEXTURE9 texture)
-{
-	D3DXVECTOR3 p(x, y, 0);
-	spriteHandler->Draw(texture, NULL, NULL, &p, D3DCOLOR_XRGB(255, 255, 255));
-}
+void Game::InitLoop() {
+	MSG msg;
 
-CGame::~CGame()
-{
-	if (spriteHandler != NULL) spriteHandler->Release();
-	if (backBuffer != NULL) backBuffer->Release();
-	if (d3ddv != NULL) d3ddv->Release();
-	if (d3d != NULL) d3d->Release();
-}
+	float tickPerFrame = 1.0f / mFPS, delta = 0;
 
+	while (GameGlobal::isGameRunning) {
+		GameTime::GetInstance()->StartCounter();
 
-CGame *CGame::GetInstance()
-{
-	if (__instance == NULL) __instance = new CGame();
-	return __instance;
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		delta += GameTime::GetInstance()->GetCouter();
+
+		if (delta >= tickPerFrame) {
+			Update((delta));
+			delta = 0;
+		}
+		else {
+			Sleep(tickPerFrame - delta);
+			delta = tickPerFrame;
+		}
+	}
 }
