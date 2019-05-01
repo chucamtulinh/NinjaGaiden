@@ -11,8 +11,8 @@
 
 using namespace std;
 
-#define WIN_NAME L"Game DirectX"
-#define WIN_TITLE L"Game DirectX"
+#define WIN_NAME L"Ninja Gaiden"
+#define WIN_TITLE L"Ninja Gaiden"
 #define SCREEN_WIDTH GameGlobal::GetWidth()
 #define SCREEN_HEIGHT GameGlobal::GetHeight()
 #define FPS 60
