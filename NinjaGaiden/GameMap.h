@@ -9,6 +9,7 @@
 #include "Sprite.h"
 #include "../NinjaGaiden/MapReader/Tmx.h.in"
 #include "GameGlobal.h"
+#include "Camera.h"
 
 class GameMap
 {
@@ -22,6 +23,8 @@ public:
 	int GetTileWidth();
 	int GetTileHeight();
 
+	void SetCamera(Camera * camera);
+
 	void Draw();
 
 	~GameMap();
@@ -29,8 +32,11 @@ public:
 private:
 	void LoadMap(char* filePath);
 
+	bool isContain(RECT rect1, RECT rect2);
+
 	Tmx::Map                        *mMap;
 	std::map<int, Sprite*>          mListTileset;
+	Camera *mCamera;
 };
 
 #endif

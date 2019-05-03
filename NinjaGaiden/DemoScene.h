@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "Animation.h"
 #include "GameMap.h"
+#include "Camera.h"
 
 class DemoScene : public Scene
 {
@@ -18,8 +19,13 @@ public:
 	void LoadContent();
 	void Draw();
 
+	void OnKeyDown(int keyCode);
+	void OnKeyUp(int keyCode);
+	void OnMouseDown(float x, float y);
+
 protected:
 	GameMap * mMap;
+	Camera * mCamera;
 
 	float mTimeCounter;
 };

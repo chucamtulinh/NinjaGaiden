@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DemoScene.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameGlobal.h" />
@@ -54,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DemoScene.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameGlobal.cpp" />

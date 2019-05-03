@@ -29,6 +29,11 @@ void GameMap::LoadMap(char* filePath) {
 	}
 }
 
+bool GameMap::isContain(RECT rect1, RECT rect2) {
+	if (rect1.left > rect2.right || rect1.right < rect2.left || rect1.top > rect2.bottom || rect1.bottom < rect2.top) return false;
+	return true;
+}
+
 Tmx::Map* GameMap::GetMap() {
 	return mMap;
 }
@@ -50,6 +55,8 @@ int GameMap::GetTileHeight() {
 }
 
 void GameMap::Draw() {
+	D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x, GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+
 	for (int i = 0; i < mMap->GetNumTileLayers(); i++) {
 		const Tmx::TileLayer *layer = mMap->GetTileLayer(i);
 
@@ -87,12 +94,27 @@ void GameMap::Draw() {
 					//dung toa do (0,0) cua the gioi thuc la (0,0) neu khong thi se la (-tilewidth/2, -tileheigth/2);
 					D3DXVECTOR3 position(n * tileWidth + tileWidth / 2, m * tileHeight + tileHeight / 2, 0);
 
+					if (mCamera != NULL) {
+						RECT objRECT;
+						objRECT.left = position.x - tileWidth / 2;
+						objRECT.top = position.y - tileHeight / 2;
+						objRECT.right = objRECT.left + tileWidth;
+						objRECT.bottom = objRECT.top + tileHeight;
+
+						//neu nam ngoai camera thi khong Draw
+						if (isContain(objRECT, mCamera->GetBound()) == false)	continue;
+					}
+
 					sprite->SetWidth(tileWidth);
 					sprite->SetHeight(tileHeight);
 
-					sprite->Draw(position, sourceRECT, D3DXVECTOR2());
+					sprite->Draw(position, sourceRECT, D3DXVECTOR2(), trans);
 				}
 			}
 		}
 	}
+}
+
+void GameMap::SetCamera(Camera * camera) {
+	this->mCamera = camera;
 }

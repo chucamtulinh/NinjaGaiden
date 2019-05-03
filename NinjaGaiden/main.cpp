@@ -8,6 +8,7 @@
 #include "GameGlobal.h"
 #include "GameTime.h"
 #include "Game.h"
+#include "SceneManager.h"
 
 using namespace std;
 
@@ -117,15 +118,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
 		break;
 
 	case WM_LBUTTONDOWN:
-
+		SceneManager::GetInstance()->GetCurrentScene()->OnMouseDown((float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam));
 		break;
 
 	case WM_KEYDOWN:
-
+		SceneManager::GetInstance()->GetCurrentScene()->OnKeyDown(wParam);
 		break;
 
 	case WM_KEYUP:
-
+		SceneManager::GetInstance()->GetCurrentScene()->OnKeyUp(wParam);
+		break;
 
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
