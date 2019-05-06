@@ -60,7 +60,7 @@ namespace MapEditor
             pen.Dispose();
         }
 
-        private bool CompareBitmap(Bitmap bmp1, Bitmap bmp2)
+        private bool CompareBitmap(Bitmap bmp1, Bitmap bmp2) // so sanh hai bitmap co giong nhau trung khop?
         {
             if (bmp1 == null || bmp2 == null)
                 return false;
@@ -78,7 +78,7 @@ namespace MapEditor
             Marshal.Copy(bitmapData2.Scan0, b2bytes, 0, bytes);
             bool result = true;
 
-            for (int n = 0; n <= bytes - 1; n++)
+            for (int n = 0; n < bytes; n++)
             {
                 if (b1bytes[n] != b2bytes[n])
                 {
@@ -132,22 +132,22 @@ namespace MapEditor
                 listBitmapMap.Add(CreateRectangle(i, column, this.widthTitle, this.heightTitle));
             }
 
-            Bitmap bmpMain = new Bitmap(this.widthTitle, this.heightTitle);
+            Bitmap bmpMain = new Bitmap(this.widthTitle, this.heightTitle); // 1 anh chinh
             Graphics gMain = Graphics.FromImage(bmpMain);
-            Bitmap bmpCheck = new Bitmap(this.widthTitle, this.heightTitle);
+            Bitmap bmpCheck = new Bitmap(this.widthTitle, this.heightTitle); // 1 anh phu de kiem tra
             Graphics gCheck = Graphics.FromImage(bmpCheck);
             bitmap = new Bitmap(imageMap);
             bool result = true;
             listBitmapTitle.Add(listBitmapMap[0]);
-            listMSofTitle.Clear();
+            listMSofTitle.Clear(); // stack so, vd listMSofTitle[11] = 2 tuc la o index 11 trung voi o tileset 2
             listMSofTitle.Add(0);
 
             for (int i = 1; i < numberTitle; i++)
             {
-                gMain.DrawImage(bitmap, 0, 0, listBitmapMap[i], GraphicsUnit.Pixel);
+                gMain.DrawImage(bitmap, 0, 0, listBitmapMap[i], GraphicsUnit.Pixel); // ve o co so index i len anh chinh
                 for (int k = 0; k < listBitmapTitle.Count(); k++)
                 {
-                    gCheck.DrawImage(this.bitmap, 0, 0, listBitmapTitle[k], GraphicsUnit.Pixel);
+                    gCheck.DrawImage(this.bitmap, 0, 0, listBitmapTitle[k], GraphicsUnit.Pixel); // ve tile k cua tileset len anh phu
                     if (CompareBitmap(bmpMain, bmpCheck))
                     {
                         result = false;
@@ -207,6 +207,7 @@ namespace MapEditor
             bitmapFinish.Dispose();
             bmpCheck.Dispose();
             bmpMain.Dispose();
+            this.Close();
         }
     }
 }

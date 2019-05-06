@@ -54,7 +54,7 @@ namespace MapEditor
         {
             //Ghi file nhi nhap cho c#
             BinaryWriter bw;
-            FileStream outStream = File.Create("D:\\D\\Map1.dat");
+            FileStream outStream = File.Create("D:\\Courses\\SE102\\Map1.dat");
             try
             {
                 bw = new BinaryWriter(outStream);
@@ -92,7 +92,7 @@ namespace MapEditor
             try
             {
                 //Ghi file text cho c++
-                StreamWriter writer = File.CreateText(@"D:\\D\\Map1.txt");//tao 1 file ten la sieuthiit.doc trong o dia C
+                StreamWriter writer = File.CreateText(@"D:\\Courses\\SE102\\Map1.txt");//tao 1 file ten la sieuthiit.doc trong o dia C
                 writer.WriteLine(width);
                 writer.WriteLine(height);
                 writer.WriteLine(row);
