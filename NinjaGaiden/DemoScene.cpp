@@ -10,7 +10,9 @@ void DemoScene::LoadContent()
 	//set mau backcolor cho scene o day la mau xanh
 	mBackColor = 0x54acd2;
 
-	mMap = new GameMap("Resources/Maps/marioworld1-1.tmx");
+	//mMap = new GameMap("Resources/Maps/marioworld1-1.tmx");
+	//mMap = new GameMap("Resources/Maps/untitled.tmx");
+	mMap = new GameMap("Resources/NG3-1.tmx");
 
 	mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
 	mCamera->SetPosition(GameGlobal::GetWidth() / 2, mMap->GetHeight() - GameGlobal::GetHeight() / 2);

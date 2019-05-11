@@ -101,7 +101,7 @@ namespace MapEditor
                 {
                     for (int j = 0; j < column; j++)
                     {
-                        writer.Write(matrix[i][j] + "\t");
+                        writer.Write(++matrix[i][j] + ",");
                     }
                     writer.WriteLine();
                 }
