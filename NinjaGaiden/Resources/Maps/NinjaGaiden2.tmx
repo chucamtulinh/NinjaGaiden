@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="192" height="11" tilewidth="16" tileheight="16" infinite="0" nextlayerid="2" nextobjectid="1">
- <tileset firstgid="1" source="NinjaGaiden2.tsx"/>
- <layer id="1" name="Tile Layer 1" width="192" height="11">
-  <data encoding="base64" compression="zlib">
-   eJzt18sKwjAQheFTRVzYYl14axdq3/8hnVJmo4iEhIDj/8Eh21mcMEkjqUkIEElK9+k/ovnW97PlIvqPmLzXO0ur9/4/LJPoP2LyXh8tJy13oBPvH/wH7/XNcresLGt97r/vCSCC1P/v657Y1h8ZKCa1/74n5sx74lB7YKCgTWbG+iMDxewtfcY51B8ZKOaqpcM5J/CrnhhTBWc=
-  </data>
- </layer>
-</map>
