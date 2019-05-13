@@ -22,7 +22,7 @@ bool Game::Initialize(HWND hWnd, int width, int height)
 	}
 
 	player = new GameSprite(100, 200, 250);
-	if (!player->Initialize(gDevice->device, "PlayerPaper.png", 58, 86))
+	if (!player->Initialize(gDevice->device, "ball.png", 58, 86))
 	{
 		return false;
 	}
@@ -83,7 +83,6 @@ void Game::Update(float gameTime)
 
 void Game::Draw(float gameTime)
 {
-	//Simple RGB value for the background so use XRGB instead of ARGB.
 	gDevice->Clear(D3DCOLOR_XRGB(0, 100, 100));
 	gDevice->Begin();
 

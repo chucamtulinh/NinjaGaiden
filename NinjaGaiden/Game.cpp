@@ -1,14 +1,13 @@
 #include "Game.h"
 #include "GameGlobal.h"
-#include "Sprite.h"
+#include "SceneManager.h"
+#include "DemoScene.h"
 
-Sprite *sprite;
 
 Game::Game(int fps)
 {
 	mFPS = fps;
-	sprite = new Sprite("brick.png");
-	sprite->SetPosition(GameGlobal::GetWidth() / 2, GameGlobal::GetHeight() / 2);
+	SceneManager::GetInstance()->ReplaceScene(new DemoScene());
 	InitLoop();
 }
 
@@ -17,20 +16,21 @@ Game::~Game()
 }
 
 void Game::Update(float dt) {
+	SceneManager::GetInstance()->GetCurrentScene()->Update(dt);
 	Render();
 }
 
 void Game::Render() {
 	auto device = GameGlobal::GetCurrentDevice();
-
-	device->Clear(0, NULL, D3DCLEAR_TARGET, 0x4866ff, 0.0f, 0);
+	auto scene = SceneManager::GetInstance()->GetCurrentScene();
+	device->Clear(0, NULL, D3DCLEAR_TARGET, scene->GetBackcolor(), 0.0f, 0);
 
 	if (device->BeginScene()) {
 		//bat dau ve
 		GameGlobal::GetCurrentSpriteHandler()->Begin(D3DXSPRITE_ALPHABLEND);
 
 		//draw here
-		sprite->Draw();
+		scene->Draw();
 
 		//ket thuc ve
 		GameGlobal::GetCurrentSpriteHandler()->End();
