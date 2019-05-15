@@ -138,8 +138,20 @@
     <ClInclude Include="GameDefine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerCrouchIdleState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
     <ClInclude Include="PlayerRunningState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerSwordSlashState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFallState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJumpState.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +264,18 @@
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerRunningState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerCrouchIdleState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerSwordSlashState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFallState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJumpState.cpp">
       <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>

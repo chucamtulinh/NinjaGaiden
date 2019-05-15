@@ -50,7 +50,10 @@ protected:
 
 	Animation   *mCurrentAnimation,
 				*mAnimationIdle,
-				*mAnimationRunning;
+				*mAnimationRunning,
+				*mAnimationCrouchIdle,
+				*mAnimationSwordSlash,
+				*mAnimationJumpState;
 
 	void changeAnimation(PlayerState::StateName state);
 

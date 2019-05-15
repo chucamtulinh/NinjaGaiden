@@ -13,6 +13,7 @@ public:
 		Idle,
 		ItemUse,
 		Jump,
+		Fall,
 		OnWall,
 		Running,
 		SpinSlash,

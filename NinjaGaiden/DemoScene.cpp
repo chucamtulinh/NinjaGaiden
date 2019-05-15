@@ -16,7 +16,6 @@ void DemoScene::LoadContent()
 
 	mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
 	mCamera->SetPosition(GameGlobal::GetWidth() / 2, mMap->GetHeight() - GameGlobal::GetHeight() / 2);
-	//mCamera->SetPosition(0, 0);
 	mMap->SetCamera(mCamera);
 	 
 	mPlayer = new Player();
@@ -29,7 +28,7 @@ void DemoScene::Update(float dt) {
 }
 
 void DemoScene::Draw() {
-	//mMap->Draw();
+	mMap->Draw();
 
 	mPlayer->Draw();
 }

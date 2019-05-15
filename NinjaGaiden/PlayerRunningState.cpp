@@ -1,6 +1,7 @@
 #include "PlayerRunningState.h"
 #include "GameDefine.h"
 #include "PlayerIdleState.h"
+#include "PlayerCrouchIdleState.h"
 
 PlayerRunningState::PlayerRunningState(PlayerData *playerData)
 {
