@@ -9,6 +9,7 @@
 #include "Animation.h"
 #include "GameMap.h"
 #include "Camera.h"
+#include "Player.h"
 
 class DemoScene : public Scene
 {
@@ -26,7 +27,10 @@ public:
 protected:
 	GameMap * mMap;
 	Camera * mCamera;
+	Player * mPlayer;
 
 	float mTimeCounter;
+
+	std::map<int, bool> keys;
 };
 

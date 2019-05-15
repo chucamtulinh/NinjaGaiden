@@ -8,7 +8,7 @@
 #include "Entity.h"
 #include "PlayerData.h"
 #include "PlayerState.h"
-//#include "PlayerRunningState.h"
+#include "PlayerRunningState.h"
 
 class Player : public Entity
 {
@@ -49,9 +49,8 @@ protected:
 	PlayerData * mPlayerData;
 
 	Animation   *mCurrentAnimation,
-				*mAnimationStanding,
-				*mAnimationRunning,
-				*mAnimationJumping;
+				*mAnimationIdle,
+				*mAnimationRunning;
 
 	void changeAnimation(PlayerState::StateName state);
 

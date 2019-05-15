@@ -7,11 +7,16 @@ class PlayerState
 {
 public:
 	enum StateName {
-		Standing,
+		Climp,
+		CrouchIdle,
+		CrouchSlash,
+		Idle,
+		ItemUse,
+		Jump,
+		OnWall,
 		Running,
-		Falling,
-		Jumping,
-		Die
+		SpinSlash,
+		SwordSlash
 	};
 
 	~PlayerState();

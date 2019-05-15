@@ -1,18 +1,17 @@
 #include "Player.h"
-//#include "PlayerStandingState.h"
-//#include "PlayerJumpingState.h"
+#include "PlayerIdleState.h"
+#include "PlayerRunningState.h"
 
 Player::Player() 
 {
-	mAnimationStanding = new Animation("Resources/mario/standingright.png", 1, 1, 1, 0);
-	mAnimationJumping = new Animation("Resources/mario/jumpingright.png", 1, 1, 1, 0);
-	mAnimationRunning = new Animation("Resources/mario/runningright.png", 2, 1, 2, 0.15f);
-
+	mAnimationIdle = new Animation("Resources/Sprites/Ryu/Idle.png", 1, 1, 1, 0);
+	mAnimationRunning = new Animation("Resources/Sprites/Ryu/Running.png", 3, 1, 3, 0.15f);
+	
 	this->mPlayerData = new PlayerData();
 	this->mPlayerData->player = this;
 	this->vx = 0;
 	this->vy = 0;
-	this->SetState(new PlayerStandingState(this->mPlayerData));
+	this->SetState(new PlayerIdleState(this->mPlayerData));
 
 	allowJump = true;
 }
@@ -34,19 +33,11 @@ void Player::HandleKeyboard(std::map<int, bool> keys) {
 }
 
 void Player::OnKeyPressed(int key) {
-	if (key == VK_SPACE) {
-		if (allowJump) {
-			if (mCurrentState == PlayerState::Running || mCurrentState == PlayerState::Standing) {
-				this->SetState(new PlayerJumpingState(this->mPlayerData));
-			}
-
-			allowJump = false;
-		}
-	}
+	
 }
 
 void Player::OnKeyUp(int key) {
-	if (key == VK_SPACE) allowJump = true;
+
 }
 
 void Player::SetReverse(bool flag) {
@@ -86,16 +77,8 @@ void Player::changeAnimation(PlayerState::StateName state) {
 		mCurrentAnimation = mAnimationRunning;
 		break;
 
-	case PlayerState::Standing:
-		mCurrentAnimation = mAnimationStanding;
-		break;
-
-	case PlayerState::Falling:
-		mCurrentAnimation = mAnimationJumping;
-		break;
-
-	case PlayerState::Jumping:
-		mCurrentAnimation = mAnimationJumping;
+	case PlayerState::Idle:
+		mCurrentAnimation = mAnimationIdle;
 		break;
 	}
 
