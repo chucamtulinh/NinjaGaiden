@@ -153,6 +153,12 @@
     <ClInclude Include="PlayerJumpState.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
@@ -277,6 +283,12 @@
     </ClCompile>
     <ClCompile Include="PlayerJumpState.cpp">
       <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameCollision.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

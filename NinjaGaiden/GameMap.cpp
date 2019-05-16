@@ -115,6 +115,10 @@ void GameMap::Draw() {
 	}
 }
 
+void GameMap::Update(float dt)
+{
+}
+
 void GameMap::SetCamera(Camera * camera) {
 	this->mCamera = camera;
 }
