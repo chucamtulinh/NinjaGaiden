@@ -5,11 +5,11 @@
 
 Player::Player() 
 {
-	mAnimationIdle = new Animation("Resources/Sprites/Ryu/Idle.png", 1, 1, 1, 0);
-	mAnimationRunning = new Animation("Resources/Sprites/Ryu/Running.png", 3, 1, 3, 0.3f);
-	mAnimationCrouchIdle = new Animation("Resources/Sprites/Ryu/CrouchIdle.png", 1, 1, 1, 0);
-	mAnimationSwordSlash = new Animation("Resources/Sprites/Ryu/SwordSlash.png", 3, 1, 3, 0.1f);
-	mAnimationJumpState = new Animation("Resources/Sprites/Ryu/Jump.png", 4, 1, 4, 0.15f);
+	mAnimationIdle = new Animation("Resources/Sprites/Ryu/Idle.png", 1, 1, 1, 0.3f);
+	mAnimationRunning = new Animation("Resources/Sprites/Ryu/Running.png", 3, 1, 3, 0.1f);
+	mAnimationCrouchIdle = new Animation("Resources/Sprites/Ryu/CrouchIdle.png", 1, 1, 1, 0.3f);
+	mAnimationSwordSlash = new Animation("Resources/Sprites/Ryu/SwordSlash.png", 3, 1, 3, 0.15f);
+	mAnimationJumpState = new Animation("Resources/Sprites/Ryu/Jump.png", 4, 1, 4, 0.2f);
 	
 	this->mPlayerData = new PlayerData();
 	this->mPlayerData->player = this;

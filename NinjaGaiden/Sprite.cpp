@@ -81,48 +81,58 @@ int Sprite::GetHeight() {
 	return mHeight;
 }
 
-void Sprite::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DXVECTOR2 transform, float angle, D3DXVECTOR2 rotationCenter, D3DXCOLOR colorKey) {
-	D3DXVECTOR3 inPosition = mPosition;
-	RECT inSourceRect = mSourceRect;
-	float inRotation = mRotation;
-	D3DXVECTOR2 inCcale = mScale;
-	D3DXVECTOR2 inTranslation = mTranslation;
-	D3DXVECTOR2 inRotationCenter = mRotationCenter;
-	D3DXVECTOR2 scalingScenter = D3DXVECTOR2(inPosition.x, inPosition.y);
+void Sprite::Draw(
+	D3DXVECTOR3 position, 
+	RECT sourceRect, 
+	D3DXVECTOR2 scale, 
+	D3DXVECTOR2 transform, 
+	float angle, 
+	D3DXVECTOR2 rotationCenter, 
+	D3DXCOLOR colorKey) 
+	{
+		D3DXVECTOR3 inPosition = mPosition;
+		RECT inSourceRect = mSourceRect;
+		float inRotation = mRotation;
+		D3DXVECTOR2 inCcale = mScale*2;
+		D3DXVECTOR2 inTranslation = mTranslation;
+		D3DXVECTOR2 inRotationCenter = mRotationCenter;
+		D3DXVECTOR2 scalingScenter = D3DXVECTOR2(inPosition.x, inPosition.y);
 
-	if (position != D3DXVECTOR3()) inPosition = position;
+		if (position != D3DXVECTOR3()) inPosition = position;
 
-	if (isRect(sourceRect)) inSourceRect = sourceRect;
+		if (isRect(sourceRect)) inSourceRect = sourceRect;
 
-	if (scale != D3DXVECTOR2()) inCcale = scale;
+		if (scale != D3DXVECTOR2()) inCcale = scale;
 
-	if (transform != D3DXVECTOR2()) inTranslation = transform;
+		if (transform != D3DXVECTOR2()) inTranslation = transform;
 
-	if (rotationCenter != D3DXVECTOR2()) inRotationCenter = rotationCenter;
-	else mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y); // cho phep quay giua hinh
+		if (rotationCenter != D3DXVECTOR2()) inRotationCenter = rotationCenter;
+		else mRotationCenter = D3DXVECTOR2(inPosition.x, inPosition.y); // cho phep quay giua hinh
 
-	D3DXMatrixTransformation2D(&mMatrix,
-		&scalingScenter,
-		0,
-		&inCcale,
-		&inRotationCenter,
-		inRotation,
-		&inTranslation);
+		D3DXMatrixTransformation2D(
+			&mMatrix,
+			&scalingScenter,
+			0,
+			&inCcale,
+			&inRotationCenter,
+			inRotation,
+			&inTranslation);
 
-	D3DXMATRIX oldMatrix;
-	mSpriteHandler->GetTransform(&oldMatrix);
-	mSpriteHandler->SetTransform(&mMatrix);
+		D3DXMATRIX oldMatrix;
+		mSpriteHandler->GetTransform(&oldMatrix);
+		mSpriteHandler->SetTransform(&mMatrix);
 
-	D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2, mHeight / 2, 0);
+		/*D3DXVECTOR3 center = D3DXVECTOR3(mWidth / 2, mHeight / 2, 0);*/
+		D3DXVECTOR3 center = D3DXVECTOR3(0, mHeight, 0);
 
-	mSpriteHandler->Draw(mTexture,
-		&inSourceRect,
-		&center,
-		&inPosition,
-		D3DCOLOR_ARGB(255, 255, 255, 255)); // nhung pixel nao co mau trang se duoc to mau nay len
+		mSpriteHandler->Draw(mTexture,
+			&inSourceRect,
+			&center,
+			&inPosition,
+			D3DCOLOR_ARGB(255, 255, 255, 255)); // nhung pixel nao co mau trang se duoc to mau nay len
 
-	mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transfrom voi class nay
-}
+		mSpriteHandler->SetTransform(&oldMatrix); // set lai matrix cu~ de Sprite chi ap dung transfrom voi class nay
+	}
 
 void Sprite::SetSourceRect(RECT rect) {
 	mSourceRect = rect;
