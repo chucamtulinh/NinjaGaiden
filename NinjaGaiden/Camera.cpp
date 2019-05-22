@@ -12,21 +12,26 @@ Camera::Camera(int width, int height)
 
 Camera::~Camera()
 {
+
 }
 
-void Camera::SetPosition(float x, float y) {
+void Camera::SetPosition(float x, float y)
+{
 	SetPosition(D3DXVECTOR3(x, y, 0));
 }
 
-void Camera::SetPosition(D3DXVECTOR3 pos) {
+void Camera::SetPosition(D3DXVECTOR3 pos)
+{
 	mPosition = pos;
 }
 
-D3DXVECTOR3 Camera::GetPosition() {
+D3DXVECTOR3 Camera::GetPosition()
+{
 	return mPosition;
 }
 
-RECT Camera::GetBound() {
+RECT Camera::GetBound()
+{
 	RECT bound;
 
 	bound.left = mPosition.x - mWidth / 2;
@@ -37,10 +42,12 @@ RECT Camera::GetBound() {
 	return bound;
 }
 
-int Camera::GetWidth() {
+int Camera::GetWidth()
+{
 	return mWidth;
 }
 
-int Camera::GetHeight() {
+int Camera::GetHeight()
+{
 	return mHeight;
 }

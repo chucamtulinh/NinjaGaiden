@@ -24,12 +24,20 @@ Player::~Player()
 {
 }
 
-void Player::Update(float dt) {
+
+void Player::Update(float dt) 
+{
 	mCurrentAnimation->Update(dt);
 
-	if (this->mPlayerData->state) this->mPlayerData->state->Update(dt);
+	if (this->mPlayerData->state)
+		this->mPlayerData->state->Update(dt);
 
 	Entity::Update(dt);
+}
+
+void Player::SetCamera(Camera *camera)
+{
+	this->mCamera = camera;
 }
 
 void Player::HandleKeyboard(std::map<int, bool> keys) {
@@ -52,7 +60,19 @@ void Player::Draw(D3DXVECTOR3 position, RECT sourceRect, D3DXVECTOR2 scale, D3DX
 	mCurrentAnimation->FlipVertical(mCurrentReverse);
 	mCurrentAnimation->SetPosition(this->GetPosition());
 
-	mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0));
+	//mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0));
+
+	if (mCamera)
+	{
+		D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x,
+			GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+
+		mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0), sourceRect, scale, trans, angle, rotationCenter, colorKey);
+	}
+	else
+	{
+		mCurrentAnimation->Draw(D3DXVECTOR3(posX, posY, 0));
+	}
 }
 
 void Player::SetState(PlayerState *newState) {

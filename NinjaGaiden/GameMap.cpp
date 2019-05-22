@@ -2,6 +2,7 @@
 
 GameMap::GameMap(char* filePath)
 {
+	mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
 	LoadMap(filePath);
 }
 
@@ -54,10 +55,44 @@ int GameMap::GetTileHeight() {
 	return mMap->GetTileHeight();
 }
 
-void GameMap::Draw() {
-	D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x, GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+RECT GameMap::GetWorldMapBound()
+{
+	RECT bound;
+	bound.left = bound.top = 0;
+	bound.right = mMap->GetWidth() * mMap->GetTileWidth();
+	bound.bottom = mMap->GetHeight() * mMap->GetTileHeight();
 
-	for (int i = 0; i < mMap->GetNumTileLayers(); i++) {
+	return bound;
+}
+
+
+bool GameMap::IsBoundLeft()
+{
+	return (mCamera->GetBound().left == 0);
+}
+
+bool GameMap::IsBoundRight()
+{
+	return (mCamera->GetBound().right == this->GetWidth());
+}
+
+bool GameMap::IsBoundTop()
+{
+	return (mCamera->GetBound().top == 0);
+}
+
+bool GameMap::IsBoundBottom()
+{
+	return (mCamera->GetBound().bottom == this->GetHeight());
+}
+
+
+void GameMap::Draw() {
+	D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x,
+		GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
+
+	for (int i = 0; i < mMap->GetNumTileLayers(); i++) 
+	{
 		const Tmx::TileLayer *layer = mMap->GetTileLayer(i);
 
 		if (!layer->IsVisible()) continue;

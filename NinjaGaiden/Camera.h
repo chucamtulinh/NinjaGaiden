@@ -21,7 +21,8 @@ public:
 	~Camera();
 
 private:
-	int             mWidth,	mHeight;
+	int             mWidth,
+		mHeight;
 
 	D3DXVECTOR3     mPosition;
 };
