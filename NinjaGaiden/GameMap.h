@@ -33,7 +33,7 @@ public:
 
 	void Draw();
 
-	void Update(float dt);	
+	void Update(float dt);
 
 	~GameMap();
 
@@ -44,7 +44,6 @@ private:
 
 	Tmx::Map                        *mMap;
 	std::map<int, Sprite*>          mListTileset;
-	LPD3DXSPRITE                    mSpriteHandler;
 	Camera *mCamera;
 };
 

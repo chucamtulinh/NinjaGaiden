@@ -1,8 +1,8 @@
 #pragma once
 namespace Define
 {
-	const float PLAYER_MAX_JUMP_VELOCITY = 50.0f; //van toc nhay lon nhat
-	const float PLAYER_MIN_JUMP_VELOCITY = -50.0f; //van toc nhay thap nhat
-	const float PLAYER_MAX_RUNNING_SPEED = 125.0f; //toc do chay nhanh nhat cua player
+	const float PLAYER_MAX_JUMP_VELOCITY = 150.0f; //van toc nhay lon nhat
+	const float PLAYER_MIN_JUMP_VELOCITY = -150.0f; //van toc nhay thap nhat
+	const float PLAYER_MAX_RUNNING_SPEED = 75.0f; //toc do chay nhanh nhat cua player
 	const float PLAYER_BOTTOM_RANGE_FALLING = 8.0f; // do dai va cham voi bottom neu nhu va cham bottom nho hon thi player se bi roi xuong
 }
