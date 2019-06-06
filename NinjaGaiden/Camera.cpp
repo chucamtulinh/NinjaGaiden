@@ -1,53 +1,171 @@
 #include "Camera.h"
+#include <cstdlib>
 
 
-Camera::Camera(int width, int height)
+
+
+
+Camera::Camera(int w, int h/*, int b_left, int b_right*/)
 {
-	mWidth = width;
-	mHeight = height;
+	_width = w;
+	_height = h;
+	isAllowFollowRYU = true;
+	isAutoGoX = false;
 
-	mPosition = D3DXVECTOR3(0, 0, 0);
+	// bien mac dinh la kich thuoc MAP
+	_boundaryLeft = 0;
+	_boundaryRight = 0;// (float)(MapWidth - SCREEN_WIDTH);
+	_xCamBackup = _yCamBackup = 0;
+	SetBoundaryBackup(_boundaryLeft, _boundaryRight);
+	vx = 0;
 }
-
 
 Camera::~Camera()
 {
+}
 
+void Camera::Update(DWORD dt)
+{
+	this->dt = dt;
+
+	if (isAutoGoX)
+	{
+		float dx = vx * dt;
+		_xCam += dx;
+	}
+
+	if (isAutoGoX == true)
+	{
+		if (abs(_xCam - AutoGoX_Backup_X) >= AutoGoX_Distance)
+		{
+			_xCam = _xCam - (abs(_xCam - AutoGoX_Backup_X) - AutoGoX_Distance);
+			isAutoGoX = false;
+		}
+	}
+
+
+
+	if (_xCam < _boundaryLeft)
+		_xCam = _boundaryLeft;
+
+	if (_xCam > _boundaryRight)
+		_xCam = _boundaryRight;
+
+}
+D3DXVECTOR2 Camera::Transform(float xWorld, float yWorld)
+{
+	return D3DXVECTOR2(xWorld - _xCam, yWorld - _yCam);
 }
 
 void Camera::SetPosition(float x, float y)
 {
-	SetPosition(D3DXVECTOR3(x, y, 0));
+	_xCam = x;
+	_yCam = y;
 }
 
-void Camera::SetPosition(D3DXVECTOR3 pos)
+float Camera::GetXCam()
 {
-	mPosition = pos;
+	return _xCam;
 }
 
-D3DXVECTOR3 Camera::GetPosition()
+float Camera::GetYCam()
 {
-	return mPosition;
+	return _yCam;
 }
 
-RECT Camera::GetBound()
-{
-	RECT bound;
-
-	bound.left = mPosition.x - mWidth / 2;
-	bound.right = bound.left + mWidth;;
-	bound.top = mPosition.y - mHeight / 2;
-	bound.bottom = bound.top + mHeight;
-
-	return bound;
-}
 
 int Camera::GetWidth()
 {
-	return mWidth;
+	return _width;
 }
 
 int Camera::GetHeight()
 {
-	return mHeight;
+	return _height;
+}
+
+bool Camera::checkObjectInCamera(float x, float y, float w, float h)
+{
+	if (x + w < _xCam || _xCam + _width < x)
+		return false;
+	if (y + h < _yCam || _yCam + _height < y)
+		return false;
+	return true;
+}
+
+bool Camera::AllowFollowSimon()
+{
+	return isAllowFollowRYU;
+}
+
+void Camera::SetAllowFollowSimon(bool b)
+{
+	isAllowFollowRYU = b;
+}
+
+void Camera::SetAutoGoX(float Distance, float Speed)
+{
+	if (isAutoGoX == true)
+		return;
+	vx = Speed;
+	AutoGoX_Backup_X = _xCam;
+	AutoGoX_Distance = Distance;
+	isAutoGoX = true;
+	isAllowFollowRYU = false;
+}
+
+void Camera::StopAutoGoX()
+{
+	isAutoGoX = false;
+}
+
+bool Camera::GetIsAutoGoX()
+{
+	return isAutoGoX;
+}
+
+void Camera::SetBoundary(float left, float right)
+{
+	_boundaryLeft = left;
+	_boundaryRight = right;
+}
+
+float Camera::GetBoundaryRight()
+{
+	return _boundaryRight;
+}
+
+float Camera::GetBoundaryLeft()
+{
+	return _boundaryLeft;
+}
+
+void Camera::SetPositionBackup(float X, float Y)
+{
+	_xCamBackup = X;
+	_yCamBackup = Y;
+
+}
+
+void Camera::SetBoundaryBackup(float l, float r)
+{
+	_boundaryLeftBackup = l;
+	_boundaryRightBackup = r;
+}
+
+void Camera::RestoreBoundary()
+{
+	_boundaryLeft = _boundaryLeftBackup;
+	_boundaryRight = _boundaryRightBackup;
+}
+
+void Camera::RestorePosition()
+{
+	_xCam = _xCamBackup;
+	_yCam = _yCamBackup;
+
+	_boundaryLeft = _boundaryLeftBackup;
+	_boundaryRight = _boundaryRightBackup;
+
+
 }

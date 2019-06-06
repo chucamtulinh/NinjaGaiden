@@ -2,15 +2,21 @@
 #define __SPRITE__
 #include <d3d9.h>
 #include <d3dx9.h>
+#include "Texture.h"
 
 #include "GameGlobal.h"
 
 class Sprite
 {
+private:
+	LPD3DXSPRITE spriteHandler;
+	int currentFrame;
+	int totalFrames;
+
 public:
 	Sprite(const char* filePath, RECT sourceRect = RECT(), int width = NULL, int height = NULL, D3DCOLOR colorKey = NULL);
 
-	Sprite();
+	Sprite(Texture* tex, DWORD TimeAnimation);
 
 	~Sprite();
 
@@ -24,6 +30,9 @@ public:
 
 	void SetHeight(int height);
 	int GetHeight();
+
+	Texture * texture;
+	DWORD timeAnimation;
 
 	D3DXIMAGE_INFO GetImageInfo(); // lay thong tin hinh anh
 
@@ -51,6 +60,7 @@ public:
 
 	void FlipVertical(bool flag); // true: lat hinh theo chieu ngang, false: binh thuong
 	bool IsFlipVertical();
+	void Update(DWORD dt);
 
 protected:
 	//su dung cho ke thua

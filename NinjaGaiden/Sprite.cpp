@@ -4,8 +4,13 @@ Sprite::Sprite(const char* filePath, RECT sourceRect, int width, int height, D3D
 	this->InitWithSprite(filePath, sourceRect, width, height, colorKey);
 }
 
-Sprite::Sprite()
+Sprite::Sprite(Texture* tex, DWORD TimeAnimation)
 {
+	texture = tex;
+	currentFrame = 0;
+	totalFrames = texture->TotalFrames - 1;
+	this->timeAnimation = TimeAnimation;
+	spriteHandler = Game::GetInstance()->GetSpriteHandler();
 }
 
 Sprite::~Sprite()
