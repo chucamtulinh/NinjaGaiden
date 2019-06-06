@@ -1,4 +1,4 @@
-#ifndef __GAMEOBJECT_H__
+﻿#ifndef __GAMEOBJECT_H__
 #define __GAMEOBJECT_H__
 
 
@@ -39,12 +39,12 @@ class GameObject
 {
 
 protected:
-	DWORD LastTimeAttacked; 
+	DWORD LastTimeAttacked; // thời điểm bị tấn công cuối cùng
 	int Health;
 	int id;
 
-	int direction;	// -1 : left, 1: right
-	eType type; // loai Object
+	int direction;	// hướng -1 : trái, 1: phải
+	eType type; // Loại Object
 
 	float x;
 	float y;
@@ -107,7 +107,7 @@ public:
 		float &nx,
 		float &ny);
 
-	bool isCollitionObjectWithObject(GameObject *obj); 	// kt va cham AABB va Sweept AABB
+	bool isCollitionObjectWithObject(GameObject *obj); 	// kiểm tra bằng AABB và Sweept AABB
 	bool checkAABB(GameObject *obj);
 
 	DWORD GetLastTimeAttacked();

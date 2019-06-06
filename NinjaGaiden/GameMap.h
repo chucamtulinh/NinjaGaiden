@@ -1,51 +1,35 @@
-#pragma once
-#ifndef __GAME_MAP__
-#define __GAME_MAP__
+﻿#ifndef __GAMEMAP_H__
+#define __GAMEMAP_H__
 
-#include <d3dx9.h>
-#include <d3d9.h>
-#include <vector>
-
+#include "TextureManager.h"
 #include "Sprite.h"
-#include "../NinjaGaiden/MapReader/Tmx.h.in"
-#include "GameGlobal.h"
+#include "GameDefine.h"
 #include "Camera.h"
 
 class GameMap
 {
-public:
-	GameMap(char* filePath);
-
-	Tmx::Map* GetMap();
-
-	int GetWidth();
-	int GetHeight();
-	int GetTileWidth();
-	int GetTileHeight();
-
-	RECT GetWorldMapBound();
-
-	bool IsBoundLeft(); //kiem tra luc nay Camera o vi bien ben trai so voi WorldMap
-	bool IsBoundRight(); // kiem tra xem co o vi tri bien ben phai worldmap khong
-	bool IsBoundTop(); // kiem tra xem co o vi tri bien ben trai worldmap khong
-	bool IsBoundBottom(); // kiem tra xem co o vi tri bien ben phai worldmap khong
-	void SetCamera(Camera * camera);
-
-	void Draw();
-
-	void Update(float dt);
-
-	~GameMap();
-
 private:
-	void LoadMap(char* filePath);
+	Texture * _texture;
+	Sprite *_sprite;
 
-	bool isContain(RECT rect1, RECT rect2);
+	int ColumnTile, RowTile, TotalTiles;
 
-	Tmx::Map                        *mMap;
-	std::map<int, Sprite*>          mListTileset;
-	Camera *mCamera;
+	int ColumnMap, RowMap;
+
+	int HeightBoard; // chiều cao board
+
+	int TileMap[500][500];
+
+public:
+	GameMap();
+	~GameMap();
+	void LoadMap(eType type);
+	void ReadMapTXT(char * filename);
+	void DrawMap(Camera * camera);
+
+	int GetMapWidth();
+	int GetMapHeight();
 };
 
-#endif
 
+#endif

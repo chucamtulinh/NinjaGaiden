@@ -14,7 +14,7 @@ public:
 
 	void AddTexture(eType type, Texture* texture);
 	Texture* GetTexture(eType type);
-
+		
 	void LoadResource();
 
 	TextureManager();

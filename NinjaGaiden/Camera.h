@@ -1,9 +1,7 @@
-#ifndef __CAMERA_H__
+﻿#ifndef __CAMERA_H__
 #define __CAMERA_H__
 
-#include <d3dx9.h>
-#include <d3d9.h>
-#include "GameDefine.h"
+#include "GameDefine.h" 
 
 class Camera
 {
@@ -20,29 +18,21 @@ protected:
 	int _width;
 	int _height;
 
-	float _boundaryLeft; // bien trai 
-	float _boundaryRight; // bien phai
+	float _boundaryLeft; // biên giới hạn bên trái 
+	float _boundaryRight; // biên giới hạn bên phải, không bao gồm đoạn simon đi được ở cuối - SCREEN_WIDTH 
 
 	float vx;
 	DWORD dt;
+	
 
-	bool isAutoGoX; // auto mode
-	float AutoGoX_Distance; 
-	float AutoGoX_Backup_X; // vi tri truoc che do auto
+	bool isAutoGoX; // đang ở chế độ tự đi
+	float AutoGoX_Distance; //khoảng cách cần tự động đi
+	float AutoGoX_Backup_X; // vị trí camera trước khi vào chế độ tự đi
 
-	bool isAllowFollowRYU;
+	bool isAllowFollowRyu;
 
 public:
-
-	Camera(int width, int height);
-
-	//center of camera
-	void SetPosition(float x, float y);
-	void SetPosition(D3DXVECTOR3 pos);
-
-	D3DXVECTOR3 GetPosition();
-	RECT GetBound();
-
+	Camera(int w, int h);
 	~Camera();
 
 	void Update(DWORD dt);
@@ -62,11 +52,11 @@ public:
 	void SetAllowFollowSimon(bool b);
 
 
-	void SetAutoGoX(float Distance, float Speed); // set thong so auto
+	void SetAutoGoX(float Distance, float Speed); // set các thông số auto
 	void StopAutoGoX();
 	bool GetIsAutoGoX();
 
-	void SetBoundary(float left, float right); // set bien camera
+	void SetBoundary(float left, float right); // set biên giới hạn cho camera
 	float GetBoundaryRight();
 	float GetBoundaryLeft();
 

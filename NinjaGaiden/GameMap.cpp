@@ -1,159 +1,71 @@
 #include "GameMap.h"
 
-GameMap::GameMap(char* filePath)
+
+
+GameMap::GameMap()
 {
-	mCamera = new Camera(GameGlobal::GetWidth(), GameGlobal::GetHeight());
-	LoadMap(filePath);
+
 }
+
 
 GameMap::~GameMap()
 {
-	delete mMap;
+	SAFE_DELETE(_sprite);
 }
 
-void GameMap::LoadMap(char* filePath) {
-	mMap = new Tmx::Map();
-	mMap->ParseFile(filePath);
-
-	RECT r;
-	r.left = 0;
-	r.top = 0;
-	r.right = this->GetWidth();
-	r.bottom = this->GetHeight();
-
-	for (int i = 0; i < mMap->GetNumTilesets(); i++) {
-		const Tmx::Tileset *tileset = mMap->GetTileset(i);
-
-		Sprite *sprite = new Sprite(tileset->GetImage()->GetSource().c_str());
-
-		mListTileset.insert(std::pair<int, Sprite*>(i, sprite));
-	}
-}
-
-bool GameMap::isContain(RECT rect1, RECT rect2) {
-	if (rect1.left > rect2.right || rect1.right < rect2.left || rect1.top > rect2.bottom || rect1.bottom < rect2.top) return false;
-	return true;
-}
-
-Tmx::Map* GameMap::GetMap() {
-	return mMap;
-}
-
-int GameMap::GetWidth() {
-	return mMap->GetWidth() * mMap->GetTileWidth();
-}
-
-int GameMap::GetHeight() {
-	return mMap->GetHeight() * mMap->GetTileHeight();
-}
-
-int GameMap::GetTileWidth() {
-	return mMap->GetTileWidth();
-}
-
-int GameMap::GetTileHeight() {
-	return mMap->GetTileHeight();
-}
-
-RECT GameMap::GetWorldMapBound()
+void GameMap::LoadMap(eType type)
 {
-	RECT bound;
-	bound.left = bound.top = 0;
-	bound.right = mMap->GetWidth() * mMap->GetTileWidth();
-	bound.bottom = mMap->GetHeight() * mMap->GetTileHeight();
-
-	return bound;
-}
-
-
-bool GameMap::IsBoundLeft()
-{
-	return (mCamera->GetBound().left == 0);
-}
-
-bool GameMap::IsBoundRight()
-{
-	return (mCamera->GetBound().right == this->GetWidth());
-}
-
-bool GameMap::IsBoundTop()
-{
-	return (mCamera->GetBound().top == 0);
-}
-
-bool GameMap::IsBoundBottom()
-{
-	return (mCamera->GetBound().bottom == this->GetHeight());
-}
-
-
-void GameMap::Draw() {
-	D3DXVECTOR2 trans = D3DXVECTOR2(GameGlobal::GetWidth() / 2 - mCamera->GetPosition().x,
-		GameGlobal::GetHeight() / 2 - mCamera->GetPosition().y);
-
-	for (int i = 0; i < mMap->GetNumTileLayers(); i++) 
+	switch (type)
 	{
-		const Tmx::TileLayer *layer = mMap->GetTileLayer(i);
-
-		if (!layer->IsVisible()) continue;
-
-		RECT sourceRECT;
-
-		int tileWidth = mMap->GetTileWidth();
-		int tileHeight = mMap->GetTileHeight();
-
-		for (int m = 0; m < layer->GetHeight(); m++) {
-			for (int n = 0; n < layer->GetWidth(); n++) {
-				int tilesetIndex = layer->GetTileTilesetIndex(n, m);
-
-				if (tilesetIndex != -1)	{
-					const Tmx::Tileset *tileSet = mMap->GetTileset(tilesetIndex);
-
-					int tileSetWidth = tileSet->GetImage()->GetWidth() / tileWidth;
-					int tileSetHeight = tileSet->GetImage()->GetHeight() / tileHeight;
-
-					Sprite* sprite = mListTileset[layer->GetTileTilesetIndex(n, m)];
-
-					//tile index
-					int tileID = layer->GetTileId(n, m);
-
-					int y = tileID / tileSetWidth;
-					int x = tileID - y * tileSetWidth;
-
-					sourceRECT.top = y * tileHeight;
-					sourceRECT.bottom = sourceRECT.top + tileHeight;
-					sourceRECT.left = x * tileWidth;
-					sourceRECT.right = sourceRECT.left + tileWidth;
-
-					//tru tilewidth/2 va tileheight/2 vi Sprite ve o vi tri giua hinh anh cho nen doi hinh de cho
-					//dung toa do (0,0) cua the gioi thuc la (0,0) neu khong thi se la (-tilewidth/2, -tileheigth/2);
-					D3DXVECTOR3 position(n * tileWidth + tileWidth / 2, m * tileHeight + tileHeight / 2, 0);
-
-					if (mCamera != NULL) {
-						RECT objRECT;
-						objRECT.left = position.x - tileWidth / 2;
-						objRECT.top = position.y - tileHeight / 2;
-						objRECT.right = objRECT.left + tileWidth;
-						objRECT.bottom = objRECT.top + tileHeight;
-
-						//neu nam ngoai camera thi khong Draw
-						if (isContain(objRECT, mCamera->GetBound()) == false)	continue;
-					}
-
-					sprite->SetWidth(tileWidth);
-					sprite->SetHeight(tileHeight);
-
-					sprite->Draw(position, sourceRECT, D3DXVECTOR2(), trans);
-				}
-			}
-		}
+	case eType::MAP1:
+		ReadMapTXT("Resources/map/readfile_map_1.txt");
+		break;
+	case eType::MAP2:
+		ReadMapTXT("Resources/map/readfile_map_2.txt");
+		break;
+	default:
+		//DebugOut(L"[MAP] Load map that bai!");
+		return;
+		break;
 	}
+
+	_texture = TextureManager::GetInstance()->GetTexture(type);
+	_sprite = new Sprite(_texture, 100);
+
 }
 
-void GameMap::Update(float dt)
+void GameMap::ReadMapTXT(char * filename)
 {
+	ifstream inp(filename, ios::in);
+	inp >> RowMap >> ColumnMap >> ColumnTile >> RowTile >> TotalTiles >> HeightBoard;
+	for (int i = 0; i < RowMap; i++)
+		for (int j = 0; j < ColumnMap; j++)
+			inp >> TileMap[i][j];
+	inp.close();
 }
 
-void GameMap::SetCamera(Camera * camera) {
-	this->mCamera = camera;
+void GameMap::DrawMap(Camera *camera)
+{
+	int row = (int)(camera->GetYCam()) / _texture->GetFrameHeight();
+	int column = (int)(camera->GetXCam()) / _texture->GetFrameHeight();
+
+	float x = -(float)((int)(camera->GetXCam()) % _texture->GetFrameHeight());
+	float y = -(float)((int)(camera->GetYCam()) % _texture->GetFrameHeight());
+
+	for (int i = 0; i < SCREEN_HEIGHT / _texture->GetFrameHeight() + 1; i++)
+		for (int j = 0; j < SCREEN_WIDTH / _texture->GetFrameWidth() + 1; j++)
+		{
+			if (!(row + i < 0 || row + i >= RowMap || j + column < 0 || j + column > ColumnMap))
+				_sprite->DrawFrame(TileMap[row + i][column + j], x + _texture->GetFrameWidth()*j, y + _texture->GetFrameHeight()*i + HeightBoard);
+		}
+}
+
+int GameMap::GetMapWidth()
+{
+	return ColumnMap * _texture->GetFrameWidth();
+}
+
+int GameMap::GetMapHeight()
+{
+	return RowMap * _texture->GetFrameHeight();
 }

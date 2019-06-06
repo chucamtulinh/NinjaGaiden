@@ -1,30 +1,26 @@
-#ifndef __SCENE__
-#define __SCENE__
-#include <d3dx9.h>
-#include <d3d9.h>
+#ifndef __SCENE_H__
+#define __SCENE_H__
 
-#include "GameGlobal.h"
+
+#include "GameDefine.h"
 
 class Scene
 {
 public:
-	virtual void Update(float dt);
-	virtual void LoadContent();
-	virtual void Draw();
-
-	virtual void OnKeyDown(int keyCode);
-	virtual void OnKeyUp(int keyCode);
-	virtual void OnMouseDown(float x, float y);
-
-	D3DCOLOR GetBackcolor();
-
-	~Scene();
-
-protected:
 	Scene();
 
-	D3DCOLOR mBackColor;
+
+	virtual void KeyState(BYTE *state) = 0;
+	virtual void OnKeyDown(int KeyCode) = 0;
+	virtual void OnKeyUp(int KeyCode) = 0;
+
+	virtual void LoadResources() = 0;
+	virtual void Update(DWORD dt) = 0;
+	virtual void Render() = 0;
+
+
+	virtual ~Scene();
+
 };
 
 #endif
-

@@ -1,0 +1,7 @@
+﻿#include "GameDefine.h"
+
+
+D3DCOLOR D3DCOLOR_BACKGROUND = COLOR_BACKGROUND_DEFAULT; // màu nền mặc định là đen
+
+int isDebug_Untouchable = 0;
+int isDebug_RenderBBox = 0;

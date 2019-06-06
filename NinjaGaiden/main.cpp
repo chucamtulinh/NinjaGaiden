@@ -1,137 +1,172 @@
-#include <d3d9.h>
-#include <d3dx9.h>
-#include <Windows.h>
-#include <iostream>
-#include <sstream>
-#include <dinput.h>
-#include <windowsx.h>
-#include "GameGlobal.h"
-#include "GameTime.h"
+﻿#include "debug.h"
 #include "Game.h"
+
 #include "SceneManager.h"
 
-using namespace std;
+#define WINDOW_CLASS_NAME L"Ninja Gaiden"
+#define MAIN_WINDOW_TITLE L"Ninja Gaiden"
 
-#define WIN_NAME L"Ninja Gaiden"
-#define WIN_TITLE L"Ninja Gaiden"
-#define SCREEN_WIDTH GameGlobal::GetWidth()
-#define SCREEN_HEIGHT GameGlobal::GetHeight()
-#define FPS 60
-#define KEYBOARD_BUFFERD_SIZE 1024
+//#include "SceneGame.h"
+//#include "Scene_Intro.h"
 
-int initWindow(int cmdShow);
-int InitDevice();
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+Game *game;
+SceneManager * _sceneManager;
 
-LPDIRECT3D9             mDirect3D9;
-LPD3DXSPRITE            mSpriteHandler;
-PDIRECT3D9              mD3d;
-LPDIRECT3DDEVICE9       mDevice;
-HINSTANCE               mHInstance;
-int                     mCmdShow;
+LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message) {
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int cmdShow) {
-	mHInstance = hInstance;
-	initWindow(cmdShow);
 	return 0;
 }
 
-int initWindow(int cmdShow) {
+void LoadResources()
+{
+	_sceneManager->LoadResources();
+}
+
+void Update(DWORD dt)
+{
+	_sceneManager->Update(dt);
+}
+
+void Render()
+{
+	LPDIRECT3DDEVICE9 d3ddv = game->GetDirect3DDevice();
+	LPDIRECT3DSURFACE9 bb = game->GetBackBuffer();
+	LPD3DXSPRITE spriteHandler = game->GetSpriteHandler();
+
+	if (d3ddv->BeginScene())
+	{
+		// Clear back buffer with a color
+		d3ddv->ColorFill(bb, NULL, D3DCOLOR_BACKGROUND); // D3DCOLOR_BACKGROUND biến toàn cục quản lí màu nền
+		spriteHandler->Begin(D3DXSPRITE_ALPHABLEND);
+
+
+		_sceneManager->Render();
+
+
+		spriteHandler->End();
+		d3ddv->EndScene();
+	}
+
+	// Display back buffer content to the screen
+	d3ddv->Present(NULL, NULL, NULL, NULL);
+}
+
+HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int ScreenHeight)
+{
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);
 
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.hInstance = mHInstance;
+	wc.hInstance = hInstance;
 
-	wc.lpfnWndProc = (WNDPROC)WndProc;
+	wc.lpfnWndProc = (WNDPROC)WinProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hIcon = NULL;
-
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = WIN_NAME;
+	wc.lpszClassName = WINDOW_CLASS_NAME;
 	wc.hIconSm = NULL;
 
 	RegisterClassEx(&wc);
 
-	//WS_OVERLAPPEDWINDOW <=> WS_EX_TOPMOST | WS_POPUP | WS_VISIBLE
-	HWND hWnd = CreateWindow(
-		WIN_NAME,
-		WIN_NAME,
-		WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		SCREEN_WIDTH,
-		SCREEN_HEIGHT,
-		NULL,
-		NULL,
-		mHInstance,
-		NULL);
+	HWND hWnd =
+		CreateWindow(
+			WINDOW_CLASS_NAME,
+			MAIN_WINDOW_TITLE,
+			WS_OVERLAPPEDWINDOW, // WS_EX_TOPMOST | WS_VISIBLE | WS_POPUP,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			ScreenWidth,
+			ScreenHeight,
+			NULL,
+			NULL,
+			hInstance,
+			NULL);
 
-	GameGlobal::SetCurrentHINSTACE(mHInstance);
-	GameGlobal::SetCurrentHWND(hWnd);
-
-	ShowWindow(hWnd, cmdShow);
-	UpdateWindow(hWnd);
-
-	if (InitDevice()) {
-		Game *game = new Game(60);
+	if (!hWnd)
+	{
+		OutputDebugString(L"[ERROR] CreateWindow failed");
+		DWORD ErrCode = GetLastError();
+		return FALSE;
 	}
 
-	return 0;
+	ShowWindow(hWnd, nCmdShow);
+	UpdateWindow(hWnd);
+
+	return hWnd;
 }
 
-int InitDevice() {
-	mD3d = Direct3DCreate9(D3D_SDK_VERSION);
-	D3DPRESENT_PARAMETERS d3dpp;
+int Run()
+{
+	MSG msg;
+	int done = 0;
+	DWORD frameStart = GetTickCount();
+	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
 
-	ZeroMemory(&d3dpp, sizeof(d3dpp));
+	while (!done)
+	{
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			if (msg.message == WM_QUIT) done = 1;
 
-	d3dpp.Windowed = TRUE;
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
-	d3dpp.BackBufferFormat = D3DFMT_A8R8G8B8;
-	d3dpp.BackBufferCount = 1;
-	d3dpp.BackBufferWidth = SCREEN_WIDTH;
-	d3dpp.BackBufferHeight = SCREEN_HEIGHT;
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
 
-	HRESULT dvresult = mD3d->CreateDevice(D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL,
-		GameGlobal::getCurrentHWND(),
-		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
-		&d3dpp,
-		&mDevice);
-	GameGlobal::SetCurrentDevice(mDevice);
+		DWORD now = GetTickCount();
 
-	D3DXCreateSprite(GameGlobal::GetCurrentDevice(), &mSpriteHandler);
-	GameGlobal::SetCurrentSpriteHandler(mSpriteHandler);
+		// dt: the time between (beginning of last frame) and now
+		// this frame: the frame we are about to render
+		DWORD dt = now - frameStart;
+
+		if (dt >= tickPerFrame)
+		{
+			frameStart = now;
+
+			game->ProcessKeyboard();
+
+			//DebugOut(L"dt = %d , tickPerFrame = %d \n", dt, tickPerFrame);
+
+			Update(dt);
+			Render();
+		}
+		else
+			Sleep(tickPerFrame - dt);
+	}
 
 	return 1;
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {	
-	switch (message) {
-	case WM_DESTROY:
-		GameGlobal::isGameRunning = false;
-		PostQuitMessage(0);
-		break;
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	case WM_LBUTTONDOWN:
-		SceneManager::GetInstance()->GetCurrentScene()->OnMouseDown((float)GET_X_LPARAM(lParam), (float)GET_Y_LPARAM(lParam));
-		break;
+	game = Game::GetInstance();
+	game->Init(hWnd);
 
-	case WM_KEYDOWN:
-		SceneManager::GetInstance()->GetCurrentScene()->OnKeyDown(wParam);
-		break;
+	_sceneManager = SceneManager::GetInstance();
 
-	case WM_KEYUP:
-		SceneManager::GetInstance()->GetCurrentScene()->OnKeyUp(wParam);
-		break;
 
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
+	//_sceneManager->SetScene(new Scene_Intro());
+
+
+	game->InitKeyboard();
+
+
+
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
+	Run();
 
 	return 0;
 }

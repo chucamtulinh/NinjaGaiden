@@ -1,9 +1,8 @@
+﻿
 
-
-//#include "debug.h" 
+#include "debug.h" 
 #include "Game.h"
 #include "GameObject.h"
-#include <algorithm>
 
 GameObject::GameObject()
 {
@@ -140,10 +139,10 @@ int GameObject::GetWidth()
 	return texture->GetFrameWidth();
 }
 
-//eType GameObject::GetType()
-//{
-//	return type;
-//}
+eType GameObject::GetType()
+{
+	return type;
+}
 
 
 void GameObject::RenderBoundingBox(Camera * camera)
@@ -161,7 +160,7 @@ void GameObject::RenderBoundingBox(Camera * camera)
 	Game::GetInstance()->Draw(
 		pos.x,
 		pos.y,
-		TextureManager::GetInstance()->GetTexture(eType::RENDERBBOX)->Texture,
+		TextureManager::GetInstance()->GetTexture(eType::RENDERBBOX)->texture,
 		rect.left,
 		rect.top,
 		rect.right,
@@ -253,13 +252,13 @@ void GameObject::FilterCollision(vector<LPCOLLISIONEVENT>& coEvents, vector<LPCO
 		coEventsResult.push_back(coEvents[min_iy]);
 }
 
-bool GameObject::isCollitionObjectWithObject(GameObject * obj)
+bool GameObject::isCollitionObjectWithObject(GameObject * obj)	// kiểm tra bằng AABB và Sweept AABB
 {
-	if (checkAABB(obj)) // ktra va cham AABB truoc
+	if (checkAABB(obj)) // kiểm tra va chạm bằng AABB trước
 		return true;
 
-	LPCOLLISIONEVENT e = SweptAABBEx(obj); // kt va cham 2 obj bang sweptAABB
-	bool res = e->t > 0 && e->t <= 1.0f; // DK va cham
+	LPCOLLISIONEVENT e = SweptAABBEx(obj); // kt va chạm giữa 2 object bằng sweptAABB
+	bool res = e->t > 0 && e->t <= 1.0f; // ĐK va chạm
 	SAFE_DELETE(e);
 	return res;
 }
@@ -301,6 +300,7 @@ Sprite * GameObject::GetSprite()
 GameObject::~GameObject()
 {
 	/*SAFE_DELETE(texture);*/
+	// ko xóa texture vì đây là texture dùng chung được quản lí bởi TextureManager
 	SAFE_DELETE(sprite);
 }
 

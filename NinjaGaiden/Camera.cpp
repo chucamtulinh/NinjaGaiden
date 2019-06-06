@@ -1,5 +1,4 @@
-#include "Camera.h"
-#include <cstdlib>
+﻿#include "Camera.h"
 
 
 
@@ -9,10 +8,10 @@ Camera::Camera(int w, int h/*, int b_left, int b_right*/)
 {
 	_width = w;
 	_height = h;
-	isAllowFollowRYU = true;
+	isAllowFollowRyu = true;
 	isAutoGoX = false;
 
-	// bien mac dinh la kich thuoc MAP
+	// Biên mặc định ban đầu là kích thước MAP
 	_boundaryLeft = 0;
 	_boundaryRight = 0;// (float)(MapWidth - SCREEN_WIDTH);
 	_xCamBackup = _yCamBackup = 0;
@@ -33,6 +32,8 @@ void Camera::Update(DWORD dt)
 		float dx = vx * dt;
 		_xCam += dx;
 	}
+
+
 
 	if (isAutoGoX == true)
 	{
@@ -95,12 +96,12 @@ bool Camera::checkObjectInCamera(float x, float y, float w, float h)
 
 bool Camera::AllowFollowSimon()
 {
-	return isAllowFollowRYU;
+	return isAllowFollowRyu;
 }
 
 void Camera::SetAllowFollowSimon(bool b)
 {
-	isAllowFollowRYU = b;
+	isAllowFollowRyu = b;
 }
 
 void Camera::SetAutoGoX(float Distance, float Speed)
@@ -111,7 +112,7 @@ void Camera::SetAutoGoX(float Distance, float Speed)
 	AutoGoX_Backup_X = _xCam;
 	AutoGoX_Distance = Distance;
 	isAutoGoX = true;
-	isAllowFollowRYU = false;
+	isAllowFollowRyu = false;
 }
 
 void Camera::StopAutoGoX()

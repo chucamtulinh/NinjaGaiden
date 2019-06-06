@@ -1,32 +1,45 @@
-#include "GameTime.h"
+﻿#include "GameTime.h"
 
-GameTime* GameTime::mInstance = NULL;
+
 
 GameTime::GameTime()
 {
+	this->_accumulationTime = 0;
+	SetTime(0);
 }
+
 
 GameTime::~GameTime()
-{ 
+{
 }
 
-GameTime* GameTime::GetInstance() {
-	if (!mInstance)	mInstance = new GameTime();
-	return mInstance;
-}
-
-void GameTime::StartCounter() {
-	if (!QueryPerformanceFrequency(&mClockRate)) {
-		return;
+void GameTime::Update(DWORD dt)
+{
+	if (_accumulationTime + dt < 1000)
+	{
+		_accumulationTime += dt;
 	}
-
-	QueryPerformanceCounter(&mStartTime);
-
+	else
+	{
+		_accumulationTime = (_accumulationTime + dt) % 1000;
+		_time++;
+		isJustChanged = true; // set trạng thái vừa thay đổi
+	}
 }
 
-float GameTime::GetCouter() {
-	QueryPerformanceCounter(&mEndTime);
-	mDelta.QuadPart = mEndTime.QuadPart - mStartTime.QuadPart;
+void GameTime::SetTime(int t)
+{
+	_time = t;
+}
 
-	return ((float)mDelta.QuadPart / mClockRate.QuadPart);
+int GameTime::GetTime()
+{
+	return _time;
+}
+
+bool GameTime::CheckIsJustChanged()
+{
+	bool b = isJustChanged;
+	isJustChanged = false; // sau khi lấy trạng thái xong rồi thì coi như "chưa thay đổi"
+	return b;
 }

@@ -1,22 +1,36 @@
-#ifndef __SCENE_MANAGER__
-#define __SCENE_MANAGER__
+#ifndef __SCENEMANAGER_H__
+#define __SCENEMANAGER_H__
 
-#include "Scene.h"
+#include "Scene.h" 
+#include "Camera.h"
+#include "GameDefine.h" 
 
 class SceneManager
 {
+private:
+	static SceneManager * _Instance;
+	Scene * _scene;
+
 public:
-	static SceneManager *GetInstance();
+	SceneManager();
 	~SceneManager();
 
-	Scene* GetCurrentScene();
-	void Update(float dt);
-	void ReplaceScene(Scene *scene);
 
-private:
-	SceneManager();
-	static SceneManager     *mInstace;
-	Scene                   *mCurrentScene;
+	static SceneManager * GetInstance();
+
+	void SetScene(Scene * x);
+
+	void KeyState(BYTE *state);
+	void OnKeyDown(int KeyCode);
+	void OnKeyUp(int KeyCode);
+
+	void LoadResources();
+	void Update(DWORD dt);
+	void Render();
+
+
+	Scene * GetScene();
+
 };
 
-#endif
+#endif 

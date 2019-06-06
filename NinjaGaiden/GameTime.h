@@ -1,22 +1,26 @@
-#pragma once
-#ifndef __GAME_TIME__
-#define __GAME_TIME__
+﻿#ifndef __GAMETIME_H__
+#define __GAMETIME_H__
 
-#include <Windows.h>
+#include "GameDefine.h"
 
 class GameTime
 {
-public:
-	void StartCounter();
-	float GetCouter();
-	static GameTime* GetInstance();
-	~GameTime();
-
 private:
+	DWORD _accumulationTime; // thời gian đã tích lũy
+	int _time; // time game 
+	bool isJustChanged; // kiểm tra có phải biến time vừa được cập nhật?
+
+public:
 	GameTime();
-	LARGE_INTEGER mStartTime, mEndTime, mDelta, mClockRate;
-	static GameTime *mInstance;
+	~GameTime();
+	void Update(DWORD dt);
+	void SetTime(int t);
+	int GetTime();
+	bool CheckIsJustChanged();
 };
 
-#endif
+
+
+
+#endif 
 
