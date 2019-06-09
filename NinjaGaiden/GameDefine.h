@@ -40,6 +40,15 @@ using namespace std;
 
 extern D3DCOLOR D3DCOLOR_BACKGROUND; // màu nền game
 
+//Phím game
+#define UP_btn DIK_UP
+#define DOWN_btn DIK_DOWN
+#define LEFT_btn DIK_LEFT
+#define RIGHT_btn DIK_RIGHT
+#define ATK_btn DIK_A
+#define JUMP_btn DIK_S
+#define ITEM_btn DIK_D
+
 
 
 extern int isDebug_Untouchable;
@@ -49,61 +58,33 @@ extern int isDebug_RenderBBox;
 // ID của Sprite, object
 enum eType
 {
-	SIMON = 01,
-	SIMON_TRANS = 02,
-	SIMON_DEADTH = 03,
+	RYU = 01,
+	RYU_TRANS = 02,
+	RYU_DEATH = 03,
 
 	// object nền
 	BRICK = 21,
-	TEX_BRICK_MODEL_1 = 22,
-	TEX_BRICK_MODEL_2 = 23,
-	TEX_BRICK_MODEL_3 = 24,
-	TEX_BRICK_TRANSPARENT = 25,
-	GATE = 26,
-	TEX_BRICK_MODEL_3_3_32 = 27,
-	TEX_BRICK_MODEL_3_4_32 = 28,
+	TEX_BRICK_31_1 = 22,
+	TEX_BRICK_31_2 = 23,
+	TEX_BRICK_31_3 = 24,
+	TEX_BRICK_31_4 = 25,
+	TEX_BRICK_31_5 = 26,
+	TEX_BRICK_31_6 = 27,
+	TEX_BRICK_31_7 = 28,
+	TEX_BRICK_31_8 = 29,
 
 	// object
-	TORCH = 41,
-	OBJECT_HIDDEN = 42,
-	CANDLE = 43,
-	STAIR = 44,
-	/*	STAIR_UP = 45,
-	STAIR_EXIT = 46,*/
-	STAIR_BOTTOM = 47,
-	STAIR_TOP = 48,
+	
 
 
 
 	// weapon
-	MORNINGSTAR = 61,
-	DAGGER = 62,
-	HOLYWATER = 63,
-	STOPWATCH = 64,
-	FIREBALL = 65,
-	THROWINGAXE = 66,
-	NON_WEAPON_COLLECT = 67,
-	BOOMERANG = 68,
-	WEAPON_DOUBLE_SHOT = 69,
+	
 
 
 	// item
 	COURIER = 81,
-	UPGRADEMORNINGSTAR = 82,
-	ITEMDAGGER = 83,
-	BONUS = 84,
-	SMALLHEART = 85,
-	ITEMHOLYWATER = 86,
-	POTROAST = 87,
-	CRYSTALBALL = 88,
-	ITEMTHROWINGAXE = 89,
-	INVISIBILITYPOTION = 90,
-	CROSS = 91,
-	ITEMBOOMERANG = 92,
-	ITEMDOUBLESHOT = 93,
-	MONEY_BAG_RED = 94,
-	MONEY_BAG_WHITE = 95,
-	MONEY_BAG_PURPLE = 96,
+	
 
 	// other
 	FONT = 101,
@@ -115,30 +96,15 @@ enum eType
 	BOARD_TRANS = 107,
 
 	// Effect
-	FIRE = 121,
-	HIT = 122,
-	BROKENBRICK = 123,
-	STEAM = 124,
-	EFFECT_MONEY_700 = 125,
-	EFFECT_MONEY_100 = 126,
-	EFFECT_MONEY_400 = 127,
-	EFFECT_MONEY_1000 = 128,
+	
 
 	// Enemy
-	GHOST = 141,
-	PANTHER = 142,
-	BAT = 143,
-	FISHMEN = 144,
+	
 
 	//BOSS
-	PHANTOMBAT = 161,
-
+	
 	// Intro
-	MAINMENU = 181,
-	INTRO_GO_SCENE1 = 182,
-	INTRO_BAT_MENU = 183, // bat ở menu
-	HELICOPTER = 184,
-	INTRO_BAT = 185 // ở intro
+	
 
 };
 

@@ -24,7 +24,6 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameDefine.h" />
-    <ClInclude Include="GameGlobal.h" />
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTime.h" />
@@ -52,7 +51,9 @@
     <ClInclude Include="MapReader\TmxUtil.h" />
     <ClInclude Include="MapReader\zconf.h" />
     <ClInclude Include="MapReader\zlib.h" />
+    <ClInclude Include="Ryu.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
@@ -89,15 +90,13 @@
     <ClCompile Include="MapReader\TmxTileOffset.cpp" />
     <ClCompile Include="MapReader\TmxTileset.cpp" />
     <ClCompile Include="MapReader\TmxUtil.cpp" />
+    <ClCompile Include="Ryu.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="brick.png" />
-    <Image Include="mario.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in" />

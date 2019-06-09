@@ -19,7 +19,7 @@ protected:
 	int _height;
 
 	float _boundaryLeft; // biên giới hạn bên trái 
-	float _boundaryRight; // biên giới hạn bên phải, không bao gồm đoạn simon đi được ở cuối - SCREEN_WIDTH 
+	float _boundaryRight; // biên giới hạn bên phải, không bao gồm đoạn Ryu đi được ở cuối - SCREEN_WIDTH 
 
 	float vx;
 	DWORD dt;
@@ -48,8 +48,8 @@ public:
 
 	bool checkObjectInCamera(float x, float y, float w, float h);
 
-	bool AllowFollowSimon();
-	void SetAllowFollowSimon(bool b);
+	bool AllowFollowRyu();
+	void SetAllowFollowRyu(bool b);
 
 
 	void SetAutoGoX(float Distance, float Speed); // set các thông số auto

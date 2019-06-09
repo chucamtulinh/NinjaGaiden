@@ -94,12 +94,12 @@ bool Camera::checkObjectInCamera(float x, float y, float w, float h)
 	return true;
 }
 
-bool Camera::AllowFollowSimon()
+bool Camera::AllowFollowRyu()
 {
 	return isAllowFollowRyu;
 }
 
-void Camera::SetAllowFollowSimon(bool b)
+void Camera::SetAllowFollowRyu(bool b)
 {
 	isAllowFollowRyu = b;
 }

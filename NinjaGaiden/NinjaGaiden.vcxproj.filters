@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -31,9 +27,6 @@
     <Filter Include="Framework\GameTime">
       <UniqueIdentifier>{a7b76247-88f8-4e2d-8307-812ecedb9a67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Framework\Map">
-      <UniqueIdentifier>{7c924d41-7060-4218-8d13-16c0decb83e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Framework\Camera">
       <UniqueIdentifier>{c2d4220d-538c-421b-9958-8992cfc19614}</UniqueIdentifier>
     </Filter>
@@ -46,12 +39,15 @@
     <Filter Include="Framework\Debug">
       <UniqueIdentifier>{5f4e5829-8c54-4ba5-9c25-df1fde8d415c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\GameDefine">
+      <UniqueIdentifier>{05091e14-be27-47ef-8393-d8f1f0b188c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\GameMap">
+      <UniqueIdentifier>{7c924d41-7060-4218-8d13-16c0decb83e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="GameGlobal.h">
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="MapReader\base64.h">
@@ -123,9 +119,6 @@
     <ClInclude Include="MapReader\zlib.h">
       <Filter>MapReader</Filter>
     </ClInclude>
-    <ClInclude Include="GameDefine.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Framework</Filter>
     </ClInclude>
@@ -151,7 +144,7 @@
       <Filter>Framework\GameTime</Filter>
     </ClInclude>
     <ClInclude Include="GameMap.h">
-      <Filter>Framework\Map</Filter>
+      <Filter>Framework\GameMap</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Framework\Scene</Filter>
@@ -159,8 +152,17 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Framework\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="GameDefine.h">
+      <Filter>Framework\GameDefine</Filter>
+    </ClInclude>
     <ClInclude Include="debug.h">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneGame.h">
+      <Filter>Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Ryu.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -246,7 +248,7 @@
       <Filter>Framework\GameTime</Filter>
     </ClCompile>
     <ClCompile Include="GameMap.cpp">
-      <Filter>Framework\Map</Filter>
+      <Filter>Framework\GameMap</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Framework\Scene</Filter>
@@ -263,20 +265,18 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameDefine.cpp">
-      <Filter>Framework</Filter>
+      <Filter>Framework\GameDefine</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="brick.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="mario.png">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ClCompile Include="debug.cpp">
+      <Filter>Framework\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneGame.cpp">
+      <Filter>Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Ryu.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in">
