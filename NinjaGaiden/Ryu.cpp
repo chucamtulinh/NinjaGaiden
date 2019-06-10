@@ -325,7 +325,7 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (isOnStair == false)
 	{
 		if (isAutoGoX == false)
-			CollisionWithBrick(coObjects); // check Collision and update x, y for Ryu
+			CollisionWithGround(coObjects); // check Collision and update x, y for Ryu
 		else
 			x += dx;
 	}
@@ -385,7 +385,7 @@ void Ryu::Render(Camera* camera)
 	if (untouchable)
 		alpha = 128;
 
-	if (isDeath && isCollisionAxisYWithBrick)
+	if (isDeath && isCollisionAxisYWithGround)
 	{
 		if (direction == -1)
 			_sprite_death->Draw(pos.x, pos.y, 255);
@@ -576,26 +576,26 @@ int Ryu::GetHeartCollect()
 	return HeartCollect;
 }
 
-void Ryu::CollisionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
+void Ryu::CollisionWithGround(const vector<LPGAMEOBJECT>* coObjects)
 {
 	vector<LPCOLLISIONEVENT> coEvents;
 	vector<LPCOLLISIONEVENT> coEventsResult;
 
 	coEvents.clear();
 
-	vector<LPGAMEOBJECT> list_Brick;
-	list_Brick.clear();
+	vector<LPGAMEOBJECT> list_Ground;
+	list_Ground.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
-		if (coObjects->at(i)->GetType() == eType::BRICK)
-			list_Brick.push_back(coObjects->at(i));
+		if (coObjects->at(i)->GetType() == eType::GROUND)
+			list_Ground.push_back(coObjects->at(i));
 
-	CalcPotentialCollisions(&list_Brick, coEvents);
+	CalcPotentialCollisions(&list_Ground, coEvents);
 
 	if (coEvents.size() == 0)
 	{
 		x += dx;
 		y += dy;
-		isCollisionAxisYWithBrick = false; // đang ko va chạm trục y
+		isCollisionAxisYWithGround = false; // đang ko va chạm trục y
 										   //	DebugOut(L"%d : Col y = false (size = 0) - dt = %d - y = %f - dy = %f\n",GetTickCount(),dt,y, dy);
 	}
 	else
@@ -625,13 +625,13 @@ void Ryu::CollisionWithBrick(const vector<LPGAMEOBJECT>* coObjects)
 
 		if (ny != 0)
 		{
-			isCollisionAxisYWithBrick = true;
+			isCollisionAxisYWithGround = true;
 			//		DebugOut(L"%d : Col y = true - dt=%d - y = %f - dy = %f\n", GetTickCount(), dt,y, dy);
 		}
 		else
 		{
 			//	DebugOut(L"%d : Col y = false - dt=%d\n", GetTickCount(), dt);
-			isCollisionAxisYWithBrick = false;// đang ko va chạm trục y
+			isCollisionAxisYWithGround = false;// đang ko va chạm trục y
 		}
 
 
@@ -670,12 +670,12 @@ void Ryu::CollisionIsOnStair(vector<LPGAMEOBJECT> *coObjects)
 			vector<LPCOLLISIONEVENT> coEvents;
 			vector<LPCOLLISIONEVENT> coEventsResult;
 			coEvents.clear();
-			vector<LPGAMEOBJECT> list_Brick;
-			list_Brick.clear();
+			vector<LPGAMEOBJECT> list_Ground;
+			list_Ground.clear();
 			for (UINT i = 0; i < coObjects->size(); i++)
-				if (coObjects->at(i)->GetType() == eType::BRICK)
-					list_Brick.push_back(coObjects->at(i));
-			CalcPotentialCollisions(&list_Brick, coEvents);
+				if (coObjects->at(i)->GetType() == eType::GROUND)
+					list_Ground.push_back(coObjects->at(i));
+			CalcPotentialCollisions(&list_Ground, coEvents);
 			if (coEvents.size() == 0)
 			{
 				x += dx;
@@ -735,14 +735,14 @@ void Ryu::CollisionIsOnStair(vector<LPGAMEOBJECT> *coObjects)
 			vector<LPCOLLISIONEVENT> coEvents;
 			vector<LPCOLLISIONEVENT> coEventsResult;
 			coEvents.clear();
-			vector<LPGAMEOBJECT> list_Brick;
-			list_Brick.clear();
+			vector<LPGAMEOBJECT> list_Ground;
+			list_Ground.clear();
 
 			for (UINT i = 0; i < coObjects->size(); i++)
-				if (coObjects->at(i)->GetType() == eType::BRICK)
-					list_Brick.push_back(coObjects->at(i));
+				if (coObjects->at(i)->GetType() == eType::GROUND)
+					list_Ground.push_back(coObjects->at(i));
 
-			CalcPotentialCollisions(&list_Brick, coEvents);
+			CalcPotentialCollisions(&list_Ground, coEvents);
 			if (coEvents.size() == 0)
 			{
 				x += dx;

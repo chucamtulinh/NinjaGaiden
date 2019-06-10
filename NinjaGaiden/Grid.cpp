@@ -42,10 +42,10 @@ void Grid::ReloadGrid()
 
 GameObject * Grid::GetNewObject(int type, float x, float y, int w, int h, int Model)
 {
-	/*switch (type)
+	switch (type)
 	{
-	
-	}*/
+	case eType::GROUND: return new Ground(x, y, w, h, Model);
+	}
 	return NULL;
 }
 

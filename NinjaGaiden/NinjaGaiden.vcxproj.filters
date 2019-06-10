@@ -45,6 +45,12 @@
     <Filter Include="Framework\GameMap">
       <UniqueIdentifier>{7c924d41-7060-4218-8d13-16c0decb83e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{fbbcdb34-fdd4-4ff7-a101-a73afbf66eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Ground">
+      <UniqueIdentifier>{460dd474-a7ad-4719-a4ff-f6596dc984a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -119,9 +125,6 @@
     <ClInclude Include="MapReader\zlib.h">
       <Filter>MapReader</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Framework\Camera</Filter>
     </ClInclude>
@@ -163,6 +166,15 @@
     </ClInclude>
     <ClInclude Include="Ryu.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>GameObject\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemContainer.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -262,9 +274,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="GameDefine.cpp">
       <Filter>Framework\GameDefine</Filter>
     </ClCompile>
@@ -277,6 +286,13 @@
     <ClCompile Include="Ryu.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>GameObject\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in">

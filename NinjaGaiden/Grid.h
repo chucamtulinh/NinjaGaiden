@@ -5,6 +5,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "GameObject.h"
+#include "Ground.h"
 
 using namespace std;
 

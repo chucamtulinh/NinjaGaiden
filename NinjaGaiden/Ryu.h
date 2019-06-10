@@ -148,7 +148,7 @@ public:
 	bool untouchable;
 	DWORD untouchable_start;
 
-	bool isCollisionAxisYWithBrick = false; // Đang va chạm với đất theo trục y
+	bool isCollisionAxisYWithGround = false; // Đang va chạm với đất theo trục y
 
 	DWORD TimeWaitedAfterDeath;
 
@@ -176,7 +176,7 @@ public:
 	void SetHeartCollect(int h);
 	int GetHeartCollect();
 
-	void CollisionWithBrick(const vector<LPGAMEOBJECT> *coObjects = NULL);
+	void CollisionWithGround(const vector<LPGAMEOBJECT> *coObjects = NULL);
 
 	void CollisionIsOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 	//bool isCollisionWithItem(Item * objItem);
