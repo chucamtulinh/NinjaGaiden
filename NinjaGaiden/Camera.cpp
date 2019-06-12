@@ -27,6 +27,25 @@ void Camera::Update(DWORD dt)
 {
 	this->dt = dt;
 
+	if (isAutoGoX)
+	{
+		float dx = vx * dt;
+		_xCam += dx;
+	}
+
+
+
+	if (isAutoGoX == true)
+	{
+		if (abs(_xCam - AutoGoX_Backup_X) >= AutoGoX_Distance)
+		{
+			_xCam = _xCam - (abs(_xCam - AutoGoX_Backup_X) - AutoGoX_Distance);
+			isAutoGoX = false;
+		}
+	}
+
+
+
 	if (_xCam < _boundaryLeft)
 		_xCam = _boundaryLeft;
 
