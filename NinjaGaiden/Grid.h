@@ -12,8 +12,8 @@ using namespace std;
 #define GRID_CELL_WIDTH (SCREEN_WIDTH/4.0f)
 #define GRID_CELL_HEIGHT (SCREEN_HEIGHT/4.0f)
 
-#define GRID_CELL_MAX_ROW 20 
-#define GRID_CELL_MAX_COLUMN 100 
+#define GRID_CELL_MAX_ROW 11 
+#define GRID_CELL_MAX_COLUMN 128
 
 
 class Grid

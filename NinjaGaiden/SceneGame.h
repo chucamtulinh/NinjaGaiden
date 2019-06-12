@@ -8,10 +8,11 @@
 #include "Camera.h"
 #include "Grid.h"
 #include "Ryu.h"
-#include "Font.h"
+//#include "Font.h"
 //#include "Board.h"
 #include "TextureManager.h"
 #include "GameTime.h"
+#include "SceneManager.h"
 //#include "Sound.h"
 
 #define GAME_TIME_MAX 300
@@ -110,7 +111,7 @@ private:
 
 	/* Xử lí gameover*/
 	bool isGameOver;
-	Font Text;
+	//Font Text;
 
 	Sprite * _spriteLagerHeart;
 	int GameOverSelect;
@@ -120,6 +121,7 @@ private:
 public:
 	SceneGame();
 	~SceneGame();
+
 
 	void KeyState(BYTE *state);
 	void OnKeyDown(int KeyCode);

@@ -104,7 +104,9 @@ enum eType
 	//BOSS
 	
 	// Intro
-	
+	MAINMENU = 181,
+	INTRO_GO_SCENE1 = 182,
+	INTRO_BAT_MENU = 183,
 
 };
 

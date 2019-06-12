@@ -5,7 +5,7 @@ Ryu::Ryu(Camera* camera)
 {
 	texture = TextureManager::GetInstance()->GetTexture(eType::RYU);
 	sprite = new Sprite(texture, 250);
-	_sprite_death = new Sprite(TextureManager::GetInstance()->GetTexture(eType::RYU_DEATH), 250);
+	//_sprite_death = new Sprite(TextureManager::GetInstance()->GetTexture(eType::RYU_DEATH), 250);
 	type = eType::RYU;
 
 

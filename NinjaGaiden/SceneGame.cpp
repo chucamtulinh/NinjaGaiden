@@ -14,6 +14,7 @@ SceneGame::~SceneGame()
 
 void SceneGame::KeyState(BYTE * state) //Xử lý phím ở hết chỗ này
 {
+	return;
 	//Các trường hợp không xét phím
 	
 	//*end
@@ -197,11 +198,6 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 			isDebug_RenderBBox = 1;
 		else
 			isDebug_RenderBBox = 0;
-	}
-
-	if (ryu->GetFreeze() == true) // Đang bóng băng thì không quan tâm phím
-	{
-		return;
 	}
 
 	if (isGameOver)
@@ -884,9 +880,9 @@ void SceneGame::Render()
 		/*if (boss != NULL)
 			boss->Render(camera);*/
 	}
-	else
+	else //l
 	{
-		Text.Draw(200, 200, "GAME OVER");
+		/*Text.Draw(200, 200, "GAME OVER");
 		Text.Draw(215, 250, "CONTINUE");
 		Text.Draw(215, 280, "END");
 		switch (GameOverSelect)
@@ -901,7 +897,7 @@ void SceneGame::Render()
 			_spriteLagerHeart->Draw(175, 275);
 			break;
 		}
-		}
+		}*/
 	}
 
 	//board->Render(Ryu, StateCurrent, GAME_TIME_MAX - gameTime->GetTime(), boss);
@@ -914,7 +910,7 @@ void SceneGame::LoadMap(eType x)
 	switch (x)
 	{
 	case eType::MAP1:
-		gridGame->SetFile("Resources/map/file_gameobject_map1.txt");
+		gridGame->SetFile("Resources/Maps/file_gameobject_map1.txt");
 		TileMap->LoadMap(eType::MAP1);
 
 		camera->SetAllowFollowRyu(true);

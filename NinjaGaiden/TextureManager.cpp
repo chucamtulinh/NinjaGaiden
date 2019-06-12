@@ -27,17 +27,17 @@ void TextureManager::LoadResource()
 	//board
 	
 	//map
-	AddTexture(eType::MAP1, new Texture("Resources/map/NG3-1.png", 79, 1, 79));
+	AddTexture(eType::MAP1, new Texture("Resources/Maps/NG3-1.png", 79, 1, 79));
 
 	//gameobject ground
-	AddTexture(eType::TEX_GROUND3101, new Texture("Resources/Ground/Ground3101.png"));
-	AddTexture(eType::TEX_GROUND3102, new Texture("Resources/Ground/Ground3102.png"));
-	AddTexture(eType::TEX_GROUND3103, new Texture("Resources/Ground/Ground3103.png"));
-	AddTexture(eType::TEX_GROUND3104, new Texture("Resources/Ground/Ground3104.png"));
-	AddTexture(eType::TEX_GROUND3105, new Texture("Resources/Ground/Ground3105.png"));
-	AddTexture(eType::TEX_GROUND3106, new Texture("Resources/Ground/Ground3106.png"));
-	AddTexture(eType::TEX_GROUND3107, new Texture("Resources/Ground/Ground3107.png"));
-	AddTexture(eType::TEX_GROUND3108, new Texture("Resources/Ground/Ground3108.png"));
+	AddTexture(eType::TEX_GROUND3101, new Texture("Resources/Ground/ground3101.png", 1, 1, 1));
+	AddTexture(eType::TEX_GROUND3102, new Texture("Resources/Ground/ground3102.png", 1, 1, 1));
+	AddTexture(eType::TEX_GROUND3103, new Texture("Resources/Ground/ground3103.png", 1, 1, 1));
+	AddTexture(eType::TEX_GROUND3104, new Texture("Resources/Ground/ground3104.png", 1, 1, 1));
+	AddTexture(eType::TEX_GROUND3105, new Texture("Resources/Ground/ground3105.png", 1, 1, 1));
+	AddTexture(eType::TEX_GROUND3106, new Texture("Resources/Ground/ground3106.png", 1, 1, 1));	
+	AddTexture(eType::TEX_GROUND3107, new Texture("Resources/Ground/ground3107.png", 1, 1, 1));
+	AddTexture(eType::TEX_GROUND3108, new Texture("Resources/Ground/ground3108.png", 1, 1, 1));
 	
 	
 
@@ -52,7 +52,7 @@ void TextureManager::LoadResource()
 
 
 	//player
-	
+	AddTexture(eType::RYU, new Texture("Resources/Sprites/Ryu/Idle.png", 1, 1, 1));
 
 	//effect
 	

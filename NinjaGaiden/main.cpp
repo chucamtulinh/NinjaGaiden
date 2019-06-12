@@ -2,6 +2,7 @@
 #include "Game.h"
 
 #include "SceneManager.h"
+#include "SceneGame.h"
 
 #define WINDOW_CLASS_NAME L"Ninja Gaiden"
 #define MAIN_WINDOW_TITLE L"Ninja Gaiden"
@@ -157,7 +158,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	_sceneManager = SceneManager::GetInstance();
 
 
-	//_sceneManager->SetScene(new Scene_Intro());
+	_sceneManager->SetScene(new SceneGame());
 
 
 	game->InitKeyboard();

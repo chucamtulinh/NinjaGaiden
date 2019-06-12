@@ -51,6 +51,9 @@
     <Filter Include="GameObject\Ground">
       <UniqueIdentifier>{460dd474-a7ad-4719-a4ff-f6596dc984a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Item">
+      <UniqueIdentifier>{d7b3264e-0fd0-4afc-9e2b-1bfc311b5609}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -174,7 +177,10 @@
       <Filter>GameObject\Ground</Filter>
     </ClInclude>
     <ClInclude Include="ItemContainer.h">
-      <Filter>Framework</Filter>
+      <Filter>GameObject\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>GameObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -292,7 +298,12 @@
     <ClCompile Include="Ground.cpp">
       <Filter>GameObject\Ground</Filter>
     </ClCompile>
-    <ClCompile Include="ItemContainer.cpp" />
+    <ClCompile Include="ItemContainer.cpp">
+      <Filter>GameObject\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>GameObject\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in">
