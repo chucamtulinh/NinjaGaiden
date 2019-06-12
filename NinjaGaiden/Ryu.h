@@ -8,9 +8,9 @@
 
 #define Ryu_POSITION_DEFAULT  50.0f, 300.0f
 
-#define Ryu_BBOX_WIDTH 60
-#define Ryu_BBOX_HEIGHT 63
-#define Ryu_BBOX_SITTING_HEIGHT 45
+#define Ryu_BBOX_WIDTH 17
+#define Ryu_BBOX_HEIGHT 32
+#define Ryu_BBOX_SITTING_HEIGHT 24
 #define Ryu_BBOX_JUMPING_HEIGHT 45
 
 #define PULL_UP_Ryu_AFTER_SITTING 18.0f // Kéo Ryu lên 18px sau khi ngồi rồi đứng dậy, tránh overlaping do BBOX bottom thu lại khi ngồi
