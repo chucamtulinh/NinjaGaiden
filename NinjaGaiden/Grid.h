@@ -6,14 +6,15 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "Ground.h"
+#include "ItemContainer.h"
 
 using namespace std;
 
 #define GRID_CELL_WIDTH (SCREEN_WIDTH/4.0f)
 #define GRID_CELL_HEIGHT (SCREEN_HEIGHT/4.0f)
 
-#define GRID_CELL_MAX_ROW 11 
-#define GRID_CELL_MAX_COLUMN 128
+#define GRID_CELL_MAX_ROW 12
+#define GRID_CELL_MAX_COLUMN 129
 
 
 class Grid

@@ -35,6 +35,7 @@ using namespace std;
 #define MAX_FRAME_RATE 90
 
 #define COLOR_BACKGROUND_DEFAULT D3DCOLOR_XRGB(0, 0, 0) // Màu đen
+//#define COLOR_BACKGROUND_DEFAULT D3DCOLOR_XRGB(255, 255, 255) // này là màu trắng
 
 #define TIME_LIMIT_WAIT_RESET_GAME 300 // Thời gian chờ vẽ màn màu đen khi reset game
 
@@ -83,7 +84,7 @@ enum eType
 
 
 	// item
-	COURIER = 81,
+	ITEMCONTAINER = 81,
 	
 
 	// other
