@@ -2,9 +2,19 @@
 
 
 
-ItemContainer::ItemContainer(float X, float Y)
+ItemContainer::ItemContainer(float X, float Y, int Model)
 {
-	texture = TextureManager::GetInstance()->GetTexture(eType::ITEMCONTAINER);
+	model = Model;
+	switch (Model)
+	{
+	case ITEMCONTAINER31:
+		texture = TextureManager::GetInstance()->GetTexture(eType::ITEMCONTAINER_31);
+		break;
+	case ITEMCONTAINER32:
+		texture = TextureManager::GetInstance()->GetTexture(eType::ITEMCONTAINER_32);
+		break;
+	default: break;
+	}
 	sprite = new Sprite(texture, 100);
 	this->x = X;
 	this->y = Y;

@@ -39,7 +39,8 @@ void TextureManager::LoadResource()
 	AddTexture(eType::TEX_GROUND3107, new Texture("Resources/Ground/ground3107.png", 1, 1, 1));
 	AddTexture(eType::TEX_GROUND3108, new Texture("Resources/Ground/ground3108.png", 1, 1, 1));
 	
-	
+	//gameobject itemcontainer
+	AddTexture(eType::ITEMCONTAINER_31, new Texture("Resources/Sprites/Enemies/ItemContainer.png", 2, 1, 2));
 
 	//item
 	

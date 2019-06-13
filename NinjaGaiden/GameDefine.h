@@ -84,8 +84,9 @@ enum eType
 
 
 	// item
-	ITEMCONTAINER = 81,
-	
+	ITEMCONTAINER = 80,
+	ITEMCONTAINER_31 = 81,
+	ITEMCONTAINER_32 = 82,
 
 	// other
 	FONT = 101,

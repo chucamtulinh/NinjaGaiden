@@ -45,7 +45,7 @@ GameObject * Grid::GetNewObject(int type, float x, float y, int w, int h, int Mo
 	switch (type)
 	{
 	case eType::ITEMCONTAINER:
-		return new ItemContainer(x, y);
+		return new ItemContainer(x, y, Model);
 		break;
 	case eType::GROUND: 
 		return new Ground(x, y, w, h, Model);
@@ -81,7 +81,7 @@ void Grid::GetListObject(vector<GameObject*>& ListObj, Camera * camera)
 				}
 				else
 				{
-						cells[i][j].erase(cells[i][j].begin() + k); // xóa luôn
+						//cells[i][j].erase(cells[i][j].begin() + k); // xóa luôn
 				}
 			}
 

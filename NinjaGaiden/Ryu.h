@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "GameDefine.h"
 
-#define Ryu_POSITION_DEFAULT  50.0f, 300.0f
+#define Ryu_POSITION_DEFAULT  50.0f, 200.0f
 
 #define Ryu_BBOX_WIDTH 17
 #define Ryu_BBOX_HEIGHT 32

@@ -870,7 +870,7 @@ void SceneGame::Render()
 			listEnemy[i]->Render(camera);
 
 
-		ryu->Render(camera);
+		//ryu->Render(camera);
 
 
 		/*for (UINT i = 0; i < listEffect.size(); i++)
@@ -930,7 +930,7 @@ void SceneGame::LoadMap(eType x)
 
 	case eType::MAP2:
 
-		gridGame->SetFile("Resources/map/file_gameobject_map2.txt");
+		gridGame->SetFile("Resources/Maps/file_gameobject_map2.txt");
 		TileMap->LoadMap(eType::MAP2);
 
 		camera->SetAllowFollowRyu(true);
