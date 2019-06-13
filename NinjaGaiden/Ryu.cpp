@@ -124,7 +124,7 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		else
 		{
-			if (isWalking == true)
+			if (isRunning == true)
 			{
 				if (isProcessingOnStair == 1) // nếu ở giai đoạn bước chân thì set frame 12
 				{
@@ -266,12 +266,12 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 				}
 				else
-					if (isWalking == true) // đang di chuyển
+					if (isRunning == true) // đang di chuyển
 					{
 						if (isJumping == false) // ko nhảy
 						{
-							if (index < Ryu_ANI_WALKING_BEGIN || index >= Ryu_ANI_WALKING_END)
-								sprite->SelectFrame(Ryu_ANI_WALKING_BEGIN);
+							if (index < Ryu_ANI_RUNNING_BEGIN || index >= Ryu_ANI_RUNNING_END)
+								sprite->SelectFrame(Ryu_ANI_RUNNING_BEGIN);
 
 							//cập nhật frame mới
 							sprite->Update(dt); // dt này được cập nhật khi gọi update; 
@@ -330,45 +330,12 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			x += dx;
 	}
 
-	if (isOnStair == true)
-		CollisionIsOnStair(coObjects);
-
-	//for (auto& objWeapon : mapWeapon)
-	//{
-	//	if (objWeapon.second->GetFinish() == false) // vũ khi này chưa kết thúc thì update
-	//	{
-	//		if (objWeapon.second->GetType() == eType::MORNINGSTAR)
-	//		{
-	//			objWeapon.second->SetPosition(this->x, this->y);
-	//			objWeapon.second->SetSpeed(vx, vy); // set vận tốc để kt va chạm
-	//			objWeapon.second->UpdatePositionFitRyu();
-	//		}
-
-	//		objWeapon.second->Update(dt, coObjects);
-	//	}
-	//}
-
-
-
 	if (isProcessingOnStair == 3)
 	{
 		isProcessingOnStair = 0;
 		vx = 0;
 		vy = 0;
-		isWalking = false;
-	}
-
-
-	if (isAutoGoX == true)
-	{
-		if (abs(x - AutoGoX_Backup_X) >= AutoGoX_Distance)
-		{
-			x = x - (abs(x - AutoGoX_Backup_X) - AutoGoX_Distance);
-			RestoreBackupAutoGoX();
-			isAutoGoX = false;
-
-			DebugOut(L"[Ryu] end auto go X\n");
-		}
+		isRunning = false;
 	}
 
 }
@@ -410,46 +377,25 @@ void Ryu::Render(Camera* camera)
 				sprite->DrawFlipX(pos.x, pos.y, alpha);
 		}
 	}
-
-
-
-	//for (auto& objWeapon : mapWeapon)
-	//{
-	//	if (objWeapon.second->GetFinish() == false) // vũ khi này chưa kết thúc thì render
-	//	{
-	//		objWeapon.second->Render(camera);
-	//	}
-	//}
-
-
 }
 
 void Ryu::Left()
 {
-	if (isOnStair == true)
-		return;
 	direction = -1;
 }
 
 void Ryu::Right()
 {
-	if (isOnStair == true)
-		return;
 	direction = 1;
 }
 
 void Ryu::Go()
 {
-	if (isOnStair == true)
-	{
-		return;
-	}
-
 	if (isAttacking == true)
 		return;
 
-	vx = Ryu_WALKING_SPEED * direction;
-	isWalking = 1;
+	vx = Ryu_RUNNING_SPEED * direction;
+	isRunning = 1;
 
 }
 
@@ -459,7 +405,7 @@ void Ryu::Sit()
 		return;
 
 	vx = 0;
-	isWalking = 0;
+	isRunning = 0;
 
 	if (isSitting == false)
 		y = y + PULL_UP_Ryu_AFTER_SITTING;
@@ -511,7 +457,7 @@ void Ryu::Stop()
 	//DebugOut(L"[STOP] Set vx = %f \n", vx);
 
 
-	isWalking = 0;
+	isRunning = 0;
 	if (isSitting == true)
 	{
 		isSitting = 0;
@@ -528,7 +474,7 @@ void Ryu::SetHurt(LPCOLLISIONEVENT e)
 	if (e->nx == 0 && e->ny == 0) // ko có va chạm
 		return;
 
-	isWalking = 0;
+	isRunning = 0;
 	isAttacking = 0;
 	isJumping = 0;
 
@@ -540,7 +486,7 @@ void Ryu::SetHurt(LPCOLLISIONEVENT e)
 	{
 		if (e->nx != 0)
 		{
-			vx = Ryu_WALKING_SPEED * e->nx;
+			vx = Ryu_RUNNING_SPEED * e->nx;
 			vy = -Ryu_VJUMP_HURTING;
 			isHurting = 1;
 			//DebugOut(L"[SetHurt] Set vx = %f \n", vx);
@@ -555,7 +501,7 @@ void Ryu::SetHurt(LPCOLLISIONEVENT e)
 	}
 	else
 	{
-		isWalking = 1;
+		isRunning = 1;
 		//isHurting = 1;
 	}
 
@@ -693,7 +639,7 @@ void Ryu::CollisionIsOnStair(vector<LPGAMEOBJECT> *coObjects)
 					vx = 0;
 					vy = 0;
 					isOnStair = false; // kết thúc việc đang trên cầu thang
-					isWalking = false;
+					isRunning = false;
 					isProcessingOnStair = 0;
 				}
 			}
@@ -760,7 +706,7 @@ void Ryu::CollisionIsOnStair(vector<LPGAMEOBJECT> *coObjects)
 					vx = 0;
 					vy = 0;
 					isOnStair = false; // kết thúc việc đang trên cầu thang
-					isWalking = false;
+					isRunning = false;
 					//	x = xCenterStairTop;
 					isProcessingOnStair = 0;
 				}
@@ -1024,7 +970,7 @@ void Ryu::SetAutoGoX(int DirectionGo, int directionAfterGo, float Distance, floa
 	AutoGoX_Backup_X = x; // set lại vị trí trước khi đi tự động
 
 						  //Backup trạng thái
-	isWalking_Backup = isWalking;
+	isRunning_Backup = isRunning;
 	isJumping_Backup = isJumping;
 	isSitting_Backup = isSitting;
 	isAttacking_Backup = isAttacking;
@@ -1041,7 +987,7 @@ void Ryu::SetAutoGoX(int DirectionGo, int directionAfterGo, float Distance, floa
 
 	direction = DirectionGo;
 	vx = Speed * DirectionGo;
-	isWalking = 1;
+	isRunning = 1;
 	isJumping = 0;
 	isSitting = 0;
 	isAttacking = 0;
@@ -1056,7 +1002,7 @@ bool Ryu::GetIsAutoGoX()
 
 void Ryu::RestoreBackupAutoGoX()
 {
-	isWalking = isWalking_Backup;
+	isRunning = isRunning_Backup;
 	isJumping = isJumping_Backup;
 	isSitting = isSitting_Backup;
 	isAttacking = isAttacking_Backup;
@@ -1067,7 +1013,7 @@ void Ryu::RestoreBackupAutoGoX()
 
 	direction = directionAfterGo; // set hướng sau khi đi
 
-	isWalking = 0; // tắt trạng thái đang đi
+	isRunning = 0; // tắt trạng thái đang đi
 	isAutoGoX = 0; // tắt trạng thái auto
 
 	vx = 0;
@@ -1087,7 +1033,7 @@ void Ryu::SetDeath()
 
 	ResetSit();
 	vx = 0;
-	isWalking = 0;
+	isRunning = 0;
 	isOnStair = 0;
 
 	//sound->Play(eSound::musicLifeLost);
@@ -1212,7 +1158,7 @@ void Ryu::Reset()
 	isProcessingOnStair = 0;// ko phải đang xử lí
 	isOnStair = 0;
 	isJumping = 0;
-	isWalking = 0;
+	isRunning = 0;
 	isAttacking = 0;
 
 	isAutoGoX = 0;

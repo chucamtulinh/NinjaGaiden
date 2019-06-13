@@ -62,6 +62,7 @@ enum eType
 	RYU = 01,
 	RYU_TRANS = 02,
 	RYU_DEATH = 03,
+	RYU_RUNNING = 04,
 
 	// object nền
 	GROUND = 20,
@@ -73,6 +74,7 @@ enum eType
 	TEX_GROUND3106 = 26,
 	TEX_GROUND3107 = 27,
 	TEX_GROUND3108 = 28,
+	TEX_GROUND3109 = 29,
 
 	// object
 	

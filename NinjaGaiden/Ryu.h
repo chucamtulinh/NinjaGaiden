@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "GameDefine.h"
 
-#define Ryu_POSITION_DEFAULT  50.0f, 200.0f
+#define Ryu_POSITION_DEFAULT  25.0f, 138.0f
 
 #define Ryu_BBOX_WIDTH 17
 #define Ryu_BBOX_HEIGHT 32
@@ -19,28 +19,28 @@
 #define Ryu_VJUMP_HURTING 0.2f // nhảy lúc bị đau
 #define PULL_UP_Ryu_AFTER_JUMPING 18.0f // Kéo Ryu lên 18px sau khi nhảy, tránh overlaping do BBOX bottom thu lại khi nhảy
 
-#define Ryu_GRAVITY 0.005f 
+#define Ryu_GRAVITY 0.0001f 
 #define Ryu_GRAVITY_JUMPING 0.001f 
 #define Ryu_GRAVITY_HURTING 0.001f
 
-#define Ryu_WALKING_SPEED 0.12f //0.12f 
+#define Ryu_RUNNING_SPEED 0.22f //0.12f 
 
 #define Ryu_STATE_IDLE 0
-#define Ryu_STATE_WALKING 1
+#define Ryu_STATE_RUNNING 1
 
-#define Ryu_ANI_WALKING_BEGIN 1
-#define Ryu_ANI_WALKING_END 3
+#define Ryu_ANI_RUNNING_BEGIN 1
+#define Ryu_ANI_RUNNING_END 3
 
 #define Ryu_ANI_IDLE 0
 
-#define Ryu_ANI_JUMPING 4
-#define Ryu_ANI_SITTING 4
+#define Ryu_ANI_JUMPING 14
+#define Ryu_ANI_SITTING 8
 
 
 
 /*Ani đang ngồi đánh*/
-#define Ryu_ANI_SITTING_ATTACKING_BEGIN 15
-#define Ryu_ANI_SITTING_ATTACKING_END 17
+#define Ryu_ANI_SITTING_ATTACKING_BEGIN 9
+#define Ryu_ANI_SITTING_ATTACKING_END 11
 
 /*Ani đang đứng đánh*/
 #define Ryu_ANI_STANDING_ATTACKING_BEGIN 5
@@ -103,7 +103,7 @@ private:
 	D3DXVECTOR2 PositionBackup;
 
 
-	bool isWalking_Backup;
+	bool isRunning_Backup;
 	bool isJumping_Backup;
 	bool isSitting_Backup;
 	bool isAttacking_Backup;
@@ -133,7 +133,7 @@ public:
 
 	bool isAttacking;
 	bool isHurting;
-	bool isWalking;
+	bool isRunning;
 	bool isJumping;
 	bool isSitting;
 

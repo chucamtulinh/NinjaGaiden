@@ -14,6 +14,7 @@
 #define GROUND3106 6
 #define GROUND3107 7
 #define GROUND3108 8
+#define GROUND3109 9
 
 class Ground : public GameObject
 {

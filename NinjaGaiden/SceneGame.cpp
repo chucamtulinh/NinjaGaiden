@@ -14,178 +14,121 @@ SceneGame::~SceneGame()
 
 void SceneGame::KeyState(BYTE * state) //Xử lý phím ở hết chỗ này
 {
-	return;
 	//Các trường hợp không xét phím
 	
 	//*end
 
-	//if (ryu->isHurting)
-	//	return;
+	if (ryu->isHurting)
+		return;
+	if (!ryu->isJumping)
+	{
+		if (Game::GetInstance()->IsKeyDown(UP_btn) && ryu->isAttacking == false) // CODE bò tường chỗ này, đi lên
+			{		
+			}
+		else
+			{
+				if (Game::GetInstance()->IsKeyDown(DOWN_btn) && ryu->isAttacking == false) // bò tường đi xuống
+				{
+					//if (!ryu->isOnStair) // chưa trên cầu thang
+					//{
+					//	int CountCollisionTop = 0;
+					//	for (UINT i = 0; i < listObj.size(); i++)
+					//		if (listObj[i]->GetType() == eType::STAIR_TOP)
+					//		{
+					//			if (ryu->isCollitionObjectWithObject(listObj[i])
+					//				//&& ryu->isCheckCollisionAxisY_WithBrickSweptAABB(&listObj)
+					//				&&
+					//				ryu->isCollisionAxisYWithBrick
+					//				) // nếu va chạm với STAIR TOP
+					//			{
+					//				GameObject* gameobj = dynamic_cast<GameObject*>(listObj[i]);
+					//				ryu->directionStair = gameobj->GetDirection(); // lưu hướng của cầu thang đang đi vào Ryu
+					//				ryu->directionY = 1;// hướng đi xuống
+					//				ryu->SetDirection(ryu->directionStair);// hướng của Ryu khi đi xuống là hướng của cầu thang
 
-	//if (Game::GetInstance()->IsKeyDown(UP_btn) && Game::GetInstance()->IsKeyDown(DIK_A) && ryu->isProcessingOnStair == 0 && !ryu->isAttacking)
-	//{
-	//	ryu->Attack(ryu->GetTypeWeaponCollect()); // attack với vũ khí phụ đang nhặt
-	//}
-	//else
-	//	if (!ryu->isJumping)
-	//	{
-	//		if (Game::GetInstance()->IsKeyDown(DIK_UP) && ryu->isAttacking == false)
-	//		{
-	//			if (!ryu->isOnStair) // chưa trên thang
-	//			{
-	//				for (UINT i = 0; i < listObj.size(); i++)
-	//					if (listObj[i]->GetType() == eType::STAIR_BOTTOM)
-	//					{
-	//						if (ryu->isCollisionAxisYWithBrick && ryu->isCollitionObjectWithObject(listObj[i])) // nếu va chạm với trục y brick và STAIR BOTOM
-	//						{
-	//							GameObject* gameobj = dynamic_cast<GameObject*>(listObj[i]);
-	//							ryu->directionStair = gameobj->GetDirection(); // lưu hướng của cầu thang đang đi vào Ryu
-	//							ryu->directionY = -1;// hướng đi lên
-	//							ryu->SetDirection(ryu->directionStair);// hướng của Ryu khi đi lên là hướng của cầu thang
-
-	//							ryu->isOnStair = true; // set trạng thái đang trên cầu thang
-	//							ryu->DoCaoDiDuoc = 0;
-
-	//							if (ryu->GetX() < gameobj->GetX())
-	//							{
-	//								ryu->SetAutoGoX(1, gameobj->GetDirection(), gameobj->GetX() - ryu->GetX(), Ryu_WALKING_SPEED);
-	//								// hướng sau khi autogo phải là hướng của cầu thang:  gameobj->GetDirection()
-	//							}
-	//							else
-	//								ryu->SetAutoGoX(-1, gameobj->GetDirection(), ryu->GetX() - gameobj->GetX(), Ryu_WALKING_SPEED);
-	//							//	DebugOut(L"bat dau len cau thang!\n"); 
-	//							return;
-	//						}
-	//					}
-	//			}
-	//			else // nếu đã trên cầu thang
-	//			{
-	//				//	DebugOut(L"Da o tren cau thang!\n");
-
-	//				if (ryu->isProcessingOnStair == 0 || ryu->isProcessingOnStair == 3) // kết thúc xử lí trước đó
-	//				{
-	//					ryu->isWalking = true;
-	//					ryu->isProcessingOnStair = 1;
-	//					ryu->directionY = -1;// hướng đi lên
-	//					ryu->SetDirection(ryu->directionStair);// hướng của Ryu khi đi lên là hướng của cầu thang
-	//					ryu->SetSpeed(ryu->GetDirection()* Ryu_SPEED_ONSTAIR, -1 * Ryu_SPEED_ONSTAIR);
-
-	//					float vvx, vvy;
-	//					ryu->GetSpeed(vvx, vvy);
-	//					//DebugOut(L"vy = %f\n", vvy);
-	//				}
+					//				ryu->isOnStair = true; // set trạng thái đang trên cầu thang
+					//				ryu->DoCaoDiDuoc = 0;
 
 
-	//			}
-	//		}
-	//		else
-	//		{
-	//			if (Game::GetInstance()->IsKeyDown(DIK_DOWN) && ryu->isAttacking == false) // ngược lại nếu nhấn nút xuống
-	//			{
-	//				if (!ryu->isOnStair) // chưa trên cầu thang
-	//				{
-	//					int CountCollisionTop = 0;
-	//					for (UINT i = 0; i < listObj.size(); i++)
-	//						if (listObj[i]->GetType() == eType::STAIR_TOP)
-	//						{
-	//							if (ryu->isCollitionObjectWithObject(listObj[i])
-	//								//&& ryu->isCheckCollisionAxisY_WithBrickSweptAABB(&listObj)
-	//								&&
-	//								ryu->isCollisionAxisYWithBrick
-	//								) // nếu va chạm với STAIR TOP
-	//							{
-	//								GameObject* gameobj = dynamic_cast<GameObject*>(listObj[i]);
-	//								ryu->directionStair = gameobj->GetDirection(); // lưu hướng của cầu thang đang đi vào Ryu
-	//								ryu->directionY = 1;// hướng đi xuống
-	//								ryu->SetDirection(ryu->directionStair);// hướng của Ryu khi đi xuống là hướng của cầu thang
-
-	//								ryu->isOnStair = true; // set trạng thái đang trên cầu thang
-	//								ryu->DoCaoDiDuoc = 0;
-
-
-	//								if (ryu->GetX() < gameobj->GetX())
-	//								{
-	//									ryu->SetAutoGoX(1, -gameobj->GetDirection(), gameobj->GetX() - ryu->GetX(), Ryu_WALKING_SPEED);
-	//									// hướng sau khi autogo phải là hướng của cầu thang:  gameobj->GetDirection()
-	//								}
-	//								else
-	//									ryu->SetAutoGoX(-1, -gameobj->GetDirection(), ryu->GetX() - gameobj->GetX(), Ryu_WALKING_SPEED);
+					//				if (ryu->GetX() < gameobj->GetX())
+					//				{
+					//					ryu->SetAutoGoX(1, -gameobj->GetDirection(), gameobj->GetX() - ryu->GetX(), Ryu_WALKING_SPEED);
+					//					// hướng sau khi autogo phải là hướng của cầu thang:  gameobj->GetDirection()
+					//				}
+					//				else
+					//					ryu->SetAutoGoX(-1, -gameobj->GetDirection(), ryu->GetX() - gameobj->GetX(), Ryu_WALKING_SPEED);
 
 
 
-	//								CountCollisionTop++;
-	//								return;
-	//							}
-	//						}
+					//				CountCollisionTop++;
+					//				return;
+					//			}
+					//		}
 
-	//					if (CountCollisionTop == 0) // ko đụng stair top, tức là ngồi bt
-	//					{
-	//						ryu->Sit();
-	//						if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
-	//							ryu->Right();
+					//	if (CountCollisionTop == 0) // ko đụng stair top, tức là ngồi bt
+					//	{
+					//		ryu->Sit();
+					//		if (Game::GetInstance()->IsKeyDown(RIGHT_btn))
+					//			ryu->Right();
 
-	//						if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
-	//							ryu->Left();
-	//						return;
-	//					}
+					//		if (Game::GetInstance()->IsKeyDown(LEFT_btn))
+					//			ryu->Left();
+					//		return;
+					//	}
 
-	//				}
-	//				else // đã ở trên cầu thang
-	//				{
-	//					if (ryu->isProcessingOnStair == 0 || ryu->isProcessingOnStair == 3) // kết thúc xử lí trước đó
-	//					{
-	//						ryu->isWalking = true;
-	//						ryu->isProcessingOnStair = 1;
-	//						ryu->directionY = 1;// hướng đi xuống
-	//						ryu->SetDirection(ryu->directionStair*-1);// hướng của Ryu khi đi xuóng là ngược của cầu thang
-	//						ryu->SetSpeed(ryu->GetDirection()* Ryu_SPEED_ONSTAIR, Ryu_SPEED_ONSTAIR);
-	//					}
+					//}
+					//else // đã ở trên cầu thang
+					//{
+					//	if (ryu->isProcessingOnStair == 0 || ryu->isProcessingOnStair == 3) // kết thúc xử lí trước đó
+					//	{
+					//		ryu->isWalking = true;
+					//		ryu->isProcessingOnStair = 1;
+					//		ryu->directionY = 1;// hướng đi xuống
+					//		ryu->SetDirection(ryu->directionStair*-1);// hướng của Ryu khi đi xuóng là ngược của cầu thang
+					//		ryu->SetSpeed(ryu->GetDirection()* Ryu_SPEED_ONSTAIR, Ryu_SPEED_ONSTAIR);
+					//	}
 
-	//				}
-	//			}
-	//			else
-	//			{
-	//				ryu->Stop();
-	//			}
-	//		}
+					//}
+				}
+				else
+				{
+					ryu->Stop();
+				}
+			}
 
-	//	}
-
-
-	//if (ryu->isJumping && ryu->isWalking)
-	//{
-	//	return;
-	//}
+	}
 
 
-	//if (ryu->isOnStair) // nếu đang trên thang thì không xét loại đi trái phải bt
-	//	return;
+	if (ryu->isJumping && ryu->isRunning)
+	{
+		return;
+	}
 
-	//if (ryu->isAttacking) // đang attack
-	//{
-	//	float vx, vy;
-	//	ryu->GetSpeed(vx, vy);
-	//	ryu->SetSpeed(0, vy);
-	//	//DebugOut(L"DIK_RIGHT & attack \n");
 
-	//	return;
-	//}
+	if (ryu->isAttacking) // đang attack
+	{
+		float vx, vy;
+		ryu->GetSpeed(vx, vy);
+		ryu->SetSpeed(0, vy);
+		DebugOut(L"RIGHT_btn & attack \n");
+		return;
+	}
 
-	//if (Game::GetInstance()->IsKeyDown(DIK_RIGHT))
-	//{
-	//	ryu->Right();
-	//	ryu->Go();
-	//}
-	//else
-	//	if (Game::GetInstance()->IsKeyDown(DIK_LEFT))
-	//	{
-	//		ryu->Left();
-	//		ryu->Go();
-	//	}
-	//	else
-	//	{
-	//		ryu->Stop();
-	//	}
+	if (Game::GetInstance()->IsKeyDown(RIGHT_btn))
+	{
+		ryu->Right();
+		ryu->Go();
+	}
+	else
+		if (Game::GetInstance()->IsKeyDown(LEFT_btn))
+		{
+			ryu->Left();
+			ryu->Go();
+		}
+		else
+		{
+			ryu->Stop();
+		}
 
 
 }
@@ -204,12 +147,12 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 	{
 		switch (KeyCode)
 		{
-		case DIK_UP:
+		case UP_btn:
 		{
 			GameOverSelect = GAMEOVER_SELECT_CONTINUE;
 			break;
 		}
-		case DIK_DOWN:
+		case DOWN_btn:
 		{
 			GameOverSelect = GAMEOVER_SELECT_END;
 			break;
@@ -262,7 +205,7 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 		DebugOut(L"[SET POSITION Ryu] x = 1140.0f \n");
 		ryu->SetPosition(1140.0f, 0);
 		ryu->isAttacking = 0;
-		ryu->isWalking = 0;
+		ryu->isRunning = 0;
 		ryu->isOnStair = 0;
 		ryu->isProcessingOnStair = 0;
 	}
@@ -331,33 +274,33 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 		return;
 
 
-	//if (KeyCode == DIK_A && Game::GetInstance()->IsKeyDown(DIK_UP) && ryu->isProcessingOnStair == 0)
+	//if (KeyCode == ATK_btn && Game::GetInstance()->IsKeyDown(UP_btn) && ryu->isProcessingOnStair == 0)
 	//{
 	//	ryu->Attack(ryu->GetTypeWeaponCollect()); // attack với vũ khí phụ đang nhặt
 	//}
 	//else
 
-	if (!(Game::GetInstance()->IsKeyDown(DIK_UP) && Game::GetInstance()->IsKeyDown(DIK_A) /*&& ryu->isProcessingOnStair == 0*/ && ryu->isAttacking == true))
-		if (KeyCode == DIK_A && ryu->isProcessingOnStair == 0) // không phải đang xử lí việc đi trên thang thì đc đánh
+	if (!(Game::GetInstance()->IsKeyDown(UP_btn) && Game::GetInstance()->IsKeyDown(ATK_btn) /*&& ryu->isProcessingOnStair == 0*/ && ryu->isAttacking == true))
+		if (KeyCode == ATK_btn && ryu->isProcessingOnStair == 0) // không phải đang xử lí việc đi trên thang thì đc đánh
 		{
 			//ryu->Attack(eType::MORNINGSTAR);
 		}
 
 
-	if (ryu->isJumping && ryu->isWalking)
+	if (ryu->isJumping && ryu->isRunning)
 	{
 		return;
 	}
 
 
-	if (KeyCode == DIK_S && ryu->isOnStair == false)
+	if (KeyCode == JUMP_btn)
 	{
-		if (Game::GetInstance()->IsKeyDown(DIK_LEFT) || Game::GetInstance()->IsKeyDown(DIK_RIGHT))
+		if (Game::GetInstance()->IsKeyDown(LEFT_btn) || Game::GetInstance()->IsKeyDown(RIGHT_btn))
 		{
 			ryu->Stop();
 			//ryu->SetSpeed(Ryu_WALKING_SPEED * ryu->GetDirection(), -Ryu_VJUMP);
 			ryu->isJumping = 1;
-			ryu->isWalking = 1;
+			ryu->isRunning = 1;
 		}
 		else
 		{
@@ -471,14 +414,14 @@ void SceneGame::Update(DWORD dt)
 	}
 #pragma endregion
 
-//#pragma region Process_Freeze
-//	if (ryu->GetFreeze() == true)
-//	{
-//		ryu->UpdateFreeze(dt);
-//		if (ryu->GetFreeze() == true)
-//			return;
-//	}
-//#pragma endregion
+#pragma region Process_Freeze
+	if (ryu->GetFreeze() == true)
+	{
+		ryu->UpdateFreeze(dt);
+		if (ryu->GetFreeze() == true)
+			return;
+	}
+#pragma endregion
 
 	ProcessClearState3(dt); // xử lí sau khi diệt xong boss
 
@@ -870,7 +813,7 @@ void SceneGame::Render()
 			listEnemy[i]->Render(camera);
 
 
-		//ryu->Render(camera);
+		ryu->Render(camera);
 
 
 		/*for (UINT i = 0; i < listEffect.size(); i++)
