@@ -17,48 +17,7 @@
 
 #define GAME_TIME_MAX 300
 
-#define CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT (2576.0f-15.0f) // Biên phải camera trước khi qua cửa 1
-
-//#pragma region define FISHMEN
-//
-//#define FISHMEN_ZONE_1_LEFT 3065.0f
-//#define FISHMEN_ZONE_1_RIGHT 3193.0f
-//#define FISHMEN_POS_1 3121.0f
-//
-//#define FISHMEN_ZONE_2_LEFT 3193.0f
-//#define FISHMEN_ZONE_2_RIGHT 3326.0f
-//#define FISHMEN_POS_2 3254.0f
-//
-//#define FISHMEN_ZONE_3_LEFT 3326.0f
-//#define FISHMEN_ZONE_3_RIGHT 3458.0f
-//#define FISHMEN_POS_3 3382.0f
-//
-//#define FISHMEN_ZONE_4_LEFT 3458
-//#define FISHMEN_ZONE_4_RIGHT 3571
-//#define FISHMEN_POS_4 3505 
-//
-//#define FISHMEN_ZONE_5_LEFT 3571.0f
-//#define FISHMEN_ZONE_5_RIGHT 3707.0f
-//#define FISHMEN_POS_5 3636.0f
-//
-//#define FISHMEN_ZONE_6_LEFT 3707.0f
-//#define FISHMEN_ZONE_6_RIGHT 3829.0f
-//#define FISHMEN_POS_6 3760.0f
-//
-//#define FISHMEN_ZONE_7_LEFT 3829.0f
-//#define FISHMEN_ZONE_7_RIGHT 3956.0f
-//#define FISHMEN_POS_7 3881.0f
-//
-//
-//#define FISHMEN_ZONE_8_LEFT 3956.0f
-//#define FISHMEN_ZONE_8_RIGHT 4095.0f
-//#define FISHMEN_POS_8 4017.0f
-//
-//#define FISHMEN_POS_Y 805.0f
-//
-//
-//#pragma endregion
-
+#define CROSS_LIMITTIME 1000 // thời gian tối đa khi dùng Cross
 
 #pragma region define ClearState3
 
@@ -73,8 +32,6 @@
 #define CLEARSTATE3_LIMITTIMEWAIT_PROCESS_OPENGAMEOVER 2000 // thời gian chờ mở gameover sau khi clearstate xong
 
 #pragma endregion
-
-#define CROSS_LIMITTIME 1000 // thời gian tối đa khi dùng Cross
 
 
 class SceneGame : public Scene
@@ -92,6 +49,10 @@ private:
 	DWORD TimeWaited_ClearState3;
 	DWORD LimitTimeWait_ClearState3;
 
+	/*Xử lí liên quan tạo Panther*/
+	bool isAllowRenewPanther;
+	int CountEnemyPanther;
+
 	Ryu * ryu;
 	GameMap * TileMap;
 	Camera *camera;
@@ -100,6 +61,7 @@ private:
 	Sound * sound;*/
 
 	vector<GameObject*> listObj;
+	vector <Item*> listItem;
 	vector <GameObject*> listEnemy;
 
 	GameTime * gameTime;
@@ -147,10 +109,10 @@ public:
 	void CheckCollisionWithEnemy();
 	void CheckCollisionRyuWithEnemy();
 	void CheckCollisionWithBoss();
-	//Item * GetNewItem(int Id, eType Type, float X, float Y);
+	Item * GetNewItem(int Id, eType Type, float X, float Y);
 
 
-	void ProcessClearState3(DWORD dt);
+	//void ProcessClearState3(DWORD dt);
 
 	void ReplayMusicGame();
 };

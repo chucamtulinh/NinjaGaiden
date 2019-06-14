@@ -1,4 +1,4 @@
-#include "TextureManager.h"
+﻿#include "TextureManager.h"
 
 TextureManager* TextureManager::__Instance = NULL;
 
@@ -42,12 +42,12 @@ void TextureManager::LoadResource()
 
 
 	// Weapon
-	AddTexture(eType::CROUCHSLASHWEAPON, new Texture("Resources/Weapon/CrouchSlashWeapon.png", 3, 1, 3));
-	AddTexture(eType::SWORDSLASHWEAPON, new Texture("Resources/Weapon/CrouchSlashWeapon.png", 3, 1, 3));
+	AddTexture(eType::CROUCHSLASHWEAPON, new Texture("Resources/Weapon/CrouchSlashWeapon.png", 4, 1, 4));
+	AddTexture(eType::SWORDSLASHWEAPON, new Texture("Resources/Weapon/SwordSlashWeapon.png", 4, 1, 4));
 
 	//player
 	AddTexture(eType::RYU, new Texture("Resources/Sprites/Ryu/Ryu_fix.png", 21, 1, 21));
-	AddTexture(eType::RYU_RUNNING, new Texture("Resources/Sprites/Ryu/Jump.png", 4, 1, 4));
+	AddTexture(eType::RYU_DEATH, new Texture("Resources/Sprites/Ryu/.png")); //  chưa load death
 
 	//effect
 	

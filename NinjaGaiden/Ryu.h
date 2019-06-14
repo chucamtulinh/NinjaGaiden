@@ -4,6 +4,8 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "Weapon.h"
+#include "CrouchSlashWeapon.h"
+#include "SwordSlashWeapon.h"
 #include "Texture.h"
 #include "GameDefine.h"
 
@@ -184,12 +186,6 @@ public:
 	void SetDeath();
 	bool GetIsDeath();
 	void SetIsDeath(bool b);
-
-	eType GetTypeWeaponCollect();
-	void SetTypeWeaponCollect(eType t);
-	void ProcessWeaponCollect(eType t);
-	bool IsUsingWeapon(eType typeWeapon);
-
 
 	eType GetTypeWeaponCollect();
 	void SetTypeWeaponCollect(eType t);

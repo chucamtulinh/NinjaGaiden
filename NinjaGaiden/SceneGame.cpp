@@ -176,8 +176,6 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 		ryu->SetPosition(1140.0f, 0);
 		ryu->isAttacking = 0;
 		ryu->isRunning = 0;
-		ryu->isOnStair = 0;
-		ryu->isProcessingOnStair = 0;
 	}
 
 	if (KeyCode == DIK_4)
@@ -222,7 +220,7 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 	{
 		ryu->SetHealth(Ryu_DEFAULT_HEALTH);
 		ryu->SetLives(99);
-		ryu->SetHeartCollect(99);
+		ryu->SetManaCollect(99);
 		gameTime->SetTime(0);
 	}
 
@@ -247,7 +245,7 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 	//else
 
 	if (!(Game::GetInstance()->IsKeyDown(UP_btn) && Game::GetInstance()->IsKeyDown(ATK_btn) /*&& ryu->isProcessingOnStair == 0*/ && ryu->isAttacking == true))
-		if (KeyCode == ATK_btn && ryu->isProcessingOnStair == 0) // không phải đang xử lí việc đi trên thang thì đc đánh
+		if (KeyCode == ATK_btn) // không phải đang xử lí việc đi trên thang thì đc đánh
 		{
 			//ryu->Attack(eType::MORNINGSTAR);
 		}
@@ -305,9 +303,85 @@ void SceneGame::LoadResources()
 	ryu = new Ryu(camera);
 	//board = new Board(BOARD_DEFAULT_POSITION_X, BOARD_DEFAULT_POSITION_Y);
 
-	//_spriteLagerHeart = new Sprite(TextureManager::GetInstance()->GetTexture(eType::LARGEHEART), 100);
+	//_spriteLagerMana = new Sprite(TextureManager::GetInstance()->GetTexture(eType::LARGEMANA), 100);
 
 	InitGame();
+}
+
+Item * SceneGame::GetNewItem(int Id, eType Type, float X, float Y)
+{
+	if (mapCurrent == eType::MAP1)
+	{
+		if (Type == eType::ITEMCONTAINER)
+		{
+			/*if (Id == 1 || Id == 4)
+				return new LargeHeart(X, Y);
+
+			if (Id == 2 || Id == 3)
+				return new UpgradeMorningStar(X, Y);
+
+			if (Id == 5)
+				return new ItemDagger(X, Y);*/
+		}
+	}
+
+	if (mapCurrent == eType::MAP2)
+	{
+		if (Type == eType::ITEMCONTAINER)
+		{
+			/*switch (Id)
+			{
+			case 2:
+				return new MoneyBag(X, Y, eType::MONEY_BAG_WHITE);
+				break;
+
+			case 40: case 71:
+				return new ItemHolyWater(X, Y);
+				break;
+
+			case 76:
+				return new ItemStopWatch(X, Y);
+				break;
+
+			case 109:
+				return new InvisibilityPotion(X, Y);
+				break;
+
+			case 111:
+				return new ItemThrowingAxe(X, Y);
+				break;
+
+			case 23: case 98:
+				return new Cross(X, Y);
+				break;
+
+			default:
+			{
+				int random = rand() % 15;
+				switch (random)
+				{
+				case 0:
+					return new MoneyBag(X, Y, eType::MONEY_BAG_RED);
+					break;
+				case 1:
+					return new MoneyBag(X, Y, eType::MONEY_BAG_WHITE);
+					break;
+				case 2:
+					return new MoneyBag(X, Y, eType::MONEY_BAG_PURPLE);
+					break;
+
+				default:
+					return new SmallHeart(X, Y);
+					break;
+				}
+				break;
+			}
+			}*/
+
+		}
+	}
+
+	return new Item();
 }
 
 void SceneGame::InitGame()
@@ -329,7 +403,7 @@ void SceneGame::ResetResource()
 {
 	gridGame->ReloadGrid(); // nạp lại lưới
 
-	//listItem.clear();
+	listItem.clear();
 	//listEffect.clear();
 	//listEnemy.clear();
 	//listWeaponOfEnemy.clear();
@@ -389,7 +463,7 @@ void SceneGame::Update(DWORD dt)
 	}
 #pragma endregion
 
-	ProcessClearState3(dt); // xử lí sau khi diệt xong boss
+//	ProcessClearState3(dt); // xử lí sau khi diệt xong boss
 
 	if (isAllowProcessClearState3 == false)
 	{
@@ -739,9 +813,9 @@ void SceneGame::Update(DWORD dt)
 	for (UINT i = 0; i < listObj.size(); i++)
 		listObj[i]->Update(dt, &listObj);  // đã kiểm tra "Alive" lúc lấy từ lưới ra
 
-	//for (UINT i = 0; i < listItem.size(); i++)
-	//	if (listItem[i]->GetFinish() == false)
-	//		listItem[i]->Update(dt, &listObj); // trong các hàm update chỉ kiểm tra va chạm với đất
+	for (UINT i = 0; i < listItem.size(); i++)
+		if (listItem[i]->GetFinish() == false)
+			listItem[i]->Update(dt, &listObj); // trong các hàm update chỉ kiểm tra va chạm với đất
 
 	/*for (UINT i = 0; i < listEffect.size(); i++)
 		if (listEffect[i]->GetFinish() == false)
@@ -769,9 +843,9 @@ void SceneGame::Render()
 		for (UINT i = 0; i < listObj.size(); i++)
 			listObj[i]->Render(camera);
 
-		/*for (UINT i = 0; i < listItem.size(); i++)
+		for (UINT i = 0; i < listItem.size(); i++)
 			if (listItem[i]->GetFinish() == false)
-				listItem[i]->Render(camera);*/
+				listItem[i]->Render(camera);
 
 
 
@@ -798,12 +872,12 @@ void SceneGame::Render()
 		{
 		case GAMEOVER_SELECT_CONTINUE:
 		{
-			_spriteLagerHeart->Draw(175, 245);
+			_spriteLagerMana->Draw(175, 245);
 			break;
 		}
 		case GAMEOVER_SELECT_END:
 		{
-			_spriteLagerHeart->Draw(175, 275);
+			_spriteLagerMana->Draw(175, 275);
 			break;
 		}
 		}*/
@@ -845,8 +919,6 @@ void SceneGame::LoadMap(eType x)
 		camera->SetAllowFollowRyu(true);
 
 		camera->SetPosition(0, 0);
-		camera->SetBoundary(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
-		camera->SetBoundaryBackup(0, CAMERA_BOUNDARY_BEFORE_GO_GATE1_RIGHT); // biên camera khi chưa qua cửa
 
 		ryu->SetPosition(Ryu_POSITION_DEFAULT);
 		ryu->SetPositionBackup(Ryu_POSITION_DEFAULT);
@@ -869,228 +941,78 @@ void SceneGame::CheckCollision()
 
 void SceneGame::CheckCollisionWeapon(vector<GameObject*> listObj)
 {
+	for (auto& objWeapon : ryu->mapWeapon)
+	{
+		if (objWeapon.second->GetFinish() == false) // Vũ khí đang hoạt động
+		{
+			for (UINT i = 0; i < listObj.size(); i++)
+				if (objWeapon.second->GetLastTimeAttack() > listObj[i]->GetLastTimeAttacked()) // Nếu chưa xét va chạm của lượt attack này ở các frame trước
+				{
+					if (objWeapon.second->isCollision(listObj[i]) == true) // nếu có va chạm
+					{
+						bool RunEffectHit = false;
+						GameObject *gameObj = listObj[i];
+						switch (gameObj->GetType())
+						{
 
-	//for (auto& objWeapon : ryu->mapWeapon)
-	//{
-	//	if (objWeapon.second->GetFinish() == false) // Vũ khí đang hoạt động
-	//	{
-	//		for (UINT i = 0; i < listObj.size(); i++)
-	//			if (objWeapon.second->GetLastTimeAttack() > listObj[i]->GetLastTimeAttacked()) // Nếu chưa xét va chạm của lượt attack này ở các frame trước
-	//			{
-	//				if (objWeapon.second->isCollision(listObj[i]) == true) // nếu có va chạm
-	//				{
-	//					bool RunEffectHit = false;
-	//					GameObject *gameObj = listObj[i];
-	//					switch (gameObj->GetType())
-	//					{
+						case eType::ITEMCONTAINER:
+						{
+							gameObj->SubHealth(1);
+							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));// hiệu ứng hit
+							RunEffectHit = true;
+							break;
+						}
 
-	//					case eType::TORCH:
-	//					{
-	//						gameObj->SubHealth(1);
-	//						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));// hiệu ứng hit
-	//						RunEffectHit = true;
-	//						break;
-	//					}
+						case eType::PANTHER:
+						{
+							gameObj->SubHealth(1);
+							ryu->SetScore(ryu->GetScore() + 200);
+							RunEffectHit = true;
+							CountEnemyPanther--; // giảm số lượng Panther đang hoạt động
+							break;
+						}
 
-	//					case eType::CANDLE:
-	//					{
-	//						gameObj->SubHealth(1);
-	//						listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));// hiệu ứng hit
-	//						RunEffectHit = true;
-	//						break;
-	//					}
+						//case eType::BAT:
+						//{
+						//	gameObj->SubHealth(1);
+						//	ryu->SetScore(ryu->GetScore() + 200);
+						//	if (rand() % 2 == 1) // tỉ lệ 50%
+						//	{
+						//		listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
 
-	//					case eType::GHOST:
-	//					{
-	//						gameObj->SubHealth(1);
-	//						ryu->SetScore(ryu->GetScore() + 100);
-	//						if (rand() % 2 == 1) // tỉ lệ 50%
-	//						{
-	//							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-	//						}
+						//	}
 
-	//						RunEffectHit = true;
-	//						CountEnemyGhost--; // giảm số lượng Ghost đang hoạt động
-	//						if (CountEnemyGhost == 0)
-	//						{
-	//							TimeWaitProcessCreateGhost = GetTickCount(); // set thời điểm hiện tại
-	//							isWaitProcessCreateGhost = true;
-	//							isAllowCheckTimeWaitProcessCreateGhost = true;
-	//						}
-	//						break;
-	//					}
+						//	RunEffectHit = true;
+						//	CountEnemyGhost--; // giảm số lượng Ghost đang hoạt động
+						//	if (CountEnemyGhost == 0)
+						//	{
+						//		TimeWaitProcessCreateGhost = GetTickCount(); // set thời điểm hiện tại
+						//		isWaitProcessCreateGhost = true;
+						//		isAllowCheckTimeWaitProcessCreateGhost = true;
+						//	}
+						//	break;
+						//}						
 
-	//					case eType::PANTHER:
-	//					{
-	//						gameObj->SubHealth(1);
-	//						ryu->SetScore(ryu->GetScore() + 200);
-	//						if (rand() % 2 == 1) // tỉ lệ 50%
-	//						{
-	//							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-	//						}
-	//						RunEffectHit = true;
-	//						CountEnemyPanther--; // giảm số lượng Panther đang hoạt động
-	//						break;
-	//					}
+						if (RunEffectHit)
+						{
+							//listEffect.push_back(new Hit(listObj[i]->GetX() + 10, listObj[i]->GetY() + 14)); // hiệu ứng hit
+							//listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng lửa
 
-	//					case eType::BAT:
-	//					{
-	//						gameObj->SubHealth(1);
-	//						ryu->SetScore(ryu->GetScore() + 200);
-	//						if (rand() % 2 == 1) // tỉ lệ 50%
-	//						{
-	//							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
+							////sound->Play(eSound::soundHit);
 
-	//						}
+							//if (objWeapon.second->GetType() == eType::DAGGER)
+							//{
+							//	objWeapon.second->SetFinish(true);
+							//}
 
-	//						RunEffectHit = true;
-	//						CountEnemyGhost--; // giảm số lượng Ghost đang hoạt động
-	//						if (CountEnemyGhost == 0)
-	//						{
-	//							TimeWaitProcessCreateGhost = GetTickCount(); // set thời điểm hiện tại
-	//							isWaitProcessCreateGhost = true;
-	//							isAllowCheckTimeWaitProcessCreateGhost = true;
-	//						}
-	//						break;
-	//					}
+						}
 
-	//					case eType::FISHMEN:
-	//					{
-	//						gameObj->SubHealth(1);
-	//						ryu->SetScore(ryu->GetScore() + 300);
-	//						if (rand() % 2 == 1) // tỉ lệ 50% 
-	//							listItem.push_back(GetNewItem(gameObj->GetId(), gameObj->GetType(), gameObj->GetX() + 5, gameObj->GetY()));
-
-	//						RunEffectHit = true;
-	//						CountEnemyFishmen--; // giảm số lượng Fishmen đang hoạt động
-
-	//						break;
-	//					}
-
-	//					case eType::PHANTOMBAT:
-	//					{
-	//						if (objWeapon.second->GetType() == eType::MORNINGSTAR)
-	//						{
-	//							MorningStar * morningstar = dynamic_cast<MorningStar *>(objWeapon.second);
-	//							if (morningstar->GetLevel() > 0) // level 1 hoặc 2
-	//								gameObj->SubHealth(24 / 8); // 8 hit chết
-	//							else
-	//								gameObj->SubHealth(24 / 12); // 12 hit chết
-
-	//						}
-	//						else
-	//							gameObj->SubHealth(24 / 12); // 12 hit chết
-
-	//						if (gameObj->GetHealth() == 0) // chết
-	//						{
-	//							for (int u = 0; u < 2; u++)
-	//							{
-	//								for (int v = 0; v < 3; v++)
-	//								{
-	//									listEffect.push_back(new Fire(gameObj->GetX() + v * FIRE_WIDTH, gameObj->GetY() + u * FIRE_HEIGHT - 10, 3)); // hiệu ứng lửa
-	//									RunEffectHit = false;
-	//								}
-	//							}
-	//							RunEffectHit = false;
-	//							sound->Play(eSound::soundHit);
-	//							listItem.push_back(new CrystalBall(CRYSTALBALL_DEFAULT_POSITION_X, CRYSTALBALL_DEFAULT_POSITION_y));
-
-	//						}
-	//						else
-	//						{
-	//							RunEffectHit = true;
-	//						}
-	//						break;
-	//					}
-
-
-	//					case eType::BRICK:
-	//					{
-	//						if (objWeapon.second->GetType() != eType::MORNINGSTAR) // nếu ko là MORNINGSTAR thì bỏ qua
-	//							break;
-
-	//						GameObject * gameObject = listObj[i];
-	//						if (gameObject->GetHealth() > 0)
-	//						{
-	//							switch (gameObject->GetId())
-	//							{
-	//							case 39: // id 39 : brick 4 ô-> chỉ hiện effect
-	//							{
-	//								gameObject->SubHealth(1);
-	//								HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-	//								BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick
-	//								sound->Play(eSound::soundBrokenBrick);
-	//								break;
-	//							}
-
-	//							case 40: // id 40: brick 3 ô-> effect
-	//							{
-	//								gameObject->SubHealth(1);
-	//								listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
-	//								HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-	//								BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
-	//								break;
-	//							}
-
-	//							case 72: // id 72: brick -> a bonus
-	//							{
-	//								gameObject->SubHealth(1);
-	//								sound->Play(eSound::soundDisplayMonney);
-	//								listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
-	//								HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-	//								BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
-	//								sound->Play(eSound::soundBrokenBrick);
-	//								break;
-	//							}
-
-	//							case 51: // id 51: brick 2 -> effect
-	//							{
-	//								gameObject->SubHealth(1);
-	//								HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-	//								BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
-	//								sound->Play(eSound::soundBrokenBrick);
-	//								break;
-	//							}
-
-	//							case 104: // id 104: double shot
-	//							{
-	//								gameObject->SubHealth(1);
-
-	//								listItem.push_back(GetNewItem(gameObject->GetId(), gameObject->GetType(), gameObject->GetX(), gameObject->GetY()));
-
-	//								HIT_ADD_EFFECT(listEffect, gameObject); // hiệu ứng hit
-	//								BROKEN_BRICK_ADD_EFFECT(listEffect, gameObject); // hiệu ứng BrokenBrick								sound->Play(eSound::soundBrokenBrick);
-	//								sound->Play(eSound::soundBrokenBrick);
-	//								break;
-	//							}
-
-	//							}
-	//						}
-	//						break;
-	//					}
-	//					default:
-	//						break;
-	//					}
-
-	//					if (RunEffectHit)
-	//					{
-	//						listEffect.push_back(new Hit(listObj[i]->GetX() + 10, listObj[i]->GetY() + 14)); // hiệu ứng hit
-	//						listEffect.push_back(new Fire(gameObj->GetX() - 5, gameObj->GetY() + 8)); // hiệu ứng lửa
-
-	//						sound->Play(eSound::soundHit);
-
-	//						if (objWeapon.second->GetType() == eType::DAGGER)
-	//						{
-	//							objWeapon.second->SetFinish(true);
-	//						}
-
-	//					}
-
-	//					gameObj->SetLastTimeAttacked(objWeapon.second->GetLastTimeAttack()); // bị đánh trúng->update thời gian bị đánh lần cuối
-	//				}
-	//			}
-	//	}
-	//}
+						gameObj->SetLastTimeAttacked(objWeapon.second->GetLastTimeAttack()); // bị đánh trúng->update thời gian bị đánh lần cuối
+						}
+					}
+				}
+		}
+	}
 }
 
 void SceneGame::CheckCollisionRyuWithItem()
@@ -1127,7 +1049,6 @@ void SceneGame::CheckCollisionRyuWithEnemy()
 
 	if (ryu->untouchable == false) // đã tắt chế độ ko cho chạm
 	{
-#pragma region Va chạm với Enemy bình thường
 		for (UINT i = 0; i < listEnemy.size(); i++)
 		{
 			GameObject * gameobj = dynamic_cast<GameObject *> (listEnemy[i]);
@@ -1158,7 +1079,6 @@ void SceneGame::CheckCollisionRyuWithEnemy()
 				}
 			}
 		}
-#pragma endregion 
 	}
 
 	if (ryu->untouchable == false)
@@ -1233,7 +1153,7 @@ void SceneGame::CheckCollisionWithBoss()
 //		if (Type == eType::TORCH)
 //		{
 //			if (Id == 1 || Id == 4)
-//				return new LargeHeart(X, Y);
+//				return new LargeMana(X, Y);
 //
 //			if (Id == 2 || Id == 3)
 //				return new UpgradeMorningStar(X, Y);
@@ -1295,7 +1215,7 @@ void SceneGame::CheckCollisionWithBoss()
 //					break;
 //
 //				default:
-//					return new SmallHeart(X, Y);
+//					return new SmallMana(X, Y);
 //					break;
 //				}
 //				break;
@@ -1322,10 +1242,10 @@ void SceneGame::CheckCollisionWithBoss()
 //			switch (random)
 //			{
 //			case 0:
-//				return new LargeHeart(X, Y);
+//				return new LargeMana(X, Y);
 //				break;
 //			case 1:
-//				return new SmallHeart(X, Y);
+//				return new SmallMana(X, Y);
 //				break;
 //			case 2:
 //				return new ItemDagger(X, Y);
@@ -1351,8 +1271,8 @@ void SceneGame::CheckCollisionWithBoss()
 //			case 9:
 //				return new ItemBoomerang(X, Y);
 //				break;
-//			default: // còn lại là SmallHeart
-//				return new SmallHeart(X, Y);
+//			default: // còn lại là SmallMana
+//				return new SmallMana(X, Y);
 //				break;
 //			}
 //		}
@@ -1374,7 +1294,7 @@ void SceneGame::CheckCollisionWithBoss()
 //
 //
 //			default:
-//				return new SmallHeart(X, Y);
+//				return new SmallMana(X, Y);
 //				break;
 //			}
 //
@@ -1390,98 +1310,50 @@ void SceneGame::CheckCollisionWithBoss()
 //
 //	}
 //
-//	return new LargeHeart(X, Y);
+//	return new LargeMana(X, Y);
 //}
 
-void SceneGame::ProcessClearState3(DWORD dt)
-{
-	if (isAllowProcessClearState3)
-	{
-		switch (StatusProcessClearState3)
-		{
-		case CLEARSTATE3_PROCESS_HEALTH:
-		{
-			TimeWaited_ClearState3 += dt;
-			if (TimeWaited_ClearState3 >= CLEARSTATE3_LIMITTIMEWAIT_PROCESS_HEALTH)
-			{
-				TimeWaited_ClearState3 = 0;
-
-				if (ryu->GetHealth() < Ryu_DEFAULT_HEALTH)
-				{
-					ryu->SetHealth(ryu->GetHealth() + 1);
-				}
-				else
-				{
-					StatusProcessClearState3 = CLEARSTATE3_PROCESS_GETSCORE_TIME;
-				}
-			}
-			break;
-		}
-
-		case CLEARSTATE3_PROCESS_GETSCORE_TIME:
-		{
-			TimeWaited_ClearState3 += dt;
-			if (TimeWaited_ClearState3 >= CLEARSTATE3_LIMITTIMEWAIT_PROCESS_GETSCORE_TIME)
-			{
-				TimeWaited_ClearState3 = 0;
-
-				if (GAME_TIME_MAX - gameTime->GetTime() > 0) // thời gian còn lại lớn hơn 0
-				{
-					ryu->SetScore(ryu->GetScore() + 10); // mỗi giây +10 điểm
-					gameTime->SetTime(gameTime->GetTime() + 1);// giảm giây còn lại
-					//sound->Play(eSound::soundGetScoreTimer, true);
-				}
-				else
-				{
-					StatusProcessClearState3 = CLEARSTATE3_PROCESS_GETSCORE_HEART;
-					TimeWaited_ClearState3 = 0;
-					//sound->Stop(eSound::soundGetScoreTimer);
-				}
-			}
-
-			break;
-		}
-
-		case CLEARSTATE3_PROCESS_GETSCORE_HEART:
-		{
-			TimeWaited_ClearState3 += dt;
-			if (TimeWaited_ClearState3 >= CLEARSTATE3_LIMITTIMEWAIT_PROCESS_GETSCORE_HEART)
-			{
-				TimeWaited_ClearState3 = 0;
-
-				if (ryu->GetHeartCollect() > 0) // thời gian còn lại lớn hơn 0
-				{
-					ryu->SetScore(ryu->GetScore() + 100); // mỗi giây +100 điểm
-					ryu->SetHeartCollect(ryu->GetHeartCollect() - 1); // giảm 1 heart
-					//sound->Play(eSound::soundGetScoreHeart, true);
-				}
-				else
-				{
-					//sound->Stop(eSound::soundGetScoreHeart);
-					StatusProcessClearState3 = CLEARSTATE3_PROCESS_DONE;
-
-				}
-			}
-
-			break;
-		}
-
-		case CLEARSTATE3_PROCESS_DONE:
-		{
-			TimeWaited_ClearState3 += dt;
-			if (TimeWaited_ClearState3 >= CLEARSTATE3_LIMITTIMEWAIT_PROCESS_OPENGAMEOVER)
-			{
-				isAllowProcessClearState3 = false; // tắt clear state
-				isGameOver = true; // bật bảng hiện gameover
-			}
-			break;
-		}
-
-		default:
-			break;
-		}
-	}
-}
+//void SceneGame::ProcessClearState3(DWORD dt)
+//{
+//	if (isAllowProcessClearState3)
+//	{
+//		switch (StatusProcessClearState3)
+//		{
+//		case CLEARSTATE3_PROCESS_HEALTH:
+//		{
+//			TimeWaited_ClearState3 += dt;
+//			if (TimeWaited_ClearState3 >= CLEARSTATE3_LIMITTIMEWAIT_PROCESS_HEALTH)
+//			{
+//				TimeWaited_ClearState3 = 0;
+//
+//				if (ryu->GetHealth() < Ryu_DEFAULT_HEALTH)
+//				{
+//					ryu->SetHealth(ryu->GetHealth() + 1);
+//				}
+//				else
+//				{
+//					StatusProcessClearState3 = CLEARSTATE3_PROCESS_GETSCORE_TIME;
+//				}
+//			}
+//			break;
+//		}
+//
+//		case CLEARSTATE3_PROCESS_DONE:
+//		{
+//			TimeWaited_ClearState3 += dt;
+//			if (TimeWaited_ClearState3 >= CLEARSTATE3_LIMITTIMEWAIT_PROCESS_OPENGAMEOVER)
+//			{
+//				isAllowProcessClearState3 = false; // tắt clear state
+//				isGameOver = true; // bật bảng hiện gameover
+//			}
+//			break;
+//		}
+//
+//		default:
+//			break;
+//		}
+//	}
+//}
 
 void SceneGame::ReplayMusicGame()
 {

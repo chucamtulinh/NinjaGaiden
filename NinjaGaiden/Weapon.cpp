@@ -65,8 +65,6 @@ bool Weapon::isCollision(GameObject * obj)
 	return isCollitionObjectWithObject(obj);
 }
 
-
-
 bool Weapon::GetFinish()
 {
 	return isFinish;
