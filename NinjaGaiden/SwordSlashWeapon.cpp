@@ -70,7 +70,7 @@ void SwordSlashWeapon::UpdatePositionFitRyu()
 {
 	if (direction == -1)
 	{
-		this->x = x - 22;
+		this->x = x - 14;
 		this->y = y + 1;
 	}
 }
@@ -90,7 +90,6 @@ void SwordSlashWeapon::GetBoundingBox(float & left, float & top, float & right, 
 		top = y + 5;
 		right = x + 18;
 		bottom = y + 13;
-
 	}
 }
 
