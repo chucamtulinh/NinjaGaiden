@@ -4,6 +4,8 @@
 #include "Camera.h"
 #include "GameObject.h"
 #include "Weapon.h"
+#include "CrouchSlashWeapon.h"
+#include "SwordSlashWeapon.h"
 #include "Texture.h"
 #include "GameDefine.h"
 
@@ -21,11 +23,11 @@
 #define Ryu_VJUMP_HURTING 0.2f // nhảy lúc bị đau
 #define PULL_UP_Ryu_AFTER_JUMPING 8.0f // Kéo Ryu lên 8px sau khi nhảy, tránh overlaping do BBOX bottom thu lại khi nhảy
 
-#define Ryu_GRAVITY 0.001f 
-#define Ryu_GRAVITY_JUMPING 0.001f 
+#define Ryu_GRAVITY 0.001f
+#define Ryu_GRAVITY_JUMPING 0.001f
 #define Ryu_GRAVITY_HURTING 0.001f
 
-#define Ryu_RUNNING_SPEED 0.12f //0.12f 
+#define Ryu_RUNNING_SPEED 0.12f //0.12f
 #define Ryu_JUMPING_SPEED 0.06f
 
 #define Ryu_STATE_IDLE 0
@@ -175,7 +177,7 @@ public:
 	void SetAutoGoX(int DirectionGo, int DirectionBackup, float Dx, float Speed); // set các thông số auto và backup các trạng thái hiện tại
 	bool GetIsAutoGoX(); // kiểm tra có đang ở chế độ auto go?
 
-	void RestoreBackupAutoGoX(); // khôi phục trạng thái 
+	void RestoreBackupAutoGoX(); // khôi phục trạng thái
 
 	bool LoseLife(); // thiết lập lại 1 số thứ sau khi Ryu mất mạng
 	void SetPositionBackup(float X, float Y);  // lưu vị trí cần backup để Ryu die thì bắt đầu lại từ đây

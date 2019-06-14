@@ -5,11 +5,12 @@ Ryu::Ryu(Camera* camera)
 {
 	texture = TextureManager::GetInstance()->GetTexture(eType::RYU);
 	sprite = new Sprite(texture, 200);
+	_sprite_death = new Sprite(TextureManager::GetInstance()->GetTexture(eType::RYU_DEATH), 250);
 	type = eType::RYU;
 
 	this->camera = camera;
 	//this->sound = Sound::GetInstance();
-	//mapWeapon[eType::MORNINGSTAR] = new MorningStar();
+	mapWeapon[eType::SWORDSLASHWEAPON] = new SwordSlashWeapon();
 
 	Init();
 }
@@ -58,7 +59,7 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 #pragma region Update về sprite
 
 	int index = sprite->GetCurrentFrame();
-	
+
 	if (isHurting)
 		{
 			sprite->SelectFrame(Ryu_ANI_HURTING);
@@ -140,9 +141,9 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								sprite->SelectFrame(Ryu_ANI_RUNNING_BEGIN);
 
 							//cập nhật frame mới
-							sprite->Update(dt); // dt này được cập nhật khi gọi update; 
+							sprite->Update(dt); // dt này được cập nhật khi gọi update;
 						}
-						else						
+						else
 						{
 							sprite->timeAccumulated += dt;
 							if (index < Ryu_ANI_JUMPING_BEGIN || index > Ryu_ANI_JUNPING_END) // nếu ani chưa đúng
@@ -172,7 +173,7 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 							if (sprite->GetCurrentFrame() > Ryu_ANI_JUNPING_END) // đã đi vượt qua frame cuối
 							{
-								sprite->SelectFrame(Ryu_ANI_IDLE); // set lại ani bắt đầu							
+								sprite->SelectFrame(Ryu_ANI_IDLE); // set lại ani bắt đầu
 								isJumping == false;
 							}
 						}
@@ -184,7 +185,7 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						DebugOut(L"update ani Ryu y = %f", y);
 					}
 		}
-	
+
 #pragma endregion
 
 	/* Update về sprite */
@@ -207,9 +208,22 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else
 				vy += Ryu_GRAVITY * dt;// Simple fall down
 		}
-	
+
 	CollisionWithGround(coObjects); // check Collision and update x, y for Ryu
-	
+	for (auto& objWeapon : mapWeapon)
+	{
+		if (objWeapon.second->GetFinish() == false) // vũ khi này chưa kết thúc thì update
+		{
+			if (objWeapon.second->GetType() == eType::SWORDSLASHWEAPON)
+			{
+				objWeapon.second->SetPosition(this->x, this->y);
+				objWeapon.second->SetSpeed(vx, vy); // set vận tốc để kt va chạm
+				objWeapon.second->UpdatePositionFitRyu();
+			}
+
+			objWeapon.second->Update(dt, coObjects);
+		}
+	}
 }
 
 void Ryu::Render(Camera* camera)
@@ -247,6 +261,15 @@ void Ryu::Render(Camera* camera)
 				sprite->Draw(pos.x, pos.y, alpha);
 			else
 				sprite->DrawFlipX(pos.x, pos.y, alpha);
+		}
+	}
+
+	for (auto& objWeapon : mapWeapon)
+	{
+
+		if (objWeapon.second->GetFinish() == false ) // vũ khi này chưa kết thúc thì render
+		{
+			objWeapon.second->Render(camera);
 		}
 	}
 }
@@ -340,7 +363,7 @@ void Ryu::SetHurt(LPCOLLISIONEVENT e)
 
 	ResetSit();
 
-	//mapWeapon[eType::MORNINGSTAR]->SetFinish(true);
+	mapWeapon[eType::SWORDSLASHWEAPON]->SetFinish(true);
 
 	if (!isAutoGoX) // ko "đang tự đi" và ko "đang trên thang" thì bật ra
 	{
@@ -515,116 +538,31 @@ void Ryu::Attack(eType typeWeapon)
 
 	bool isAllowSubManaCollect = false;
 
-	//if (mapWeapon[typeWeapon]->GetFinish()) // vũ khí đã kết thúc thì mới đc tấn công tiếp
-	//{
-	//	if (isUseDoubleShot && typeWeapon != eType::MORNINGSTAR && IsUsingWeapon(eType::WEAPON_DOUBLE_SHOT)) // Double shot, sub weapon , và vũ khí phụ còn hoạt động thì bỏ qua
-	//		return;
+	if (mapWeapon[typeWeapon]->GetFinish()) // vũ khí đã kết thúc thì mới đc tấn công tiếp
+	{
+		isAttacking = true; // set trang thái tấn công
+		sprite->SelectFrame(0);
+		sprite->ResetTime();
 
-	//	isAttacking = true; // set trang thái tấn công
-	//	sprite->SelectFrame(0);
-	//	sprite->ResetTime();
-
-	//	mapWeapon[typeWeapon]->Attack(this->x, this->y, this->direction); // set vị trí weapon theo Ryu
-	//	isAllowSubManaCollect = true;
-	//}
-	//else // xử lí Double Shot
-	//{
-	//	if (isUseDoubleShot && typeWeapon != eType::MORNINGSTAR && typeWeapon != eType::STOPWATCH) // đang ở chế độ DoubleShot và k phải là Morning star VÀ STOPWATCH
-	//	{
-	//		if (GetTickCount() - mapWeapon[typeWeapon]->GetLastTimeAttack() >= 250) // sau 250 ms thì mới được dùng Double Shot
-	//		{
-	//			bool isMustRecreateDoubleShot = false; // ban đầu k cần tạo lại
-
-
-	//			if (mapWeapon.find(eType::WEAPON_DOUBLE_SHOT) == mapWeapon.end()) // chưa tạo Double shot
-	//			{
-	//				isMustRecreateDoubleShot = true; // chưa tạo thì phải tạo lại
-	//			}
-	//			else
-	//			{
-	//				if (mapWeapon[eType::WEAPON_DOUBLE_SHOT]->GetFinish() == false) // vũ khí đã tạo vẫn còn đang chạy
-	//				{
-	//					return; // thoát luôn
-	//				}
-	//				else
-	//				{
-	//					if (mapWeapon[eType::WEAPON_DOUBLE_SHOT]->GetType() != typeWeapon) // vũ khí đã tạo khác với vũ khí đang dùng để tấn công
-	//					{
-	//						isMustRecreateDoubleShot = true; // tạo lại cho đúng
-	//					}
-	//				}
-	//			}
-
-	//			if (isMustRecreateDoubleShot)
-	//			{
-	//				SAFE_DELETE(mapWeapon[eType::WEAPON_DOUBLE_SHOT]); // DELETE vũ khí hiện tại
-	//				eType t = GetTypeWeaponCollect();
-	//				switch (t)
-	//				{
-
-	//				case DAGGER:
-	//				{
-	//					mapWeapon[eType::WEAPON_DOUBLE_SHOT] = new Dagger(camera);
-	//					break;
-	//				}
-
-	//				case HOLYWATER:
-	//				{
-	//					mapWeapon[eType::WEAPON_DOUBLE_SHOT] = new HolyWater(camera);
-	//					break;
-	//				}
-
-	//				case STOPWATCH:
-	//				{
-	//					mapWeapon[eType::WEAPON_DOUBLE_SHOT] = new StopWatch();
-	//					break;
-	//				}
-
-	//				case THROWINGAXE:
-	//				{
-	//					mapWeapon[eType::WEAPON_DOUBLE_SHOT] = new ThrowingAxe(camera);
-	//					break;
-	//				}
-
-	//				case BOOMERANG:
-	//				{
-	//					mapWeapon[eType::WEAPON_DOUBLE_SHOT] = new Boomerang(camera, this);
-	//					break;
-	//				}
-	//				default:
-	//					break;
-	//				}
-	//			}
-
-
-	//			isAttacking = true; // set trang thái tấn công
-	//			sprite->SelectFrame(0);
-	//			sprite->ResetTime();
-
-
-	//			mapWeapon[eType::WEAPON_DOUBLE_SHOT]->Attack(this->x, this->y, this->direction);
-	//			isAllowSubManaCollect = true;
-
-	//		}
-
-	//	}
-	//}
+		mapWeapon[typeWeapon]->Attack(this->x, this->y, this->direction); // set vị trí weapon theo Ryu
+		isAllowSubManaCollect = true;
+	}
 
 	if (isAllowSubManaCollect)
 	{
 		switch (typeWeapon)
 		{
-		//case MORNINGSTAR:
-		//{
-		//	// ko trừ
-		//	break;
-		//}
+		case SWORDSLASHWEAPON:
+		{
+			// ko trừ
+			break;
+		}
 
-		//case STOPWATCH:
-		//{
-		//	ManaCollect -= 5;
-		//	break;
-		//}
+		/*case :
+		{
+			ManaCollect -= 5;
+			break;
+		}*/
 
 		default: // các vũ khí còn lại
 		{
@@ -835,11 +773,11 @@ void Ryu::ProcessWeaponCollect(eType t)
 
 bool Ryu::IsUsingWeapon(eType typeWeapon)
 {
-	//if (this->mapWeapon.find(typeWeapon) != this->mapWeapon.end()) // có tồn tại
-	//{
-	//	if (this->mapWeapon[typeWeapon]->GetFinish() == false) //chưa kết thúc
-	//		return true;
-	//}
+	if (this->mapWeapon.find(typeWeapon) != this->mapWeapon.end()) // có tồn tại
+	{
+		if (this->mapWeapon[typeWeapon]->GetFinish() == false) //chưa kết thúc
+			return true;
+	}
 	return false;
 }
 

@@ -4,7 +4,7 @@
 #include "GameDefine.h"
 #include "Camera.h"
 #include "Texture.h"
-#include "Sprite.h" 
+#include "Sprite.h"
 #include "GameObject.h"
 #include "Item.h"
 
@@ -26,11 +26,7 @@ public:
 
 
 	virtual void Render(Camera *camera);
-//<<<<<<< HEAD
-	virtual void UpdatePositionFitSimon();
-//=======
 	virtual void UpdatePositionFitRyu();
-//>>>>>>> 714df99a00490830f08e6caa737ad9114a8cb939
 	virtual bool isCollision(GameObject* obj); // kiểm tra vũ khí này có va chạm với object kia hay không?
 	virtual void RenderIcon(float X, float Y) = 0;
 	bool GetFinish();

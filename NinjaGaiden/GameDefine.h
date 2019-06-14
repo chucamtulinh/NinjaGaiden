@@ -2,13 +2,13 @@
 #define _DEFINE_H__
 
 
-#include <fstream> 
+#include <fstream>
 #include <string>
 #include <stdio.h>
-#include <Windows.h>  
+#include <Windows.h>
 #include <iostream>
 #include <map>
-#include "debug.h" 
+#include "debug.h"
 #include <algorithm>
 #include <d3dx9.h>
 #include <stdlib.h>
@@ -22,12 +22,12 @@
 using namespace std;
 
 
-#define COLOR_BLACK D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)  
-#define COLOR_KEY D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f) 
+#define COLOR_BLACK D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f)
+#define COLOR_KEY D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f)
 
 
 #define SCREEN_WIDTH 528
-#define SCREEN_HEIGHT 480 
+#define SCREEN_HEIGHT 480
 
 
 #define IS_DEBUG_RENDER_BBOX isDebug_RenderBBox
@@ -161,4 +161,4 @@ if(ptr) \
 
 #endif
 
-#endif 
+#endif
