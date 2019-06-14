@@ -7,7 +7,6 @@
 #include "Sprite.h" 
 #include "GameObject.h"
 #include "Item.h"
-#include "UpgradeMorningStar.h"
 
 
 class Weapon : public GameObject

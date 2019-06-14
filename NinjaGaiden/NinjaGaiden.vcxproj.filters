@@ -200,13 +200,16 @@
     <ClInclude Include="Weapon.h">
       <Filter>GameObject\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="UpgradeMorningStar.h">
-      <Filter>GameObject\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Gunner.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="SwordMan.h">
+      <Filter>GameObject\Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="Bullet.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Banshee.h">
       <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
@@ -343,39 +346,20 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>GameObject\Weapon</Filter>
     </ClCompile>
-    <ClCompile Include="UpgradeMorningStar.cpp">
-      <Filter>GameObject\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Gunner.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="SwordMan.cpp">
+      <Filter>GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Banshee.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in">
       <Filter>MapReader</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Resources\Maps\file_gameobject_map1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Resources\Maps\file_gameobject_map2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Resources\Maps\readfile_map_1.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="Resources\Maps\readfile_map_2.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Resources\Maps\NG3-1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\Maps\NG3-1_32.png">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿#ifndef __PANTHER_H__
 #define __PANTHER_H__
 
+#define PANTHER_ANI_WAIT 0
 #define PANTHER_ANI_RUNNING_BEGIN 1
 #define PANTHER_ANI_RUNNING_END 3
 
@@ -17,8 +18,10 @@
 class Panther : public GameObject
 {
 private:
-	//trạng thái
+	bool isWait;
+	bool isRunning;
 	bool isJumping;
+	bool isStart; // trạng thái bắt đầu
 
 	float AutoGoX_Distance; // khoảng cách cần chạy
 	bool isAutoGoX;

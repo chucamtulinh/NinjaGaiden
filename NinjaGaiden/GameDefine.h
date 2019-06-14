@@ -84,16 +84,12 @@ enum eType
 	// weapon
 	BULLET = 65,
 
-	// item
-<<<<<<< HEAD
-	COURIER = 81,
-	UPGRADEMORNINGSTAR = 82,
 
-=======
+	// item
 	ITEMCONTAINER = 80,
 	ITEMCONTAINER_31 = 81,
 	ITEMCONTAINER_32 = 82,
->>>>>>> 48350d3ab595cd872c41db14657d47f259789e4e
+	
 
 	// other
 	FONT = 101,
@@ -106,20 +102,16 @@ enum eType
 
 	// Effect
 
-
 	// Enemy
-	SWORDMAN = 108,
-	PANTHER = 109,
-	BIRD = 110,
-	BANSHEE = 111,
-	GUNGUY = 112,
-	GUNNER = 113,
-	RUNNER = 113,
-
-
+	BIRD = 108,
+	GUNNER = 109,
+	PANTHER = 110,
+	RUNNER = 111,
+	SWORDMAN = 112,
+	GUNGUY = 113,
 
 	//BOSS
-	
+
 	// Intro
 	MAINMENU = 181,
 	INTRO_GO_SCENE1 = 182,
