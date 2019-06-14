@@ -82,8 +82,14 @@ enum eType
 
 
 	// weapon
+<<<<<<< HEAD
+	WEAPON = 60,
+	CROUCHSLASHWEAPON = 61,
+	SWORDSLASHWEAPON = 62,
+=======
 	BULLET = 65,
 
+>>>>>>> 714df99a00490830f08e6caa737ad9114a8cb939
 
 	// item
 	ITEMCONTAINER = 80,

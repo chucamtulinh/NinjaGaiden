@@ -24,20 +24,25 @@ void Ryu::GetBoundingBox(float & left, float & top, float & right, float & botto
 {
 	if (isSitting == true)
 	{
-		left = x + 15;
-		top = y - 1;
-		right = x + Ryu_BBOX_WIDTH + 15;
+		left = x;
+		top = y;
+		right = x + Ryu_BBOX_WIDTH;
 		bottom = y + Ryu_BBOX_SITTING_HEIGHT;
+		if (isAttacking == true)
+		{
+			//bottom -= 1.0f;
+		}
 	}
 	else
 	{
-		left = x + 15;
-		top = y - 1;
-		right = x + Ryu_BBOX_WIDTH - 15;
+		left = x;
+		top = y;
+		right = x + Ryu_BBOX_WIDTH;
 		bottom = y + Ryu_BBOX_HEIGHT;
 
-		if (isJumping)
+		if (isJumping) {
 			bottom = y + Ryu_BBOX_JUMPING_HEIGHT;
+		}
 	}
 
 }
@@ -62,7 +67,6 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (isSitting == true)
 			{
-				sprite->SelectFrame(Ryu_ANI_SITTING);
 				if (isAttacking == true) // tấn công
 				{
 					/* Xử lí ani ngồi đánh */
@@ -85,6 +89,7 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						if (sprite->GetCurrentFrame() > Ryu_ANI_SITTING_ATTACKING_END) // đã đi vượt qua frame cuối
 						{
 							isAttacking = false;
+							y = y - 1.0f;
 							sprite->SelectFrame(Ryu_ANI_SITTING);
 						}
 					}
@@ -92,9 +97,11 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					DebugOut(L"update ani Ryu dt = %d, tich luy = %d\n", dt, sprite->timeAccumulated);
 
 				}
+				else
+					sprite->SelectFrame(Ryu_ANI_SITTING);
 			}
 			else
-				if (isAttacking == true)
+				if (isAttacking == true && isSitting == false)
 				{
 					/* Xử lí ani đứng đánh */
 					if (index < Ryu_ANI_STANDING_ATTACKING_BEGIN) // nếu ani chưa đúng
@@ -165,14 +172,17 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 							if (sprite->GetCurrentFrame() > Ryu_ANI_JUNPING_END) // đã đi vượt qua frame cuối
 							{
-								sprite->SelectFrame(Ryu_ANI_JUMPING_BEGIN); // set lại ani bắt đầu
-								if (vy > 0) isJumping == false;
+								sprite->SelectFrame(Ryu_ANI_IDLE); // set lại ani bắt đầu							
+								isJumping == false;
 							}
 						}
 
 					}
-					else sprite->SelectFrame(Ryu_ANI_IDLE);		// Ryu đứng yên
-
+					else
+					{
+						sprite->SelectFrame(Ryu_ANI_IDLE);		// Ryu đứng yên
+						DebugOut(L"update ani Ryu y = %f", y);
+					}
 		}
 	
 #pragma endregion
@@ -199,15 +209,7 @@ void Ryu::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	
 	CollisionWithGround(coObjects); // check Collision and update x, y for Ryu
-
-	if (isProcessingOnStair == 3)
-	{
-		isProcessingOnStair = 0;
-		vx = 0;
-		vy = 0;
-		isRunning = false;
-	}
-
+	
 }
 
 void Ryu::Render(Camera* camera)
@@ -273,10 +275,6 @@ void Ryu::Sit()
 {
 	vx = 0;
 	isRunning = false;
-
-	if (isSitting == false)
-		y = y + PULL_UP_Ryu_AFTER_SITTING;
-
 	isSitting = true;
 }
 
@@ -344,7 +342,7 @@ void Ryu::SetHurt(LPCOLLISIONEVENT e)
 
 	//mapWeapon[eType::MORNINGSTAR]->SetFinish(true);
 
-	if (!isOnStair && !isAutoGoX) // ko "đang tự đi" và ko "đang trên thang" thì bật ra
+	if (!isAutoGoX) // ko "đang tự đi" và ko "đang trên thang" thì bật ra
 	{
 		if (e->nx != 0)
 		{
@@ -374,14 +372,14 @@ void Ryu::SetHurt(LPCOLLISIONEVENT e)
 	//sound->Play(eSound::soundHurting);
 }
 
-void Ryu::SetHeartCollect(int h)
+void Ryu::SetManaCollect(int h)
 {
-	HeartCollect = h;
+	ManaCollect = h;
 }
 
-int Ryu::GetHeartCollect()
+int Ryu::GetManaCollect()
 {
-	return HeartCollect;
+	return ManaCollect;
 }
 
 void Ryu::CollisionWithGround(const vector<LPGAMEOBJECT>* coObjects)
@@ -455,143 +453,6 @@ void Ryu::CollisionWithGround(const vector<LPGAMEOBJECT>* coObjects)
 		delete coEvents[i];
 }
 
-
-void Ryu::CollisionIsOnStair(vector<LPGAMEOBJECT> *coObjects)
-{
-	if (directionY == 1) // đang đi xuống
-	{
-		int CountCollisionBottom = 0;
-		vector<LPGAMEOBJECT> listobj;
-		listobj.clear();
-		//for (UINT i = 0; i < (*coObjects).size(); i++)
-		//	if ((*coObjects)[i]->GetType() == eType::STAIR_BOTTOM) // nếu là object ở dưới
-		//	{
-		//		if (this->isCollitionObjectWithObject((*coObjects)[i]))
-		//		{
-		//			CountCollisionBottom++;
-		//			break;
-		//		}
-		//	}
-
-		if (CountCollisionBottom > 0) // có va chạm với bottom
-		{
-			vector<LPCOLLISIONEVENT> coEvents;
-			vector<LPCOLLISIONEVENT> coEventsResult;
-			coEvents.clear();
-			vector<LPGAMEOBJECT> list_Ground;
-			list_Ground.clear();
-			for (UINT i = 0; i < coObjects->size(); i++)
-				if (coObjects->at(i)->GetType() == eType::GROUND)
-					list_Ground.push_back(coObjects->at(i));
-			CalcPotentialCollisions(&list_Ground, coEvents);
-			if (coEvents.size() == 0)
-			{
-				x += dx;
-				y += dy;
-			}
-			else
-			{
-				float min_tx, min_ty, nx = 0, ny;
-
-				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-				if (nx != 0 || ny != 0)
-				{
-					vx = 0;
-					vy = 0;
-					isOnStair = false; // kết thúc việc đang trên cầu thang
-					isRunning = false;
-					isProcessingOnStair = 0;
-				}
-			}
-
-			for (UINT i = 0; i < coEvents.size(); i++)
-				delete coEvents[i];
-
-			return;
-		}
-
-	}
-
-
-	if (directionY == -1) // đang đi lên
-	{
-		vector<LPGAMEOBJECT> listobj;
-		//float xCenterStairTop; // vị trí x ở giữa của box top
-		int CountCollisionTop = 0;
-		listobj.clear();
-		//for (UINT i = 0; i < (*coObjects).size(); i++)
-		//	if ((*coObjects)[i]->GetType() == eType::STAIR_TOP) // nếu là object ở trên
-		//	{
-		//		if (this->isCollitionObjectWithObject((*coObjects)[i])) // có va chạm với top stair
-		//		{
-		//			CountCollisionTop++;
-		//			//xCenterStairTop = (*coObjects)[i]->GetX(); //25 là kích thước 1/2 của box top
-		//			break;
-		//		}
-		//	}
-
-		if (CountCollisionTop > 0) // có va chạm với top, và nó đang đi lên
-		{
-			float backupVy = vy;
-
-			y = y - 50; // kéo Ryu lên cao, để tạo va chạm giả xuống mặt đất, tránh overlaping. tính thời gian tiếp đất
-			vy = 9999999999.0f; // vận tốc kéo xuống lớn để chạm đất ngay trong 1 frame
-			dy = vy * dt; // cập nhật lại dy
-
-			vector<LPCOLLISIONEVENT> coEvents;
-			vector<LPCOLLISIONEVENT> coEventsResult;
-			coEvents.clear();
-			vector<LPGAMEOBJECT> list_Ground;
-			list_Ground.clear();
-
-			for (UINT i = 0; i < coObjects->size(); i++)
-				if (coObjects->at(i)->GetType() == eType::GROUND)
-					list_Ground.push_back(coObjects->at(i));
-
-			CalcPotentialCollisions(&list_Ground, coEvents);
-			if (coEvents.size() == 0)
-			{
-				x += dx;
-				y += dy;
-			}
-			else
-			{
-				float min_tx, min_ty, nx = 0, ny;
-
-				FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-				x += min_tx * dx + nx * 0.4f;
-				y += min_ty * dy + ny * 0.4f;
-				if (nx != 0 || ny != 0)
-				{
-					vx = 0;
-					vy = 0;
-					isOnStair = false; // kết thúc việc đang trên cầu thang
-					isRunning = false;
-					//	x = xCenterStairTop;
-					isProcessingOnStair = 0;
-				}
-			}
-
-			for (UINT i = 0; i < coEvents.size(); i++)
-				delete coEvents[i];
-
-			vy = backupVy;
-			dy = vy * dt; // cập nhật lại dy
-
-			return; // ko cần xét tiếp
-		}
-
-	}
-
-	// nếu không đụng top và bot thì di chuyển bt
-	x += dx;
-	y += dy;
-
-}
-
-
 //bool Ryu::isCollisionWithItem(Item * objItem)
 //{
 //	if (objItem->GetFinish() == true)
@@ -617,10 +478,10 @@ void Ryu::Attack(eType typeWeapon)
 	//	return;
 	//}
 
-	/* Kiểm tra còn đủ HeartCollect ko? */
+	/* Kiểm tra còn đủ ManaCollect ko? */
 	switch (typeWeapon)
 	{
-	/*case MORNINGSTAR:
+	case SWORDSLASHWEAPON:
 	{
 		if (isAttacking)
 		{
@@ -629,30 +490,30 @@ void Ryu::Attack(eType typeWeapon)
 		break;
 	}
 
-	case STOPWATCH:
+	/*case STOPWATCH:
 	{
-		if (HeartCollect >= 5)
+		if (ManaCollect >= 5)
 		{
-			//HeartCollect -= 5;
+			//ManaCollect -= 5;
 		}
 		else
-			return; // ko đủ HeartCollect thì ko attack
+			return; // ko đủ ManaCollect thì ko attack
 		break;
 	}*/
 
 	default: // các vũ khí còn lại
 	{
-		if (HeartCollect >= 1)
+		if (ManaCollect >= 1)
 		{
-			//	HeartCollect -= 1;
+			//	ManaCollect -= 1;
 		}
 		else
-			return;// ko đủ HeartCollect thì ko attack
+			return;// ko đủ ManaCollect thì ko attack
 		break;
 	}
 	}
 
-	bool isAllowSubHeartCollect = false;
+	bool isAllowSubManaCollect = false;
 
 	//if (mapWeapon[typeWeapon]->GetFinish()) // vũ khí đã kết thúc thì mới đc tấn công tiếp
 	//{
@@ -664,7 +525,7 @@ void Ryu::Attack(eType typeWeapon)
 	//	sprite->ResetTime();
 
 	//	mapWeapon[typeWeapon]->Attack(this->x, this->y, this->direction); // set vị trí weapon theo Ryu
-	//	isAllowSubHeartCollect = true;
+	//	isAllowSubManaCollect = true;
 	//}
 	//else // xử lí Double Shot
 	//{
@@ -742,14 +603,14 @@ void Ryu::Attack(eType typeWeapon)
 
 
 	//			mapWeapon[eType::WEAPON_DOUBLE_SHOT]->Attack(this->x, this->y, this->direction);
-	//			isAllowSubHeartCollect = true;
+	//			isAllowSubManaCollect = true;
 
 	//		}
 
 	//	}
 	//}
 
-	if (isAllowSubHeartCollect)
+	if (isAllowSubManaCollect)
 	{
 		switch (typeWeapon)
 		{
@@ -761,13 +622,13 @@ void Ryu::Attack(eType typeWeapon)
 
 		//case STOPWATCH:
 		//{
-		//	HeartCollect -= 5;
+		//	ManaCollect -= 5;
 		//	break;
 		//}
 
 		default: // các vũ khí còn lại
 		{
-			HeartCollect -= 1;
+			ManaCollect -= 1;
 			break;
 		}
 		}
@@ -836,9 +697,6 @@ void Ryu::SetAutoGoX(int DirectionGo, int directionAfterGo, float Distance, floa
 	isJumping_Backup = isJumping;
 	isSitting_Backup = isSitting;
 	isAttacking_Backup = isAttacking;
-	isOnStair_Backup = isOnStair;
-	isProcessingOnStair_Backup = isProcessingOnStair;
-	directionStair_Backup = directionStair;
 	directionY_Backup = directionY;
 
 	AutoGoX_Distance = Distance;
@@ -853,8 +711,6 @@ void Ryu::SetAutoGoX(int DirectionGo, int directionAfterGo, float Distance, floa
 	isJumping = 0;
 	isSitting = 0;
 	isAttacking = 0;
-	isOnStair = 0;
-	isProcessingOnStair = 0;
 }
 
 bool Ryu::GetIsAutoGoX()
@@ -868,9 +724,6 @@ void Ryu::RestoreBackupAutoGoX()
 	isJumping = isJumping_Backup;
 	isSitting = isSitting_Backup;
 	isAttacking = isAttacking_Backup;
-	isOnStair = isOnStair_Backup;
-	isProcessingOnStair = isProcessingOnStair_Backup;
-	directionStair = directionStair_Backup;
 	directionY = directionY_Backup;
 
 	direction = directionAfterGo; // set hướng sau khi đi
@@ -896,7 +749,6 @@ void Ryu::SetDeath()
 	ResetSit();
 	vx = 0;
 	isRunning = 0;
-	isOnStair = 0;
 
 	//sound->Play(eSound::musicLifeLost);
 
@@ -1005,7 +857,7 @@ void Ryu::Init()
 {
 	Health = Ryu_DEFAULT_HEALTH; // Ryu dính 16 phát là chết
 	Lives = Ryu_DEFAULT_LIVES;
-	HeartCollect = Ryu_DEFAULT_HEARTCOLLECT;
+	ManaCollect = Ryu_DEFAULT_MANACOLLECT;
 	score = Ryu_DEFAULT_SCORE;
 
 	Reset();
@@ -1017,8 +869,6 @@ void Ryu::Reset()
 	direction = 1;
 
 	isSitting = 0;
-	isProcessingOnStair = 0;// ko phải đang xử lí
-	isOnStair = 0;
 	isJumping = 0;
 	isRunning = 0;
 	isAttacking = 0;
@@ -1028,7 +878,6 @@ void Ryu::Reset()
 
 	vx = 0;
 	vy = 0;
-	DoCaoDiDuoc = 0;
 	isFreeze = 0;
 	TimeFreeze = 0;
 
@@ -1045,7 +894,7 @@ bool Ryu::LoseLife()
 	Health = Ryu_DEFAULT_HEALTH;
 	Lives = Lives - 1;
 
-	HeartCollect = Ryu_DEFAULT_HEARTCOLLECT;
+	ManaCollect = Ryu_DEFAULT_MANACOLLECT;
 
 
 

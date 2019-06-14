@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "GameObject.h"
+#include "Weapon.h"
 #include "Texture.h"
 #include "GameDefine.h"
 
@@ -11,9 +12,10 @@
 #define Ryu_BBOX_WIDTH 17
 #define Ryu_BBOX_HEIGHT 32
 #define Ryu_BBOX_SITTING_HEIGHT 24
-#define Ryu_BBOX_JUMPING_HEIGHT 40
+#define Ryu_BBOX_JUMPING_HEIGHT 30
+#define Ryu_BBOX_JUMPING_WIDTH 20
 
-#define PULL_UP_Ryu_AFTER_SITTING 4.0f // Kéo Ryu lên 8px sau khi ngồi rồi đứng dậy, tránh overlaping do BBOX bottom thu lại khi ngồi
+#define PULL_UP_Ryu_AFTER_SITTING 8.0f // Kéo Ryu lên 8px sau khi ngồi rồi đứng dậy, tránh overlaping do BBOX bottom thu lại khi ngồi
 
 #define Ryu_VJUMP 0.3f
 #define Ryu_VJUMP_HURTING 0.2f // nhảy lúc bị đau
@@ -50,8 +52,8 @@
 #define Ryu_ANI_STANDING_ATTACKING_END 6
 
 /* Time Ani attack */
-#define Ryu_TIME_WAIT_ANI_ATTACKING 120// thời gian thời của mỗi frame khi tấn công
-#define Ryu_TIME_WAIT_ANI_JUMPING 120 // thời gian mỗi frame nhảy
+#define Ryu_TIME_WAIT_ANI_ATTACKING 80// thời gian thời của mỗi frame khi tấn công
+#define Ryu_TIME_WAIT_ANI_JUMPING 80 // thời gian mỗi frame nhảy
 
 
 #define Ryu_ANI_HURTING 12
@@ -61,7 +63,7 @@
 
 
 #define Ryu_DEFAULT_HEALTH 16
-#define Ryu_DEFAULT_HEARTCOLLECT 5
+#define Ryu_DEFAULT_MANACOLLECT 0
 #define Ryu_DEFAULT_SCORE 0
 #define Ryu_DEFAULT_LIVES 3
 
@@ -71,7 +73,7 @@ class Ryu : public GameObject
 private:
 	Sprite * _sprite_death;
 
-	int HeartCollect; // số lượng item heart người chơi nhặt được
+	int ManaCollect; // số lượng item heart người chơi nhặt được
 	int Lives; // số mạng của Ryu
 	int score; // điểm
 
@@ -115,13 +117,7 @@ public:
 	bool isJumping;
 	bool isSitting;
 
-
-	bool isOnStair;
-	int isProcessingOnStair;  // có 2 giai đoạn 
-	int directionStair; // hướng của cầu thang đang đi, -1 đi qua trái, 1 đi qua phải
 	int directionY; // hướng đi theo trục y của Ryu
-
-	float DoCaoDiDuoc = 0;
 
 	bool untouchable;
 	DWORD untouchable_start;
@@ -134,6 +130,8 @@ public:
 public:
 	Ryu(Camera* camera);
 	~Ryu();
+
+	unordered_map<eType, Weapon*> mapWeapon;
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
@@ -151,12 +149,11 @@ public:
 
 	void SetHurt(LPCOLLISIONEVENT e);
 
-	void SetHeartCollect(int h);
-	int GetHeartCollect();
+	void SetManaCollect(int h);
+	int GetManaCollect();
 
 	void CollisionWithGround(const vector<LPGAMEOBJECT> *coObjects = NULL);
 
-	void CollisionIsOnStair(vector<LPGAMEOBJECT> *coObjects = NULL);
 	//bool isCollisionWithItem(Item * objItem);
 
 
@@ -188,6 +185,11 @@ public:
 	bool GetIsDeath();
 	void SetIsDeath(bool b);
 
+	eType GetTypeWeaponCollect();
+	void SetTypeWeaponCollect(eType t);
+	void ProcessWeaponCollect(eType t);
+	bool IsUsingWeapon(eType typeWeapon);
+
 
 	eType GetTypeWeaponCollect();
 	void SetTypeWeaponCollect(eType t);
@@ -197,7 +199,7 @@ public:
 	bool GetIsUseDoubleShot();
 	void SetIsUseDoubleShot(bool b);
 
-	void Init(); // khởi tạo lại các trạng thái, HeartCollect, Heath, Lives, Score
+	void Init(); // khởi tạo lại các trạng thái, ManaCollect, Heath, Lives, Score
 	void Reset(); // khởi tạo lại các trạng thái.
 
 };
