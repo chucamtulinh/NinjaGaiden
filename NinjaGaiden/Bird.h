@@ -1,21 +1,18 @@
-﻿#ifndef __BIRD_H__
-#define __BIRD_H__
+﻿#ifndef __Bird_H__
+#define __Bird_H__
 
 #include "GameObject.h" 
+#include "Ryu.h"
 
-#define BIRD_SPEED_X 0.1f 
-#define BIRD_SPEED_Y 0.05f
-
-#define DeltaY 20 // Biên giao động trục y
-
+#define BIRD_SPEED_X 0.005f 
+#define BIRD_SPEED_Y 0.01f
 
 class Bird : public GameObject
 {
 private:
-	float yBackup; // vị trí của y ban dầu
-
+	Ryu* ryu;
 public:
-	Bird(float X = 0, float Y = 0, int Direction = -1);
+	Bird(float X, float Y, int Direction, Ryu* ryu);
 	virtual ~Bird();
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *listObject = NULL);

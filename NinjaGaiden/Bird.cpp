@@ -1,7 +1,7 @@
 ﻿#include "Bird.h"
 
 
-Bird::Bird(float X, float Y, int Direction)
+Bird::Bird(float X, float Y, int Direction, Ryu* ryu)
 {
 	type = eType::BIRD;
 	texture = TextureManager::GetInstance()->GetTexture(type);
@@ -9,12 +9,13 @@ Bird::Bird(float X, float Y, int Direction)
 
 	this->x = X;
 	this->y = Y;
-	this->yBackup = y;
 	this->direction = Direction;
 	this->Health = 1;
 
 	vy = BIRD_SPEED_Y;
 	vx = BIRD_SPEED_X * Direction;
+
+	this->ryu= ryu;
 }
 
 Bird::~Bird()
@@ -24,18 +25,28 @@ Bird::~Bird()
 
 void Bird::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
 {
-	// vượt quá biên độ trục y cho phép thì đổi chiều vy
-	if (y - yBackup >= DeltaY)
+	if (ryu->GetY() > y)
 	{
-		vy = -BIRD_SPEED_Y;
+		y += 1.5;
+	}
+	else if (ryu->GetY() < y)
+	{
+		y -= 1;
+	}
+
+	if ((direction == -1 && !(ryu->GetX() > x))) // đi về hướng của ryu mà đã vượt simon thì mới đổi hướng
+	{
+		vx += -0.005;
 	}
 	else
-		if (y - yBackup <= -DeltaY)
-		{
-			vy = BIRD_SPEED_Y;
-		}
+	{
+		vx += 0.008;
+	}
 
-
+	if (!vx)
+	{
+		direction *= -1;
+	}
 	GameObject::Update(dt); // Update dt, dx, dy
 
 	y += dy;

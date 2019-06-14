@@ -83,12 +83,13 @@ enum eType
 
 	// weapon
 	BULLET = 65,
-
+	THROWCROSS = 66,
 
 	// item
 	ITEMCONTAINER = 80,
 	ITEMCONTAINER_31 = 81,
 	ITEMCONTAINER_32 = 82,
+	ITEMTHROWCROSS = 83,
 	
 
 	// other
