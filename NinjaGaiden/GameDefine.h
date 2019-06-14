@@ -74,17 +74,17 @@ enum eType
 	TEX_GROUND3108 = 28,
 
 	// object
-	
+
 
 
 
 	// weapon
-	
-
+	BULLET = 65,
 
 	// item
 	COURIER = 81,
-	
+	UPGRADEMORNINGSTAR = 82,
+
 
 	// other
 	FONT = 101,
@@ -96,10 +96,18 @@ enum eType
 	BOARD_TRANS = 107,
 
 	// Effect
-	
+
 
 	// Enemy
-	
+	SWORDMAN = 108,
+	PANTHER = 109,
+	BIRD = 110,
+	BANSHEE = 111,
+	GUNGUY = 112,
+	GUNNER = 113,
+	RUNNER = 113,
+
+
 
 	//BOSS
 	
