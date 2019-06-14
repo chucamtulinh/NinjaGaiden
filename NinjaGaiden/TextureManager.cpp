@@ -55,7 +55,7 @@ void TextureManager::LoadResource()
 
 
 	//enemy
-
+	AddTexture(eType::SWORDMAN, new Texture("Resources/Sprites/Enemies/SwordMan.png", 3, 1, 3));
 
 
 	//boss

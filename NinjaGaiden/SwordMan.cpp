@@ -22,7 +22,19 @@ SwordMan::SwordMan(float X, float Y, int Direction, float autoGoX_Distance, floa
 	this->ryu = ryu;
 }
 
+SwordMan::SwordMan(float X, float Y, int Direction)
+{
+	x = X;
+	y = Y;
+	this->direction = Direction;
 
+	texture = TextureManager::GetInstance()->GetTexture(eType::SWORDMAN);
+	sprite = new Sprite(texture, 100);
+
+	Health = 1; // sét máu
+	type = eType::SWORDMAN;
+	vx = SWORDMAN_SPEED_X * this->direction;
+}
 
 void SwordMan::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {

@@ -405,7 +405,7 @@ void SceneGame::ResetResource()
 
 	listItem.clear();
 	//listEffect.clear();
-	//listEnemy.clear();
+	listEnemy.clear();
 	//listWeaponOfEnemy.clear();
 
 	/*isAllowCreateFishmen = false;
@@ -536,63 +536,63 @@ void SceneGame::Update(DWORD dt)
 
 //	if (mapCurrent == eType::MAP2)
 //	{
-//#pragma region Process_Region_Create_Enemy_Ghost
-//
-//		//	DebugOut(L"now = %d - listenemy = %d\n", CountEnemyGhost, listEnemy.size());
-//		DWORD now = GetTickCount();
-//
-//
-//
-//		if (isWaitProcessCreateGhost == false) // nếu không phải chờ xử lí thì vào xử lí
-//		{
-//#pragma region Vùng 1 & Vùng 2
-//			if ((ryu->GetX() >= -16.0f && ryu->GetX() <= 825.0f) || (ryu->GetX() > 2200 && ryu->GetX() < 2775))
-//			{
-//				if (now - TimeCreateGhost >= ThoiGianChoGiua2GhostDuocTao)
-//				{
-//					if (CountEnemyGhost < 3)
-//					{
-//						if (ryu->GetVx() > 0) // vx>0 đang chạy về bên phải
-//						{
-//							// cho ghost chạy từ bên phải qua
-//							listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));// 34 framewidth của ghost
-//						}
-//						else
-//							if (ryu->GetVx() < 0) // vx>0 đang chạy về bên trái
-//							{
-//								// cho ghost chạy từ bên trái qua 
-//								listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 326 - 10, 1));
-//							}
-//							else // đứng yên thì cứ random
-//							{
-//								int random = rand() % 2;
-//								if (random == 0) // đi từ bên trái
-//								{
-//									listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 326 - 10, 1));
-//								}
-//								else // đi từ bên phải
-//								{
-//									listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));
-//								}
-//							}
-//						CountEnemyGhost++;
-//						if (CountEnemyGhost == 3)
-//						{
-//							isWaitProcessCreateGhost = true; // phải chờ đến khi cả 3 ghost bị giết
-//							isAllowCheckTimeWaitProcessCreateGhost = false;
-//						}
-//						TimeCreateGhost = now; // set lại thời điểm đã tạo ghost
-//					}
-//				}
-//			}
-//#pragma endregion
-//
+#pragma region Process_Region_Create_Enemy_SwordMan
+
+		//	DebugOut(L"now = %d - listenemy = %d\n", CountEnemySwordMan, listEnemy.size());
+		DWORD now = GetTickCount();
+
+
+
+		if (isWaitProcessCreateSwordMan == false) // nếu không phải chờ xử lí thì vào xử lí
+		{
+#pragma region Vùng 1 & Vùng 2
+			if ((ryu->GetX() >= -16.0f && ryu->GetX() <= 825.0f) || (ryu->GetX() > 2200 && ryu->GetX() < 2775))
+			{
+				if (now - TimeCreateSwordMan >= ThoiGianChoGiua2SwordManDuocTao)
+				{
+					if (CountEnemySwordMan < 3)
+					{
+						if (ryu->GetVx() > 0) // vx>0 đang chạy về bên phải
+						{
+							// cho ghost chạy từ bên phải qua
+							//listEnemy.push_back(new SwordMan(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));
+						}
+						else
+							if (ryu->GetVx() < 0) // vx>0 đang chạy về bên trái
+							{
+								// cho ghost chạy từ bên trái qua 
+								//listEnemy.push_back(new SwordMan(camera->GetXCam() - 34, 326 - 10, 1));
+							}
+							else // đứng yên thì cứ random
+							{
+								int random = rand() % 2;
+								if (random == 0) // đi từ bên trái
+								{
+									//listEnemy.push_back(new SwordMan(camera->GetXCam() - 34, 326 - 10, 1));
+								}
+								else // đi từ bên phải
+								{
+									//listEnemy.push_back(new SwordMan(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));
+								}
+							}
+						CountEnemySwordMan++;
+						if (CountEnemySwordMan == 3)
+						{
+							isWaitProcessCreateSwordMan = true; // phải chờ đến khi cả 3 ghost bị giết
+							isAllowCheckTimeWaitProcessCreateSwordMan = false;
+						}
+						TimeCreateSwordMan = now; // set lại thời điểm đã tạo ghost
+					}
+				}
+			}
+#pragma endregion
+
 //#pragma region Vùng 3
-//			if ((ryu->GetX() >= GHOST_ZONE3_LEFT && ryu->GetX() <= GHOST_ZONE3_RIGHT))
+//			if ((ryu->GetX() >= SWORDMAN_ZONE3_LEFT && ryu->GetX() <= SWORDMAN_ZONE3_RIGHT))
 //			{
-//				if (now - TimeCreateGhost >= ThoiGianChoGiua2GhostDuocTao)
+//				if (now - TimeCreateSwordMan >= ThoiGianChoGiua2SwordManDuocTao)
 //				{
-//					if (CountEnemyGhost < 3)
+//					if (CountEnemySwordMan < 3)
 //					{
 //
 //						int random = rand() % 2; // tỉ lệ 50%
@@ -600,15 +600,15 @@ void SceneGame::Update(DWORD dt)
 //						{
 //						case 0: // ở trên
 //						{
-//							if (ryu->GetX() <= GHOST_ZONE3_COLUMN1)
+//							if (ryu->GetX() <= SWORDMAN_ZONE3_COLUMN1)
 //							{
-//								listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 185, -1));// bên phải chạy qua trái
+//								listEnemy.push_back(new SwordMan(camera->GetXCam() + camera->GetWidth(), 185, -1));// bên phải chạy qua trái
 //								break;
 //							}
 //							else
-//								if (GHOST_ZONE3_COLUMN2 <= ryu->GetX())
+//								if (SWORDMAN_ZONE3_COLUMN2 <= ryu->GetX())
 //								{
-//									listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 185, 1));// bên trái qua phải
+//									listEnemy.push_back(new SwordMan(camera->GetXCam() - 34, 185, 1));// bên trái qua phải
 //									break;
 //								}
 //								else
@@ -619,29 +619,29 @@ void SceneGame::Update(DWORD dt)
 //						case 1: // ở dưới
 //						{
 //							if (ryu->GetVx() > 0) // đang chạy về bên phải
-//								listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 330, -1));// bên phải chạy qua trái
+//								listEnemy.push_back(new SwordMan(camera->GetXCam() + camera->GetWidth(), 330, -1));// bên phải chạy qua trái
 //							else
 //								if (ryu->GetVx() < 0) // đang chạy bên trái 
-//									listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 330, 1)); // đi từ trái qua phải
+//									listEnemy.push_back(new SwordMan(camera->GetXCam() - 34, 330, 1)); // đi từ trái qua phải
 //								else
 //								{
 //									if (rand() % 2 == 0)
-//										listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 330, -1));// bên phải chạy qua trái
+//										listEnemy.push_back(new SwordMan(camera->GetXCam() + camera->GetWidth(), 330, -1));// bên phải chạy qua trái
 //									else
-//										listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 330, 1)); // đi từ trái qua phải 
+//										listEnemy.push_back(new SwordMan(camera->GetXCam() - 34, 330, 1)); // đi từ trái qua phải 
 //								}
 //							break;
 //						}
 //
 //						}
 //
-//						CountEnemyGhost++;
-//						if (CountEnemyGhost == 3)
+//						CountEnemySwordMan++;
+//						if (CountEnemySwordMan == 3)
 //						{
-//							isWaitProcessCreateGhost = true; // phải chờ đến khi cả 3 ghost bị giết
-//							isAllowCheckTimeWaitProcessCreateGhost = false;
+//							isWaitProcessCreateSwordMan = true; // phải chờ đến khi cả 3 ghost bị giết
+//							isAllowCheckTimeWaitProcessCreateSwordMan = false;
 //						}
-//						TimeCreateGhost = now; // set lại thời điểm đã tạo ghost
+//						TimeCreateSwordMan = now; // set lại thời điểm đã tạo ghost
 //
 //
 //
@@ -649,55 +649,60 @@ void SceneGame::Update(DWORD dt)
 //											   if (ryu->GetVx() > 0) // vx>0 đang chạy về bên phải
 //											   {
 //											   // cho ghost chạy từ bên phải qua
-//											   listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));// 34 framewidth của ghost
+//											   listEnemy.push_back(new SwordMan(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));// 34 framewidth của ghost
 //											   }
 //											   else
 //											   if (ryu->GetVx() < 0) // vx>0 đang chạy về bên trái
 //											   {
 //											   // cho ghost chạy từ bên trái qua
-//											   listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 326 - 10, 1));
+//											   listEnemy.push_back(new SwordMan(camera->GetXCam() - 34, 326 - 10, 1));
 //											   }
 //											   else // đứng yên thì cứ random
 //											   {
 //											   int random = rand() % 2;
 //											   if (random == 0) // đi từ bên trái
 //											   {
-//											   listEnemy.push_back(new Ghost(camera->GetXCam() - 34, 326 - 10, 1));
+//											   listEnemy.push_back(new SwordMan(camera->GetXCam() - 34, 326 - 10, 1));
 //											   }
 //											   else // đi từ bên phải
 //											   {
-//											   listEnemy.push_back(new Ghost(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));
+//											   listEnemy.push_back(new SwordMan(camera->GetXCam() + camera->GetWidth(), 326 - 10, -1));
 //											   }
 //											   }
-//											   CountEnemyGhost++;
-//											   if (CountEnemyGhost == 3)
+//											   CountEnemySwordMan++;
+//											   if (CountEnemySwordMan == 3)
 //											   {
-//											   isWaitProcessCreateGhost = true; // phải chờ đến khi cả 3 ghost bị giết
-//											   isAllowCheckTimeWaitProcessCreateGhost = false;
+//											   isWaitProcessCreateSwordMan = true; // phải chờ đến khi cả 3 ghost bị giết
+//											   isAllowCheckTimeWaitProcessCreateSwordMan = false;
 //											   }
-//											   TimeCreateGhost = now; // set lại thời điểm đã tạo ghost
+//											   TimeCreateSwordMan = now; // set lại thời điểm đã tạo ghost
 //											   */
 //					}
 //				}
 //			}
 //#pragma endregion
-//
-//		}
-//		else
-//		{
-//			if (isAllowCheckTimeWaitProcessCreateGhost)
-//			{
-//				if (now - TimeWaitProcessCreateGhost >= ThoiGianChoDeXuLiTaoGhost) // đã chờ đủ
-//				{
-//					isWaitProcessCreateGhost = false; // không phải chờ nữa
-//				}
-//			}
-//		}
-//
-//
-//
-//
-//#pragma endregion
+			listEnemy.push_back(new SwordMan(240.0f, 198.0f, 1));
+			listEnemy.push_back(new SwordMan(288.0f, 198.0f, 1));
+			listEnemy.push_back(new SwordMan(336.0f, 198.0f, 1));
+			listEnemy.push_back(new SwordMan(448.0f, 198.0f, 1));
+			listEnemy.push_back(new SwordMan(1872.0f, 198.0f, 1));
+			listEnemy.push_back(new SwordMan(1952.0f, 198.0f, 1));
+		}
+		else
+		{
+			if (isAllowCheckTimeWaitProcessCreateSwordMan)
+			{
+				if (now - TimeWaitProcessCreateSwordMan >= ThoiGianChoDeXuLiTaoSwordMan) // đã chờ đủ
+				{
+					isWaitProcessCreateSwordMan = false; // không phải chờ nữa
+				}
+			}
+		}
+
+
+
+
+#pragma endregion
 //
 //#pragma region Process_Region_Create_Panther
 //		if (REGION_CREATE_PANTHER_LEFT < ryu->GetX() && ryu->GetX() < REGION_CREATE_PANTHER_RIGHT)
@@ -820,6 +825,13 @@ void SceneGame::Update(DWORD dt)
 	/*for (UINT i = 0; i < listEffect.size(); i++)
 		if (listEffect[i]->GetFinish() == false)
 			listEffect[i]->Update(dt);*/
+	/*for (UINT i = 0; i < listWeaponOfEnemy.size(); i++)
+	{
+		if (listWeaponOfEnemy[i]->GetFinish() == false)
+		{
+			listWeaponOfEnemy[i]->Update(dt, &listObj);
+		}
+	}*/
 
 #pragma endregion
 
@@ -972,6 +984,15 @@ void SceneGame::CheckCollisionWeapon(vector<GameObject*> listObj)
 							break;
 						}
 
+						case eType::SWORDMAN:
+						{
+							gameObj->SubHealth(1);
+							ryu->SetScore(ryu->GetScore() + 200);
+							RunEffectHit = true;
+							CountEnemySwordMan--; 
+							break;
+						}
+
 						//case eType::BAT:
 						//{
 						//	gameObj->SubHealth(1);
@@ -983,12 +1004,12 @@ void SceneGame::CheckCollisionWeapon(vector<GameObject*> listObj)
 						//	}
 
 						//	RunEffectHit = true;
-						//	CountEnemyGhost--; // giảm số lượng Ghost đang hoạt động
-						//	if (CountEnemyGhost == 0)
+						//	CountEnemySwordMan--; // giảm số lượng SwordMan đang hoạt động
+						//	if (CountEnemySwordMan == 0)
 						//	{
-						//		TimeWaitProcessCreateGhost = GetTickCount(); // set thời điểm hiện tại
-						//		isWaitProcessCreateGhost = true;
-						//		isAllowCheckTimeWaitProcessCreateGhost = true;
+						//		TimeWaitProcessCreateSwordMan = GetTickCount(); // set thời điểm hiện tại
+						//		isWaitProcessCreateSwordMan = true;
+						//		isAllowCheckTimeWaitProcessCreateSwordMan = true;
 						//	}
 						//	break;
 						//}						
@@ -1225,7 +1246,7 @@ void SceneGame::CheckCollisionWithBoss()
 //		}
 //
 //
-//		if (Type == eType::GHOST || Type == eType::PANTHER || Type == eType::BAT || Type == eType::FISHMEN)
+//		if (Type == eType::SWORDMAN || Type == eType::PANTHER || Type == eType::BAT || Type == eType::FISHMEN)
 //		{
 //			int random = rand() % 15;
 //

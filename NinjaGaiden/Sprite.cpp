@@ -54,6 +54,7 @@ void Sprite::Update(DWORD dt)
 
 void Sprite::Draw(float X, float Y, int alpha, int R, int G, int B)
 {
+	if (this == NULL) return;
 	DrawFrame(currentFrame, X, Y, alpha, R, G, B);
 }
 

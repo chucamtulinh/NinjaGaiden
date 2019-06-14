@@ -13,10 +13,12 @@
 #include "TextureManager.h"
 #include "GameTime.h"
 #include "SceneManager.h"
+#include "SwordMan.h"
 //#include "Sound.h"
 
 #define GAME_TIME_MAX 300
-
+#define ThoiGianChoGiua2SwordManDuocTao 1000
+#define ThoiGianChoDeXuLiTaoSwordMan 2500
 #define CROSS_LIMITTIME 1000 // thời gian tối đa khi dùng Cross
 
 #pragma region define ClearState3
@@ -33,15 +35,23 @@
 
 #pragma endregion
 
+#pragma region define SWORDMAN
+
+#define SWORDMAN_ZONE3_LEFT 4233.0f // biên trái vùng hoạt động
+#define SWORDMAN_ZONE3_RIGHT 4993.0f// biên phải vùng hoạt động
+#define SWORDMAN_ZONE3_COLUMN1 4412.0f
+#define SWORDMAN_ZONE3_COLUMN2 4590.0f
+#pragma endregion
 
 class SceneGame : public Scene
 {
 private:
-	///*Xử lí liên quan tạo Fishmen*/
-	//bool isAllowCreateFishmen;
-	//int CountEnemyFishmen;
-	//DWORD TimeCreateFishmen; // thời điểm đã tạo fishmen
-	//DWORD TimeWaitCreateFishmen; // thời gian cần chờ để tạo fishmen
+	/*Xử lí liên quan tạo swordman*/
+	int CountEnemySwordMan; // số lượng swordman hiện tại
+	DWORD TimeCreateSwordMan; // thời điểm bắt đầu tạo swordman
+	DWORD TimeWaitProcessCreateSwordMan; // Thời điểm bắt đầu chờ xử lí việc tạo swordman
+	bool isWaitProcessCreateSwordMan; // chờ xử lí việc tạo swordman
+	bool isAllowCheckTimeWaitProcessCreateSwordMan = false; // cho phép kt thời gian chờ xử lí tạo swordman
 
 	/* Xử lí liên quan Clear State 3 */
 	bool isAllowProcessClearState3;
