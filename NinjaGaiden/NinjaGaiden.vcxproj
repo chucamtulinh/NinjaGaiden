@@ -125,6 +125,16 @@
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Maps\file_gameobject_map1.txt" />
+    <Text Include="Resources\Maps\file_gameobject_map2.txt" />
+    <Text Include="Resources\Maps\readfile_map_1.txt" />
+    <Text Include="Resources\Maps\readfile_map_2.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Maps\NG3-1.png" />
+    <Image Include="Resources\Maps\NG3-1_32.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{9714F6A0-3E42-412E-ABCD-A19CC94F15F6}</ProjectGuid>

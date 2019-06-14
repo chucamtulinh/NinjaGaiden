@@ -32,6 +32,9 @@ Ground::Ground(float X, float Y, int W, int H, int Model)
 	case GROUND3108:
 		texture = TextureManager::GetInstance()->GetTexture(eType::TEX_GROUND3108);
 		break;
+	case GROUND3109:
+		texture = TextureManager::GetInstance()->GetTexture(eType::TEX_GROUND3109);
+		break;
 	default:
 		DebugOut(L"[Ground] Get Texture that bai! Ko nhan dang duoc Model!\n");
 		break;

@@ -35,6 +35,7 @@ using namespace std;
 #define MAX_FRAME_RATE 90
 
 #define COLOR_BACKGROUND_DEFAULT D3DCOLOR_XRGB(0, 0, 0) // Màu đen
+//#define COLOR_BACKGROUND_DEFAULT D3DCOLOR_XRGB(255, 255, 255) // này là màu trắng
 
 #define TIME_LIMIT_WAIT_RESET_GAME 300 // Thời gian chờ vẽ màn màu đen khi reset game
 
@@ -61,6 +62,7 @@ enum eType
 	RYU = 01,
 	RYU_TRANS = 02,
 	RYU_DEATH = 03,
+	RYU_RUNNING = 04,
 
 	// object nền
 	GROUND = 20,
@@ -72,6 +74,7 @@ enum eType
 	TEX_GROUND3106 = 26,
 	TEX_GROUND3107 = 27,
 	TEX_GROUND3108 = 28,
+	TEX_GROUND3109 = 29,
 
 	// object
 
@@ -82,9 +85,15 @@ enum eType
 	BULLET = 65,
 
 	// item
+<<<<<<< HEAD
 	COURIER = 81,
 	UPGRADEMORNINGSTAR = 82,
 
+=======
+	ITEMCONTAINER = 80,
+	ITEMCONTAINER_31 = 81,
+	ITEMCONTAINER_32 = 82,
+>>>>>>> 48350d3ab595cd872c41db14657d47f259789e4e
 
 	// other
 	FONT = 101,
