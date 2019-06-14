@@ -54,6 +54,9 @@
     <Filter Include="GameObject\Item">
       <UniqueIdentifier>{d7b3264e-0fd0-4afc-9e2b-1bfc311b5609}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Weapon">
+      <UniqueIdentifier>{c98da7d2-df8e-4067-bace-21ddef7c8790}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -182,6 +185,15 @@
     <ClInclude Include="Item.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CrouchSlashWeapon.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordSlashWeapon.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MapReader\base64.cpp">
@@ -304,6 +316,13 @@
     <ClCompile Include="Item.cpp">
       <Filter>GameObject\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CrouchSlashWeapon.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordSlashWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in">

@@ -82,8 +82,9 @@ enum eType
 
 
 	// weapon
-	
-
+	WEAPON = 60,
+	CROUCHSLASHWEAPON = 61,
+	SWORDSLASHWEAPON = 62,
 
 	// item
 	ITEMCONTAINER = 80,
