@@ -54,11 +54,16 @@
     <Filter Include="GameObject\Item">
       <UniqueIdentifier>{d7b3264e-0fd0-4afc-9e2b-1bfc311b5609}</UniqueIdentifier>
     </Filter>
+<<<<<<< HEAD
+    <Filter Include="GameObject\Weapon">
+      <UniqueIdentifier>{c98da7d2-df8e-4067-bace-21ddef7c8790}</UniqueIdentifier>
+=======
     <Filter Include="GameObject\Enemy">
       <UniqueIdentifier>{f7f6ea6d-1dcf-44b6-adbc-33192db7a001}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameObject\Weapon">
       <UniqueIdentifier>{9457ef15-28e7-4363-824f-ba54c1255eb8}</UniqueIdentifier>
+>>>>>>> 714df99a00490830f08e6caa737ad9114a8cb939
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +193,15 @@
     <ClInclude Include="Item.h">
       <Filter>GameObject\Item</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="Weapon.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CrouchSlashWeapon.h">
+      <Filter>GameObject\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SwordSlashWeapon.h">
+=======
     <ClInclude Include="Runner.h">
       <Filter>GameObject\Enemy</Filter>
     </ClInclude>
@@ -210,6 +224,7 @@
       <Filter>GameObject\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Banshee.h">
+>>>>>>> 714df99a00490830f08e6caa737ad9114a8cb939
       <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
@@ -334,6 +349,15 @@
     <ClCompile Include="Item.cpp">
       <Filter>GameObject\Item</Filter>
     </ClCompile>
+<<<<<<< HEAD
+    <ClCompile Include="Weapon.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CrouchSlashWeapon.cpp">
+      <Filter>GameObject\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="SwordSlashWeapon.cpp" />
+=======
     <ClCompile Include="Runner.cpp">
       <Filter>GameObject\Enemy</Filter>
     </ClCompile>
@@ -356,6 +380,7 @@
       <Filter>GameObject\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="Banshee.cpp" />
+>>>>>>> 714df99a00490830f08e6caa737ad9114a8cb939
   </ItemGroup>
   <ItemGroup>
     <None Include="MapReader\Tmx.h.in">
