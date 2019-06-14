@@ -1,19 +1,18 @@
-﻿#ifndef __GUNNER_H__
-#define __GUNNER_H__
+﻿#ifndef __GUNGUY_H__
+#define __GUNGUY_H__
 
-#define GUNNER_ANI_WAIT 0
-#define GUNNER_ANI_RUNNING_BEGIN 1
-#define GUNNER_ANI_RUNNING_END 3
+#define GUNGUY_ANI_WAIT 0
+#define GUNGUY_ANI_RUNNING_BEGIN 1
+#define GUNGUY_ANI_RUNNING_END 3
 
 #define GUNNER_SPEED_RUNNING 0.08f
-
 #define PANTHER_GRAVITY 0.005f
 
 #include "GameObject.h"
 #include "Ryu.h"
 #include "Bullet.h"
 
-class Gunner : public GameObject
+class GunGuy : public GameObject
 {
 private:
 	bool isWait;
@@ -34,8 +33,8 @@ private:
 	Camera * camera;
 
 public:
-	Gunner(float X, float Y, int Direction, float autoGoX_Distance, float abc, Ryu * ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera);
-	virtual ~Gunner();
+	GunGuy(float X, float Y, int Direction, float autoGoX_Distance, float abc, Ryu * ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera);
+	virtual ~GunGuy();
 
 	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	void Render(Camera *camera);

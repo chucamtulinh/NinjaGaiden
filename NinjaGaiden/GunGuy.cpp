@@ -1,8 +1,8 @@
-﻿#include "Gunner.h"
+﻿#include "GunGuy.h"
 
-Gunner::Gunner(float X, float Y, int Direction, float autoGoX_Distance, float autoGoX_Distance2, Ryu * ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera)
+GunGuy::GunGuy(float X, float Y, int Direction, float autoGoX_Distance, float autoGoX_Distance2, Ryu * ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera)
 {
-	type = eType::PANTHER;
+	type = eType::GUNGUY;
 	Health = 1;
 	vx = vy = 0;
 	direction = Direction;
@@ -27,7 +27,7 @@ Gunner::Gunner(float X, float Y, int Direction, float autoGoX_Distance, float au
 
 
 
-void Gunner::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void GunGuy::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	GameObject::Update(dt);
 
@@ -45,18 +45,18 @@ void Gunner::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isWait)
 	{
-		sprite->SelectFrame(GUNNER_ANI_WAIT);
+		sprite->SelectFrame(GUNGUY_ANI_WAIT);
 	}
 	else
 	{
 		if (isStart)
 		{
-			if (GUNNER_ANI_RUNNING_BEGIN <= sprite->GetCurrentFrame() && sprite->GetCurrentFrame() < GUNNER_ANI_RUNNING_END)
+			if (GUNGUY_ANI_RUNNING_BEGIN <= sprite->GetCurrentFrame() && sprite->GetCurrentFrame() < GUNGUY_ANI_RUNNING_END)
 			{
 				sprite->Update(dt);
 			}
 			else
-				sprite->SelectFrame(GUNNER_ANI_RUNNING_BEGIN);
+				sprite->SelectFrame(GUNGUY_ANI_RUNNING_BEGIN);
 		}
 	}
 
@@ -141,7 +141,7 @@ void Gunner::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 }
 
-void Gunner::Render(Camera * camera)
+void GunGuy::Render(Camera * camera)
 {
 	if (Health <= 0)
 		return;
@@ -159,16 +159,16 @@ void Gunner::Render(Camera * camera)
 
 }
 
-bool Gunner::GetIsStart()
+bool GunGuy::GetIsStart()
 {
 	return isStart;
 }
 
-Gunner::~Gunner()
+GunGuy::~GunGuy()
 {
 }
 
-void Gunner::Attack()
+void GunGuy::Attack()
 {
 	if (weapon == NULL)
 	{
