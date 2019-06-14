@@ -54,8 +54,8 @@ void TextureManager::LoadResource()
 
 
 	//player
-	AddTexture(eType::RYU, new Texture("Resources/Sprites/Ryu/Ryu.png", 21, 1, 21));
-	AddTexture(eType::RYU_RUNNING, new Texture("Resources/Sprites/Ryu/Running.png", 3, 1, 3));
+	AddTexture(eType::RYU, new Texture("Resources/Sprites/Ryu/Ryu_fix.png", 21, 1, 21));
+	AddTexture(eType::RYU_RUNNING, new Texture("Resources/Sprites/Ryu/Jump.png", 4, 1, 4));
 
 	//effect
 	

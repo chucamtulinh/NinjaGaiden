@@ -12,12 +12,12 @@ SceneGame::~SceneGame()
 	SAFE_DELETE(gridGame);
 }
 
-void SceneGame::KeyState(BYTE * state) //Xử lý phím ở hết chỗ này
+void SceneGame::KeyState(BYTE * state) //Xử lý phím ở đoạn này
 {
-	//Các trường hợp không xét phím
-	
-	//*end
-
+	if (ryu->GetIsDeath() || isWaitResetGame || isGameOver)
+	{
+		return;
+	}
 	if (ryu->isHurting)
 		return;
 	if (!ryu->isJumping)
@@ -67,13 +67,10 @@ void SceneGame::KeyState(BYTE * state) //Xử lý phím ở hết chỗ này
 
 					//	if (CountCollisionTop == 0) // ko đụng stair top, tức là ngồi bt
 					//	{
-					//		ryu->Sit();
-					//		if (Game::GetInstance()->IsKeyDown(RIGHT_btn))
-					//			ryu->Right();
+					ryu->Sit();
 
-					//		if (Game::GetInstance()->IsKeyDown(LEFT_btn))
-					//			ryu->Left();
-					//		return;
+					if (Game::GetInstance()->IsKeyDown(ATK_btn)) ryu->isAttacking = true;
+					return;
 					//	}
 
 					//}
@@ -94,16 +91,27 @@ void SceneGame::KeyState(BYTE * state) //Xử lý phím ở hết chỗ này
 				{
 					ryu->Stop();
 				}
-			}
-
+			}		
 	}
 
-
-	if (ryu->isJumping && ryu->isRunning)
+	if (Game::GetInstance()->IsKeyDown(JUMP_btn))
 	{
+		ryu->Jump();
+		if (Game::GetInstance()->IsKeyDown(RIGHT_btn))
+		{
+			ryu->Right();
+			ryu->Go();
+		}
+		if (Game::GetInstance()->IsKeyDown(LEFT_btn))
+		{
+			ryu->Left();
+			ryu->Go();
+		}
+		else ryu->isRunning == false;
 		return;
 	}
 
+	if (Game::GetInstance()->IsKeyDown(ATK_btn)) ryu->isAttacking = true;
 
 	if (ryu->isAttacking) // đang attack
 	{
@@ -116,15 +124,33 @@ void SceneGame::KeyState(BYTE * state) //Xử lý phím ở hết chỗ này
 
 	if (Game::GetInstance()->IsKeyDown(RIGHT_btn))
 	{
-		ryu->Right();
-		ryu->Go();
+		if(Game::GetInstance()->IsKeyDown(JUMP_btn))
+		{
+			ryu->Jump();
+			ryu->isJumping = true;
+			return;
+		}
+		else
+		{
+			ryu->Right();
+			ryu->Go();
+		}
 	}
 	else
 		if (Game::GetInstance()->IsKeyDown(LEFT_btn))
 		{
-			ryu->Left();
-			ryu->Go();
-		}
+			if (Game::GetInstance()->IsKeyDown(JUMP_btn))
+			{
+				ryu->Jump();
+				ryu->isJumping = true;
+				return;
+			}
+			else
+			{
+				ryu->Left();
+				ryu->Go();
+			}
+		}		
 		else
 		{
 			ryu->Stop();
@@ -199,7 +225,6 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 		DebugOut(L"[MOUSE POSITION] %d %d \n", p.x + (int)camera->GetXCam(), p.y + (int)camera->GetYCam());
 	}
 
-
 	if (KeyCode == DIK_3) // set vi tri Ryu   
 	{
 		DebugOut(L"[SET POSITION Ryu] x = 1140.0f \n");
@@ -223,14 +248,11 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 		ryu->SetPosition(2060.0f, 0);
 	}
 
-
-
 	if (KeyCode == DIK_7)
 	{
 		DebugOut(L"[SET POSITION Ryu] x = .... \n");
 		ryu->SetPosition(4000.0f, 500.0f);
 	}
-
 
 	if (KeyCode == DIK_Y) // run boss
 	{
@@ -250,7 +272,6 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 		DebugOut(L"[RESET GRID]");
 		gridGame->ReloadGrid();
 	}
-
 
 	if (KeyCode == DIK_F) // create hollywater
 	{
@@ -286,13 +307,6 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 			//ryu->Attack(eType::MORNINGSTAR);
 		}
 
-
-	if (ryu->isJumping && ryu->isRunning)
-	{
-		return;
-	}
-
-
 	if (KeyCode == JUMP_btn)
 	{
 		if (Game::GetInstance()->IsKeyDown(LEFT_btn) || Game::GetInstance()->IsKeyDown(RIGHT_btn))
@@ -308,6 +322,10 @@ void SceneGame::OnKeyDown(int KeyCode) // combo phím hack game :v
 		}
 	}
 
+	if (KeyCode == DOWN_btn)
+	{
+		ryu->isSitting = true;
+	}
 }
 
 void SceneGame::OnKeyUp(int KeyCode)
@@ -322,7 +340,10 @@ void SceneGame::OnKeyUp(int KeyCode)
 		return;
 	}
 
-
+	if (KeyCode == DOWN_btn)
+	{
+		ryu->isSitting = false;
+	}
 }
 
 void SceneGame::LoadResources()

@@ -6,24 +6,25 @@
 #include "Texture.h"
 #include "GameDefine.h"
 
-#define Ryu_POSITION_DEFAULT  25.0f, 138.0f
+#define Ryu_POSITION_DEFAULT  25.0f, 206.0f // heightboard 100
 
 #define Ryu_BBOX_WIDTH 17
 #define Ryu_BBOX_HEIGHT 32
 #define Ryu_BBOX_SITTING_HEIGHT 24
-#define Ryu_BBOX_JUMPING_HEIGHT 45
+#define Ryu_BBOX_JUMPING_HEIGHT 40
 
-#define PULL_UP_Ryu_AFTER_SITTING 18.0f // Kéo Ryu lên 18px sau khi ngồi rồi đứng dậy, tránh overlaping do BBOX bottom thu lại khi ngồi
+#define PULL_UP_Ryu_AFTER_SITTING 4.0f // Kéo Ryu lên 8px sau khi ngồi rồi đứng dậy, tránh overlaping do BBOX bottom thu lại khi ngồi
 
-#define Ryu_VJUMP 0.34f
+#define Ryu_VJUMP 0.3f
 #define Ryu_VJUMP_HURTING 0.2f // nhảy lúc bị đau
-#define PULL_UP_Ryu_AFTER_JUMPING 18.0f // Kéo Ryu lên 18px sau khi nhảy, tránh overlaping do BBOX bottom thu lại khi nhảy
+#define PULL_UP_Ryu_AFTER_JUMPING 8.0f // Kéo Ryu lên 8px sau khi nhảy, tránh overlaping do BBOX bottom thu lại khi nhảy
 
-#define Ryu_GRAVITY 0.0001f 
+#define Ryu_GRAVITY 0.001f 
 #define Ryu_GRAVITY_JUMPING 0.001f 
 #define Ryu_GRAVITY_HURTING 0.001f
 
-#define Ryu_RUNNING_SPEED 0.22f //0.12f 
+#define Ryu_RUNNING_SPEED 0.12f //0.12f 
+#define Ryu_JUMPING_SPEED 0.06f
 
 #define Ryu_STATE_IDLE 0
 #define Ryu_STATE_RUNNING 1
@@ -33,50 +34,27 @@
 
 #define Ryu_ANI_IDLE 0
 
-#define Ryu_ANI_JUMPING 14
-#define Ryu_ANI_SITTING 8
+#define Ryu_ANI_JUMPING_BEGIN 11
+#define Ryu_ANI_JUNPING_END 14
+
+#define Ryu_ANI_SITTING 7
 
 
 
 /*Ani đang ngồi đánh*/
-#define Ryu_ANI_SITTING_ATTACKING_BEGIN 9
-#define Ryu_ANI_SITTING_ATTACKING_END 11
+#define Ryu_ANI_SITTING_ATTACKING_BEGIN 8
+#define Ryu_ANI_SITTING_ATTACKING_END 10
 
 /*Ani đang đứng đánh*/
-#define Ryu_ANI_STANDING_ATTACKING_BEGIN 5
-#define Ryu_ANI_STANDING_ATTACKING_END 7
-
-/*Ani đang đi xuống cầu thang đánh*/
-#define Ryu_ANI_STAIR_DOWN_ATTACKING_BEGIN 18
-#define Ryu_ANI_STAIR_DOWN_ATTACKING_END 20
-
-/*Ani đang đi lên cầu thang đánh*/
-#define Ryu_ANI_STAIR_UP_ATTACKING_BEGIN 21
-#define Ryu_ANI_STAIR_UP_ATTACKING_END 23
-
-
+#define Ryu_ANI_STANDING_ATTACKING_BEGIN 4
+#define Ryu_ANI_STANDING_ATTACKING_END 6
 
 /* Time Ani attack */
 #define Ryu_TIME_WAIT_ANI_ATTACKING 120// thời gian thời của mỗi frame khi tấn công
+#define Ryu_TIME_WAIT_ANI_JUMPING 120 // thời gian mỗi frame nhảy
 
 
-#define Ryu_ANI_HURTING 8
-
-#define Ryu_ANI_HIDE_FACE 9
-
-#define Ryu_ANI_STAIR_GO_DOWN_BEGIN 10
-#define Ryu_ANI_STAIR_GO_DOWN_END 11
-
-#define Ryu_ANI_STAIR_GO_UP_BEGIN 12
-#define Ryu_ANI_STAIR_GO_UP_END 13
-
-
-
-
-#define Ryu_SPEED_ONSTAIR 0.09f 
-
-#define Ryu_ANI_STAIR_STANDING_UP 12
-#define Ryu_ANI_STAIR_STANDING_DOWN 10
+#define Ryu_ANI_HURTING 12
 
 
 #define TIME_FREEZE_MAX 500
