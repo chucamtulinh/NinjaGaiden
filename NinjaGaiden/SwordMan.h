@@ -1,17 +1,17 @@
-#ifndef __GHOST_H__
-#define __GHOST_H__
+#ifndef __SWORDMAN_H__
+#define __SWORDMAN_H__
 
 
-#define GHOST_SPEED_X 0.19f
-#define GHOST_GRAVITY 0.005f
+#define SWORDMAN_SPEED_X 0.19f
+#define SWORDMAN_GRAVITY 0.005f
 
 
 #include "GameObject.h"
-class Ghost : public GameObject
+class SwordMan : public GameObject
 {
 public:
-	Ghost(float X, float Y, int Direction);
-	virtual ~Ghost();
+	SwordMan(float X, float Y, int Direction);
+	virtual ~SwordMan();
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
 	virtual void Render(Camera *camera);

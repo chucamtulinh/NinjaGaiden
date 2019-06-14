@@ -1,34 +1,34 @@
-#include "Ghost.h"
+#include "SwordMan.h"
 
 
 
-Ghost::Ghost(float X, float Y, int Direction)
+SwordMan::SwordMan(float X, float Y, int Direction)
 {
 	x = X;
 	y = Y;
 	this->direction = Direction;
 
-	texture = TextureManager::GetInstance()->GetTexture(eType::GHOST);
-	sprite = new GSprite(texture, 100);
+	texture = TextureManager::GetInstance()->GetTexture(eType::SWORDMAN);
+	sprite = new Sprite(texture, 100);
 
 	Health = 1; // sét máu
-	type = eType::GHOST;
-	vx = GHOST_SPEED_X * this->direction;
+	type = eType::SWORDMAN;
+	vx = SWORDMAN_SPEED_X * this->direction;
 }
 
-Ghost::~Ghost()
+SwordMan::~SwordMan()
 {
 }
 
-void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void SwordMan::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	GameObject::Update(dt);
-	vy += GHOST_GRAVITY * dt;
+	vy += SWORDMAN_GRAVITY * dt;
 
 	vector<LPGAMEOBJECT> listObject_Brick;
 	listObject_Brick.clear();
 	for (UINT i = 0; i < coObjects->size(); i++)
-		if (coObjects->at(i)->GetType() == eType::BRICK)
+		if (coObjects->at(i)->GetType() == eType::GROUND)
 			listObject_Brick.push_back(coObjects->at(i));
 
 	vector<LPCOLLISIONEVENT> coEvents;
@@ -65,7 +65,7 @@ void Ghost::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	sprite->Update(dt); // update frame ani
 }
 
-void Ghost::Render(Camera * camera)
+void SwordMan::Render(Camera * camera)
 {
 	if (Health <= 0)
 		return;
