@@ -1,113 +1,152 @@
 ﻿#include "Gunner.h"
 
-
-Gunner::Gunner(float X, float Y, int Direction, Ryu* ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera)
+Gunner::Gunner(float X, float Y, int Direction, float autoGoX_Distance, float autoGoX_Distance2, Ryu * ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera)
 {
-	texture = TextureManager::GetInstance()->GetTexture(eType::GUNGUY);
-	sprite = new Sprite(texture, 200);
-	type = eType::GUNNER;
+	type = eType::PANTHER;
+	Health = 1;
+	vx = vy = 0;
+	direction = Direction;
+	x = X;
+	y = Y;
+	AutoGoX_Backup_X = x;
+	AutoGoX_Distance = autoGoX_Distance;
+	AutoGoX_Distance2 = autoGoX_Distance2;
 
-	this->x = X;
-	this->y = Y;
-	this->direction = Direction;
-	this->Health = 1;
-	vx = 0;
-	vy = 0;
+	texture = TextureManager::GetInstance()->GetTexture(type);
+	sprite = new Sprite(texture, 120);
+	TimeAttack = GetTickCount();
+	isWait = 1;
+	isStart = 0;
+	isAttacking = 0;
+	isAutoGoX = 0;
 
-	isAttacking = false;
-	sprite->SelectFrame(GUNNER_ANI_ATTACK);
 	this->ryu = ryu;
 	this->listWeaponOfEnemy = listWeaponOfEnemy;
 	this->camera = camera;
 }
 
-Gunner::~Gunner()
+
+
+void Gunner::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-}
-
-void Gunner::GetBoundingBox(float & left, float & top, float & right, float & bottom)
-{
-	left = x + 5;
-	top = y + 15;
-	right = x + texture->GetFrameWidth() - 5;
-	bottom = y + texture->GetFrameHeight();
-}
-
-void Gunner::Update(DWORD dt, vector<LPGAMEOBJECT>* listObject)
-{
-		if ((direction == -1 && !(ryu->GetX() < x)) ||
-			(direction == 1 && !(x < ryu->GetX()))) // hướng mặt về phía ryu, mà đã vượt ryu thì mới đổi hướng
-		{
-			direction *= -1; //đổi hướng đi
-
-		}
-	DWORD gh = GetTickCount();
-
-	if (gh - TimeDelay >= TIME_ATTACK_DELAY)
-	{
-		Attack();
-	}
 	GameObject::Update(dt);
 
-#pragma region Xu li va cham Ground
-	vector<LPCOLLISIONEVENT> coEvents;
-	vector<LPCOLLISIONEVENT> coEventsResult;
-	coEvents.clear();
-	vector<LPGAMEOBJECT> list_Ground;
-	list_Ground.clear();
+	vy += PANTHER_GRAVITY * dt;// Simple fall down
 
-	for (UINT i = 0; i < listObject->size(); i++)
-		if (listObject->at(i)->GetType() == eType::GROUND)
-			list_Ground.push_back(listObject->at(i));
-
-	CalcPotentialCollisions(&list_Ground, coEvents);
-
-	float min_tx, min_ty, nx = 0, ny;
-	FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
-
-	if (ny == -1)
+	// chuyển qua trạng thái chạy
+	if (isWait)
 	{
-		vy = 0;
-		y += min_ty * dy + ny * 0.4f;
+		isWait = false;
+		isStart = true;
+		vx = GUNNER_SPEED_RUNNING * direction;
+		isAutoGoX = 1;
+	}
+
+
+	if (isWait)
+	{
+		sprite->SelectFrame(GUNNER_ANI_WAIT);
 	}
 	else
 	{
-		y += dy;
+		if (isStart)
+		{
+			if (GUNNER_ANI_RUNNING_BEGIN <= sprite->GetCurrentFrame() && sprite->GetCurrentFrame() < GUNNER_ANI_RUNNING_END)
+			{
+				sprite->Update(dt);
+			}
+			else
+				sprite->SelectFrame(GUNNER_ANI_RUNNING_BEGIN);
+		}
 	}
 
+	TimeDelay = GetTickCount();
+	if (TimeDelay - TimeAttack > 1000)
+	{
+		//xAccumulationAttack = 0;
+		Attack();
+	}
+
+#pragma region Xét va chạm đất
+
+	vector<LPCOLLISIONEVENT> coEvents;
+	vector<LPCOLLISIONEVENT> coEventsResult;
+	coEvents.clear();
+	vector<LPGAMEOBJECT> list_Brick;
+	list_Brick.clear();
+	for (UINT i = 0; i < coObjects->size(); i++)
+	{
+		if (coObjects->at(i)->GetType() == eType::GROUND)
+			list_Brick.push_back(coObjects->at(i));
+	}
+
+	CalcPotentialCollisions(&list_Brick, coEvents);
+	if (coEvents.size() == 0)
+	{
+		x += dx;
+		y += dy;
+	}
+	else
+	{
+		float min_tx, min_ty, nx = 0, ny;
+		FilterCollision(coEvents, coEventsResult, min_tx, min_ty, nx, ny);
+
+		x += dx;
+		if (ny == -1)
+			y += min_ty * dy + ny * 0.4f;
+		else
+			y += dy;
+
+		if (ny == -1)
+		{
+			vy = 0;
+
+		}
+	}
 	for (UINT i = 0; i < coEvents.size(); i++)
 		delete coEvents[i];
 #pragma endregion
 
 
-	if (isAttacking)
-	{
-		DWORD now = GetTickCount();
-		if (now - TimeAttack >= TIME_ATTACK_DELAY)
+
+
+	if (abs(ryu->GetX() - x) < 200) {
+		if ((direction == -1 && !(ryu->GetX() < x)) ||
+			(direction == 1 && !(x < ryu->GetX()))) // đi về hướng của simon mà đã vượt simon thì mới đổi hướng
 		{
-			isAttacking = false;
-			TimeDelay = GetTickCount();
+			direction *= -1; //đổi hướng đi
+			vx *= -1;//xInit = x;
 		}
 	}
-
-	//xAfter = x;
-	//xAccumulationAttack += abs(xAfter - xBefore);
-
-
-#pragma region Update Animation
-	if (isAttacking)
+	else
 	{
-		sprite->SelectFrame(GUNNER_ANI_ATTACK);
+		if (isAutoGoX == true)
+		{
+			if (abs(x - AutoGoX_Backup_X) >= AutoGoX_Distance)
+			{
+				isAutoGoX = false;
+				AutoGoX_Backup_X = x;
+				//direction *= -1;
+				vx *= -1;
+				DebugOut(L"[SWORDMAN] end auto go X\n");
+			}
+		}
+		if (abs(x - AutoGoX_Backup_X) >= AutoGoX_Distance2)
+		{
+			isAutoGoX = false;
+			AutoGoX_Backup_X = x;
+			//direction *= -1;
+			vx *= -1;
+		}
 	}
-	
-#pragma endregion
-
 }
 
 void Gunner::Render(Camera * camera)
 {
 	if (Health <= 0)
 		return;
+
+	//	sprite->Update(dt);
 
 	D3DXVECTOR2 pos = camera->Transform(x, y);
 	if (direction == -1)
@@ -117,13 +156,20 @@ void Gunner::Render(Camera * camera)
 
 	if (IS_DEBUG_RENDER_BBOX)
 		RenderBoundingBox(camera);
+
+}
+
+bool Gunner::GetIsStart()
+{
+	return isStart;
+}
+
+Gunner::~Gunner()
+{
 }
 
 void Gunner::Attack()
 {
-	if (isAttacking)
-		return;
-
 	if (weapon == NULL)
 	{
 		weapon = new Bullet(camera);
@@ -136,7 +182,6 @@ void Gunner::Attack()
 	isAttacking = true;
 	TimeAttack = GetTickCount();
 
-	weapon->SetSpeed(BULLET_SPEED * direction, 0);
+	//weapon1->SetSpeed(THROWINGAXE_SPEED_X * direction, 0);
 	weapon->Attack(x + 10, y + 3, direction);
-
 }

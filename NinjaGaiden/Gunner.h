@@ -1,40 +1,50 @@
 ﻿#ifndef __GUNNER_H__
 #define __GUNNER_H__
 
-#include "GameObject.h" 
-#include "Ground.h"
+#define GUNNER_ANI_WAIT 0
+#define GUNNER_ANI_RUNNING_BEGIN 1
+#define GUNNER_ANI_RUNNING_END 3
+
+#define GUNNER_SPEED_RUNNING 0.08f
+
+#define PANTHER_GRAVITY 0.005f
+
+#include "GameObject.h"
 #include "Ryu.h"
 #include "Bullet.h"
 
-#define GUNNER_ANI_ATTACK 0 // ani lúc attack
-#define GUNNER_TIME_LIMIT_WAIT_AFTER_ATTACK 700 // thời gian phải đứng lại chờ trước khi đi tiếp, sau khi attack
-#define TIME_ATTACK_DELAY 1000 //Thời gian giữa 2 lần tấn công
 class Gunner : public GameObject
 {
 private:
-	DWORD TimeAttack; // thời điểm 
+	bool isWait;
+	//bool isRunning;
+	//bool isJumping;
+	bool isStart; // trạng thái bắt đầu
+	Bullet *weapon;
+	DWORD TimeAttack;
 	DWORD TimeDelay;
-	float xAccumulationAttack;
-	Bullet * weapon;
 	bool isAttacking;
+	float AutoGoX_Distance; // khoảng cách cần chạy
+	float AutoGoX_Distance2; // khoảng cách 
+	bool isAutoGoX;
+	float AutoGoX_Backup_X;
 
-	/* Lưu thành phần ngoài phục vụ xử lí */
-	Ryu* ryu;
 	vector<Weapon*> *listWeaponOfEnemy;
+	Ryu * ryu;
 	Camera * camera;
 
 public:
-	Gunner(float X, float Y, int Direction, Ryu* ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera);
+	Gunner(float X, float Y, int Direction, float autoGoX_Distance, float abc, Ryu * ryu, vector<Weapon*> *listWeaponOfEnemy, Camera * camera);
 	virtual ~Gunner();
 
-	void GetBoundingBox(float &left, float &top, float &right, float &bottom);
-	void Update(DWORD dt, vector<LPGAMEOBJECT> *listObject = NULL);
-	void Render(Camera * camera);
+	void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects = NULL);
+	void Render(Camera *camera);
 	void Attack();
+	bool GetIsStart();
+
+	//void Jump();
+	//void Run();
 };
 
-#endif 
 
-
-
-
+#endif

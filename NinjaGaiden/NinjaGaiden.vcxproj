@@ -23,7 +23,6 @@
     <ClInclude Include="Bird.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CrouchSlashWeapon.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="Game.h" />
@@ -66,13 +65,10 @@
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Sprite.h" />
-<<<<<<< HEAD
-    <ClInclude Include="SwordSlashWeapon.h" />
-=======
     <ClInclude Include="SwordMan.h" />
->>>>>>> 714df99a00490830f08e6caa737ad9114a8cb939
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="ThrowCross.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
@@ -80,7 +76,6 @@
     <ClCompile Include="Bird.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CrouchSlashWeapon.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -121,13 +116,10 @@
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
-<<<<<<< HEAD
-    <ClCompile Include="SwordSlashWeapon.cpp" />
-=======
     <ClCompile Include="SwordMan.cpp" />
->>>>>>> 714df99a00490830f08e6caa737ad9114a8cb939
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="ThrowCross.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>

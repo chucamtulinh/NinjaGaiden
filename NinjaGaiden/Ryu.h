@@ -190,12 +190,6 @@ public:
 	void ProcessWeaponCollect(eType t);
 	bool IsUsingWeapon(eType typeWeapon);
 
-
-	eType GetTypeWeaponCollect();
-	void SetTypeWeaponCollect(eType t);
-	void ProcessWeaponCollect(eType t);
-	bool IsUsingWeapon(eType typeWeapon);
-
 	bool GetIsUseDoubleShot();
 	void SetIsUseDoubleShot(bool b);
 
